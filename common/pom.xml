@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+		>
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+          <groupId>net.alemas.oss.tools</groupId>
+          <artifactId>events-collector</artifactId>
+		<version>0.0.0</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>events-collector-common</artifactId>
+	<packaging>jar</packaging>
+
+	<name>events collector - common library</name>
+	<description>
+		Definition of libraries shared between server and client.
+	</description>
+	<inceptionYear>2021</inceptionYear>
+	<url />
+	<organization />
+	<licenses />
+	<developers>
+		<developer>
+			<name>Alessandro Mascherpa</name>
+			<email>a.mascherpa@computer.org</email>
+			<roles>
+				<role>designer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors />
+	<scm />
+	<distributionManagement />
+	<issueManagement />
+
+
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.11.4</version>
+		</dependency>
+
+		<!-- Swagger2 dependencies -->
+		<!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.1.7</version>
+		</dependency>
+
+        <!-- testing dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+	</dependencies>
+
+
+	<build>
+
+		<plugins>
+
+			<!-- compiling -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>default-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- SptBugs plugins -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${site-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${project-info-reports.version}</version>
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+</project>

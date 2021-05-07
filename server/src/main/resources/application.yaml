@@ -1,0 +1,28 @@
+
+# server description, configuration and behaviour;
+#
+server:
+    port: ${EVENTS_COLLECTOR_PORT:8090}
+
+    base-path: /@parent.artifactId@
+    title: @project.name@
+    description: @project.description@
+    version: @project.version@
+
+    the-host-name: your-host.net
+
+    error:
+      include-message:  always
+
+# logging configuration
+#
+logging:
+  level:
+    web:  INFO
+    org:
+      springframework:
+        web:  INFO
+
+# swagger configuraton
+#
+springfox.documentation.swagger-ui.base-url:  ${server.base-path}
