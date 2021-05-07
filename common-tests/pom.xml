@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    >
+
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.alemas.oss.tools</groupId>
+    <artifactId>events-collector</artifactId>
+    <version>0.0.0</version>
+    <relativePath>..</relativePath>
+  </parent>
+  <artifactId>events-collector-common-tests</artifactId>
+  <packaging>jar</packaging>
+
+  <name>events collector - common library for testing</name>
+  <description>
+    Shared libraries for testing phases.
+  </description>
+  <inceptionYear>2021</inceptionYear>
+  <url />
+  <organization />
+  <licenses />
+  <developers>
+    <developer>
+      <name>Alessandro Mascherpa</name>
+      <email>a.mascherpa@computer.org</email>
+      <roles>
+	<role>designer</role>
+      </roles>
+    </developer>
+  </developers>
+  <contributors />
+  <scm />
+  <distributionManagement />
+  <issueManagement />
+
+
+  <dependencies>
+
+    <!-- project dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>events-collector-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- testing dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+  </dependencies>
+
+
+  <build>
+
+    <plugins>
+
+      <!-- compiling -->
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-jar-plugin</artifactId>
+	<version>3.2.0</version>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+</project>

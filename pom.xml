@@ -58,6 +58,7 @@
 
     <modules>
         <module>common</module>
+        <module>common-tests</module>
         <module>server</module>
         <module>client</module>
     </modules>
