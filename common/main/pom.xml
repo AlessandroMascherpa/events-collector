@@ -10,7 +10,7 @@
           <groupId>net.alemas.oss.tools</groupId>
           <artifactId>events-collector</artifactId>
 		<version>0.0.0</version>
-		<relativePath>..</relativePath>
+		<relativePath>../..</relativePath>
 	</parent>
 	<artifactId>events-collector-common</artifactId>
 	<packaging>jar</packaging>

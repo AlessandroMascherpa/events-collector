@@ -42,27 +42,25 @@ For this end point, the query parameters: **application**, **after** and **befor
 
 ## Build
 
-To build both the service and client library, simply compile it from the root directory:
+To build both the service and client libraries, simply compile they from the root directory:
 
    ```sh
    mvn  -Dmaven.test.skip=true  clean  package
    ```
 
-A maven weird behavior: the test phase on whole project works fine and all tests pass, but in the package phase the test of client sub module fails.
-That is, the command:
+You can test thw whole library as well with:
 
    ```sh
    mvn  clean  test
    ```
    
-completes correctly without errors, but the command
+At present, you cannot run the command:
 
    ```sh
    mvn  clean  package
    ```
 
-fails when testing the sub module: `events-collector-client`.
-I do not yet now the reason.
+because it fails when testing the sub module: `events-collector-client`.
 
 
 ## Installation
