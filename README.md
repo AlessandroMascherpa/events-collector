@@ -3,6 +3,7 @@
 ## Description
 
 Web API to collect information about events and produce some statistical data.
+The latter are returned in JSON format or as spreadsheet file.
 
 The service keeps all data in memory, at present there is not a persistent storage handling.
 
@@ -34,8 +35,11 @@ The end points that keep track of users activity in a system is: **/events-colle
      - **after** to get only events after or equal the given date/time
      - **before** to get only events before or equal the given date/time
    All the above parameters are optional, but, if defined, they are checked in **and**.
- 
- 
+
+The end point **/events-collector/events/logs-in-out/spreadsheet-ml**, with verb **GET**, returns list of log in and put events as spreadsheet file.
+For this end point, the query parameters: **application**, **after** and **before** are also available.
+
+
 ## Build
 
 To build both the service and client library, simply compile it from the root directory:
@@ -168,3 +172,7 @@ They are:
  - **store.bat**, to store some events, both log in and out events;
  - **list.bat**, to list all stored events; with a number as argument, you can show one single record;
  - **application.bat**, to list all events filtered by the application name given on command line;
+
+Statistical data returned as spreadsheet file can be opened directly in spreadsheet applications like MS Excel.
+To do so, just open the **Open** dialog box used to load files and, in the **File name** entry field, type the end point URL: http://localhost:8090/events-collector/events/logs-in-out/spreadsheet-ml, and then open the file.
+You can filter the events list as well by following URL with query parameters.

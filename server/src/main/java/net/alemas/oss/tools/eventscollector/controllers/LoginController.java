@@ -5,18 +5,22 @@ import net.alemas.oss.tools.eventscollector.io.LogInOut;
 import net.alemas.oss.tools.eventscollector.io.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
 import net.alemas.oss.tools.eventscollector.repositories.LoginRepository;
+import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
+import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetByList;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 
@@ -41,7 +45,14 @@ public class LoginController
      * add here any data repository that supports non-blocking reactive streams;
      */
     @Autowired
-    private LoginRepository repository;
+    private LoginRepository     repository;
+
+    /**
+     * server configuration properties;
+     */
+    @Autowired
+    private ServerConfiguration properties;
+
 
     /* --- constructors --- */
     /* none */
@@ -113,7 +124,7 @@ public class LoginController
 
     @ApiOperation
             (
-                    value = "List stored log in/out events. Events can be filtered out with query parameters.",
+                    value = "List stored log in/out events as JSON objects array. Events can be filtered out with query parameters.",
                     code = 200
             )
     @ApiResponses
@@ -168,7 +179,7 @@ public class LoginController
         {
             log.info
                     (
-                            "returning list of events - filter by: application: '{}', after: {}, before: {}",
+                            "returning list of events as json objects array - filter by: application: '{}', after: {}, before: {}",
                             application,
                             LogInOut.convertDate( after ),
                             LogInOut.convertDate( before )
@@ -182,24 +193,104 @@ public class LoginController
                                 before
                         );
     }
-/*
+
+
+    @ApiOperation
+            (
+                    value = "List stored log in/out events as spreadsheet file. Events can be filtered out with query parameters.",
+                    code = 200
+            )
+    @ApiResponses
+            (
+                    value =
+                            {
+                                    @ApiResponse( code = 200, message = "Events listed." )
+                            }
+            )
     @RequestMapping
             (
                     value       = "/spreadsheet-ml",
-                    method      = RequestMethod.GET,
-                    produces    = { MediaType.APPLICATION_OCTET_STREAM_VALUE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
+                    method      = RequestMethod.GET
             )
-    private Flux< LogInOutResponse > getSpreadsheetLogsInOut()
+    private ResponseEntity< Mono< Resource > >  getSpreadsheetLogsInOut
+            (
+                    @ApiParam
+                            (
+                                    value           = "To list events linked to an application name.",
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    String        application,
+
+                    @ApiParam
+                            (
+                                    value           = "To list events after the given date/time; the date/time pattern is: '" + LogInOut.DATE_TIME_PATTERN + "'.",
+                                    format          = LogInOut.DATE_TIME_PATTERN,
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    @DateTimeFormat( pattern = LogInOut.DATE_TIME_PATTERN )
+                    LocalDateTime after,
+
+                    @ApiParam
+                            (
+                                    value           = "To list events before the given date/time; the date/time pattern is: '" + LogInOut.DATE_TIME_PATTERN + "'.",
+                                    format          = LogInOut.DATE_TIME_PATTERN,
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    @DateTimeFormat( pattern = LogInOut.DATE_TIME_PATTERN )
+                    LocalDateTime before
+            )
+            throws
+                IOException
     {
         if ( log.isInfoEnabled() )
         {
-            log.info( "returning list of events as spreadsheet" );
+            log.info
+                    (
+                            "returning list of events in spreadsheet file - filter by: application: '{}', after: {}, before: {}",
+                            application,
+                            LogInOut.convertDate( after ),
+                            LogInOut.convertDate( before )
+                    );
         }
+
+        String name =
+                this.properties
+                        .getFileNameSpreadsheet()
+                ;
+
         return
-                ++++
-                this.repository.list();
+                ResponseEntity
+                        .ok()
+                        .header( HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
+                        .header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".xlsx" )
+                        .cacheControl( CacheControl.noCache() )
+                        .body
+                                (
+                                        Mono.fromCallable
+                                                (
+                                                        () ->
+                                                                SpreadsheetByList
+                                                                        .getInstance()
+                                                                        .export
+                                                                                (
+                                                                                        this.repository.list( application, after, before )
+                                                                                )
+                                                )
+                                        .subscribeOn
+                                                (
+                                                        Schedulers.boundedElastic()
+                                                )
+                                )
+                ;
     }
-*/
+
+
     @ApiOperation
             (
                     value = "To store a log in/out event.",

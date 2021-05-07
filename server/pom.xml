@@ -16,7 +16,7 @@
 
 	<name>events collector - server</name>
 	<description>
-          Web API to collect information about events and produce statistical data.
+          Web API to collect information about events and produce statistical data. The latter are returned in JSON format or as spreadsheet file.
 	</description>
 	<inceptionYear>2021</inceptionYear>
 	<url />
@@ -50,6 +50,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+        <!-- libraries for excel format -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi-ooxml.version}</version>
 		</dependency>
 
 		<!-- Swagger2 dependencies -->
