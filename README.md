@@ -28,7 +28,7 @@ The end points that keep track of users activity in a system is: **/events-colle
      - **username** the end user account
      - **application** in which system the event occurred
      - **in** boolean value to say whether the user logged in or out
-     - **when** the event date, it is the format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX, for example: 2021-03-10T14:45:03.527+0100
+     - **when** the event date, it is the format: `yyyy-MM-dd'T'HH:mm:ss.SSS`, for example: 2021-03-10T14:45:03.527
 
  - **GET** to get a list of log in and out events; to avoid to get all events the list can be filtered with query parameters:
      - **application** to get only the events linked to the given application name
@@ -166,7 +166,7 @@ To install in your local repository the client library, from the project root di
 
 ## Usage
 
-In directory `server/src/test/batch` there are some usage example with **curl**.
+In directory `server/src/test/batch/` there are some usage example with **curl**.
 They are:
 
  - **store.bat**, to store some events, both log in and out events;
