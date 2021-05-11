@@ -24,10 +24,10 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
-class EventsCollectorApplicationTests extends EventsLogInOutEvents
+class LoginEventsCollectorApplicationTests extends EventsLogInOutEvents
 {
 	/* --- logging --- */
-	final private static Logger log = LoggerFactory.getLogger( EventsCollectorApplicationTests.class );
+	final private static Logger log = LoggerFactory.getLogger( LoginEventsCollectorApplicationTests.class );
 
 	/* --- properties --- */
 	// Spring Boot will create a `WebTestClient` for you,

@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  *
  * Created by MASCHERPA on 26/02/2021.
  */
-public class EventsLogInOutEvents
+public class EventsLogInOut
 {
 
     /* --- checking methods --- */
