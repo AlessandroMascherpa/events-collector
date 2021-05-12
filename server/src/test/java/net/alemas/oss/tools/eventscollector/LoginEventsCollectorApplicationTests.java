@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
-class LoginEventsCollectorApplicationTests extends EventsLogInOutEvents
+class LoginEventsCollectorApplicationTests extends EventsLogInOut
 {
 	/* --- logging --- */
 	final private static Logger log = LoggerFactory.getLogger( LoginEventsCollectorApplicationTests.class );

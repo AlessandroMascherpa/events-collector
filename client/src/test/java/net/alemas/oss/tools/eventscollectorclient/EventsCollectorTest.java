@@ -1,7 +1,7 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 import net.alemas.oss.tools.eventscollector.EventsCollectorApplication;
-import net.alemas.oss.tools.eventscollector.EventsLogInOutEvents;
+import net.alemas.oss.tools.eventscollector.EventsLogInOut;
 import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  *
  * Created by MASCHERPA on 19/02/2021.
  */
-public class EventsCollectorTest extends EventsLogInOutEvents
+public class EventsCollectorTest extends EventsLogInOut
 {
     /* --- logging --- */
     final private static Logger log = LoggerFactory.getLogger( EventsCollectorTest.class );

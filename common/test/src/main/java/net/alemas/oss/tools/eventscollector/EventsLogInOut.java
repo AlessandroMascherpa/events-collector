@@ -3,7 +3,6 @@ package net.alemas.oss.tools.eventscollector;
 
 import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +10,11 @@ import static org.junit.Assert.*;
 
 
 /**
- * Class with common test data.
+ * Class with common test data for log in/out events.
  *
  * Created by MASCHERPA on 26/02/2021.
  */
-public class EventsLogInOut
+public class EventsLogInOut extends EventsBase
 {
 
     /* --- checking methods --- */
@@ -91,14 +90,6 @@ public class EventsLogInOut
         failures.add( new LogInOutResponse( "",     "",       null,   null ) );
         failures.add( new LogInOutResponse( USER_2, APP_NET,  null,   null ) );
         failures.add( new LogInOutResponse( USER_3, APP_NET,  null,   null ) );
-    }
-
-    /* --- payload methods --- */
-    protected static LocalDateTime asDate( int year, int month, int day, int hours, int minutes, int seconds )
-    {
-        return
-                LocalDateTime.of( year, month,day, hours, minutes, seconds, 0 )
-                ;
     }
 
 }
