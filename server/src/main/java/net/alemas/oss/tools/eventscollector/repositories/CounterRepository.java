@@ -2,7 +2,9 @@ package net.alemas.oss.tools.eventscollector.repositories;
 
 
 import net.alemas.oss.tools.eventscollector.io.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.CounterResponse;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,29 @@ public class CounterRepository
             ;
         }
         this.repository.add( event );
+    }
+
+    public Flux< CounterResponse > groupById()
+    {
+        return
+                Flux
+                        .fromIterable( this.repository )
+                        .groupBy( CounterEvent::getId )
+                        .flatMap
+                                (
+                                        grouped ->
+                                                grouped
+                                                        .collectList()
+                                                        .map
+                                                                (
+                                                                        eventsByKey -> new CounterResponse
+                                                                                (
+                                                                                        grouped.key(),
+                                                                                        eventsByKey.size()
+                                                                                )
+                                                                )
+                                )
+                ;
     }
 
 }

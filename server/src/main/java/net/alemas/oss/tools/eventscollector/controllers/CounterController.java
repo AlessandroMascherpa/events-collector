@@ -3,6 +3,7 @@ package net.alemas.oss.tools.eventscollector.controllers;
 
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.io.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.CounterResponse;
 import net.alemas.oss.tools.eventscollector.repositories.CounterRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Flux;
 
 
 /**
@@ -103,6 +105,37 @@ public class CounterController
         {
             log.info( "logging event - end" );
         }
+    }
+
+    @ApiOperation
+            (
+                    value = "List stored events as JSON objects array.",
+                    code = 200
+            )
+    @ApiResponses
+            (
+                    value =
+                            {
+                                    @ApiResponse( code = 200, message = "Events listed." )
+                            }
+            )
+    @RequestMapping
+            (
+                    value       = "/",
+                    method      = RequestMethod.GET,
+                    produces    = MediaType.APPLICATION_JSON_VALUE
+            )
+    @ResponseStatus( HttpStatus.OK )
+    private Flux< CounterResponse > getEventsById()
+    {
+        if ( log.isInfoEnabled() )
+        {
+            log.info( "returning list of events as json objects array." );
+        }
+        return
+                this.repository
+                        .groupById()
+                ;
     }
 
 }
