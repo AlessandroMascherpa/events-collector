@@ -13,17 +13,9 @@ import java.time.LocalDateTime;
  *
  * Created by MASCHERPA on 04/05/2021.
  */
-public class CounterEvent extends Base
+public class CounterEvent extends Counter
 {
     /* --- properties --- */
-    @Schema
-            (
-                    required    = true,
-                    description = "The unique event identifier.",
-                    nullable    = false
-            )
-    protected String            id;
-
     @Schema
             (
                     required    = true,
@@ -50,20 +42,11 @@ public class CounterEvent extends Base
                     LocalDateTime when
             )
     {
-        this.id     = id;
+        super( id );
         this.when   = when;
     }
 
     /* --- getters'n'setters --- */
-    public String getId()
-    {
-        return this.id;
-    }
-    public void setId( String id )
-    {
-        this.id = id;
-    }
-
     public LocalDateTime getWhen()
     {
         return this.when;
@@ -76,14 +59,7 @@ public class CounterEvent extends Base
     /* --- object checking --- */
     public void isWellFormed() throws IllegalArgumentException
     {
-        if ( ( this.id == null ) || "".equals( this.id ) )
-        {
-            throw
-                    new IllegalArgumentException
-                            (
-                                    String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "id" )
-                            );
-        }
+        super.isWellFormed();
         if ( this.when == null )
         {
             throw
