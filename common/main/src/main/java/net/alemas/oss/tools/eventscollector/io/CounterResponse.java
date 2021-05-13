@@ -76,7 +76,7 @@ public class CounterResponse extends Counter
         return
                 this.getClass().getSimpleName()
                 + '['
-                +        "id: '" + this.id + "' "
+                +        "id: '" + this.id + "', "
                 +        "count: " + this.counter
                 + ']'
                 ;
