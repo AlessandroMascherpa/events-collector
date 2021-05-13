@@ -3,6 +3,7 @@ package net.alemas.oss.tools.eventscollector;
 
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
 import net.alemas.oss.tools.eventscollector.io.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.CounterResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @ExtendWith( SpringExtension.class )
@@ -38,9 +40,21 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
     {
         log.info( "server - begin" );
 
+		/* --- test empty collection --- */
+        log.info( "test empty collection - begin" );
+        this.webTestClient
+                .get()
+                .uri( this.getUrlPath())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList( CounterResponse.class )
+                .hasSize( 0 )
+        ;
+        log.info( "test empty collection - end" );
+
         /* --- fill in the events --- */
         log.info( "post events - begin" );
-        for ( CounterEvent event : valid )
+        for ( CounterEvent event : events )
         {
             this.webTestClient
                     .post()
@@ -56,7 +70,31 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
         }
         log.info( "post events - end" );
 
+		/* --- check inserted events - all records --- */
+        log.info( "get all events - begin" );
+
+        checkList( responses );
+
+        log.info( "get all events - end" );
+
         log.info( "server - end" );
+    }
+    private void checkList( List< CounterResponse > expected )
+    {
+        String                      url     = this.getUrlPath();
+
+        List< CounterResponse >     actual  = this.webTestClient
+                .get()
+                .uri( url )
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList( CounterResponse.class )
+                .hasSize( expected.size() )
+                .returnResult()
+                .getResponseBody()
+                ;
+
+        checkListResult( actual, expected );
     }
 
     /* --- API call payload --- */
