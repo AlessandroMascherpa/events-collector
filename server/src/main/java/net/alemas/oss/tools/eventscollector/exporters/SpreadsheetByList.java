@@ -1,7 +1,6 @@
 package net.alemas.oss.tools.eventscollector.exporters;
 
 
-import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.usermodel.*;
@@ -22,15 +21,12 @@ import java.util.ResourceBundle;
  * Exporter class in spreadsheet format.
  *
  * Created by MASCHERPA on 24/03/2021.
+ *
+ * @param <Response>    the events class to use to fill the spreadsheet;
  */
-public class SpreadsheetByList
+public abstract class SpreadsheetByList< Response >
 {
-    /* --- singleton --- */
-    /**
-     * this class;
-     */
-    private static SpreadsheetByList    instance;
-
+    /* --- properties --- */
     /**
      * text messages resource;
      */
@@ -38,28 +34,20 @@ public class SpreadsheetByList
 
 
     /* --- constructors --- */
-    /**
-     * the single instance of this class;
-     *
-     * @return this class;
-     */
-    public static synchronized SpreadsheetByList getInstance()
-    {
-        if ( instance == null )
-        {
-            instance = new SpreadsheetByList();
-        }
-        return
-                instance;
-    }
-
-    private SpreadsheetByList()
+    protected SpreadsheetByList()
     {
         /* none */
     }
 
     /* --- exporter methods --- */
-    public Resource export( Flux< LogInOutResponse > list )
+    /**
+     * exports the response class in spreadsheet format;
+     *
+     * @param list    list of responses to export;
+     * @return the spreadsheet with responses;
+     * @throws IOException
+     */
+    public Resource export( Flux< Response > list )
         throws
             IOException
     {
@@ -86,26 +74,21 @@ public class SpreadsheetByList
                                         )
                 );
 
-        sheet.setColumnWidth( 0, this.columnWidthByCharsLen( 30 ) );
-        sheet.setColumnWidth( 1, this.columnWidthByCharsLen( 30 ) );
-        sheet.setColumnWidth( 2, this.columnWidthByCharsLen( 22 ) );
-        sheet.setColumnWidth( 3, this.columnWidthByCharsLen( 22 ) );
+        /* --- columns widths --- */
+        this.setColumnsWidths( sheet );
 
 
         /* --- fill the sheet: columns header --- */
         XSSFRow row = sheet.createRow( 0 );
 
-        this.setColumnHeader( row, 0, "sheet.column-header.username" );
-        this.setColumnHeader( row, 1, "sheet.column-header.application" );
-        this.setColumnHeader( row, 2, "sheet.column-header.date-log-in" );
-        this.setColumnHeader( row, 3, "sheet.column-header.date-log-out" );
+        this.setColumnsHeaders( row );
 
         /* --- fill the sheet: events --- */
         list
 //---                .log()
                 .subscribe
                         (
-                                new EventsConsumer( sheet, style, 1 )
+                                this.getConsumer( sheet, style, 1 )
                         )
                 ;
 
@@ -120,12 +103,12 @@ public class SpreadsheetByList
                         )
                 ;
     }
-    private int columnWidthByCharsLen( int len )
+    protected int columnWidthByCharsLen( int len )
     {
         return
                 ( len * 256 );
     }
-    private void setColumnHeader
+    protected void setColumnHeader
             (
                     XSSFRow row,
                     int     cell,
@@ -143,9 +126,42 @@ public class SpreadsheetByList
                         );
     }
 
+    /* --- abstract methods --- */
+    /**
+     * sets the columns widths;
+     *
+     * @param sheet    to sheet to configure;
+     */
+    protected abstract void setColumnsWidths( XSSFSheet sheet );
+
+    /**
+     * writes the column headers;
+     * @param row    the row to fill with headers;
+     */
+    protected abstract void setColumnsHeaders( XSSFRow row );
+
+    /**
+     * gets the consumer class to read the events list;
+     *
+     * @param theSheet    the sheet where the events will be written;
+     * @param theStyle    the cells style;
+     * @param start       the starting row;
+     * @return the events list consumer;
+     */
+    protected abstract EventsConsumer< Response > getConsumer
+            (
+                    XSSFSheet       theSheet,
+                    XSSFCellStyle   theStyle,
+                    int             start
+            );
 
     /* --- internal classes --- */
-    protected static class EventsConsumer implements Subscriber< LogInOutResponse >
+    /**
+     * Events list consumer class.
+     *
+     * @param <Response>    the events class to use to fill the spreadsheet;
+     */
+    protected static abstract class EventsConsumer< Response > implements Subscriber< Response >
     {
         /* --- constants --- */
         private static final int    AMOUNT  = 100;
@@ -179,16 +195,12 @@ public class SpreadsheetByList
         }
 
         @Override
-        public void onNext( LogInOutResponse response )
+        public void onNext( Response response )
         {
             /* --- fill the sheet --- */
             XSSFRow row = sheet.createRow( this.line ++ );
 
-            row.createCell( 0, CellType.STRING ).setCellValue( response.getUsername() );
-            row.createCell( 1, CellType.STRING ).setCellValue( response.getApplication() );
-
-            this.setCellDateTime( row, 2, response.getDateLoggedIn() );
-            this.setCellDateTime( row, 3, response.getDateLoggedOut() );
+            this.fillRow( row, response );
 
             /* --- request more events --- */
             if ( ++ this.consumed  >= AMOUNT )
@@ -197,7 +209,7 @@ public class SpreadsheetByList
                 this.subscription.request( AMOUNT );
             }
         }
-        private void setCellDateTime
+        protected void setCellDateTime
                 (
                         XSSFRow         row,
                         int             index,
@@ -232,6 +244,16 @@ public class SpreadsheetByList
         {
             /* do nothing */
         }
+
+        /* --- abstract methods --- */
+        /**
+         * with given event fills a single sheet row;
+         *
+         * @param row         the row to fill;
+         * @param response    the event to fill the row;
+         */
+        protected abstract void fillRow( XSSFRow row, Response response );
+
     }
 
 }

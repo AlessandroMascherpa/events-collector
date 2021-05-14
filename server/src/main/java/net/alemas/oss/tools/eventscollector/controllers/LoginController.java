@@ -1,13 +1,13 @@
 package net.alemas.oss.tools.eventscollector.controllers;
 
 
+import io.swagger.annotations.*;
+import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
+import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetLogins;
 import net.alemas.oss.tools.eventscollector.io.LogInOut;
 import net.alemas.oss.tools.eventscollector.io.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
 import net.alemas.oss.tools.eventscollector.repositories.LoginRepository;
-import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
-import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetByList;
-import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -268,14 +268,14 @@ public class LoginController
                 ResponseEntity
                         .ok()
                         .header( HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
-                        .header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".xlsx" )
+                        .header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".log-in-out.xlsx" )
                         .cacheControl( CacheControl.noCache() )
                         .body
                                 (
                                         Mono.fromCallable
                                                 (
                                                         () ->
-                                                                SpreadsheetByList
+                                                                SpreadsheetLogins
                                                                         .getInstance()
                                                                         .export
                                                                                 (

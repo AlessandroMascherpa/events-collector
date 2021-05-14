@@ -1,25 +1,30 @@
 package net.alemas.oss.tools.eventscollector.controllers;
 
 
-import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
-import net.alemas.oss.tools.eventscollector.io.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.CounterResponse;
-import net.alemas.oss.tools.eventscollector.repositories.CounterRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
+import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetCounters;
+import net.alemas.oss.tools.eventscollector.io.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.CounterResponse;
+import net.alemas.oss.tools.eventscollector.repositories.CounterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.io.IOException;
 
 
 /**
@@ -107,6 +112,7 @@ public class CounterController
         }
     }
 
+
     @ApiOperation
             (
                     value = "List stored events as JSON objects array.",
@@ -126,7 +132,7 @@ public class CounterController
                     produces    = MediaType.APPLICATION_JSON_VALUE
             )
     @ResponseStatus( HttpStatus.OK )
-    private Flux< CounterResponse > getEventsById()
+    private Flux< CounterResponse > getEventsGroupedById()
     {
         if ( log.isInfoEnabled() )
         {
@@ -135,6 +141,65 @@ public class CounterController
         return
                 this.repository
                         .groupById()
+                ;
+    }
+
+
+    @ApiOperation
+            (
+                    value = "List stored events as spreadsheet file.",
+                    code = 200
+            )
+    @ApiResponses
+            (
+                    value =
+                            {
+                                    @ApiResponse( code = 200, message = "Events listed." )
+                            }
+            )
+    @RequestMapping
+            (
+                    value       = "/spreadsheet-ml",
+                    method      = RequestMethod.GET,
+                    produces    = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+    private ResponseEntity< Mono< Resource > > getEventsGroupedByIdAsSpreadsheet()
+            throws
+                IOException
+    {
+        if ( log.isInfoEnabled() )
+        {
+            log.info( "returning list of events in spreadsheet file" );
+        }
+
+        String name =
+                this.properties
+                        .getFileNameSpreadsheet()
+                ;
+
+        return
+                ResponseEntity
+                        .ok()
+                        .header( HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
+                        .header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".counters.xlsx" )
+                        .cacheControl( CacheControl.noCache() )
+                        .body
+                                (
+                                        Mono.fromCallable
+                                                (
+                                                        () ->
+                                                                SpreadsheetCounters
+                                                                        .getInstance()
+                                                                        .export
+                                                                                (
+                                                                                        this.repository.groupById()
+                                                                                )
+                                                )
+                                            .subscribeOn
+                                                    (
+                                                            Schedulers.boundedElastic()
+                                                    )
+                                )
                 ;
     }
 
