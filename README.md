@@ -9,6 +9,7 @@ The service keeps all data in memory, at present there is not a persistent stora
 
 Events handled by service are:
 
+ - events counting
  - log in/out in a system
 
 
@@ -18,6 +19,19 @@ Client library is also provided, both for ready to use and as example.
 ### OpenDOC
 
 Web API online documentation is available at address: http://localhost:8090/events-collector/swagger-ui/
+
+
+### Events counting
+
+The end point to keep track of events occurrences is: **/events-collector/events/counter/**, with the following verbs:
+
+ - **POST** to store a single event, with the following fields in URL encoded form:
+     - **id** the event identifier
+     - **when** the event date, it is the format: `yyyy-MM-dd'T'HH:mm:ss.SSS`, for example: 2021-03-10T14:45:03.527
+
+ - **GET** to get the events identifiers list and, per each event, how many times it occurred
+ 
+The end point **/events-collector/events/counter/spreadsheet-ml**, with verb **GET**, returns the events list as spreadsheet file.
 
 
 ### Log in/out events
@@ -164,12 +178,16 @@ To install in your local repository the client library, from the project root di
 
 ## Usage
 
-In directory `server/src/test/batch/` there are some usage example with **curl**.
+In directories tree under `server/src/test/batch/` there are some usage examples with **curl**.
 They are:
 
- - **store.bat**, to store some events, both log in and out events;
- - **list.bat**, to list all stored events; with a number as argument, you can show one single record;
- - **application.bat**, to list all events filtered by the application name given on command line;
+ - **counter** with examples for the event counter end point, they are:
+    + **store.bat** to store some event
+    + **list.bat** to list the stored events
+ - **loginout** with examples for log in/out end point, they are:
+    + **store.bat**, to store some events, both log in and out events;
+    + **list.bat**, to list all stored events; with a number as argument, you can show one single record;
+    + **application.bat**, to list all events filtered by the application name given on command line;
 
 Statistical data returned as spreadsheet file can be opened directly in spreadsheet applications like MS Excel.
 To do so, just open the **Open** dialog box used to load files and, in the **File name** entry field, type the end point URL: http://localhost:8090/events-collector/events/logs-in-out/spreadsheet-ml, and then open the file.
