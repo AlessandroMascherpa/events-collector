@@ -20,18 +20,20 @@ public class ClientProperties
 
     /* --- properties --- */
     private String  basePath;
+    private String  provider;
 
     /* --- constructors --- */
     public ClientProperties()
     {
-        final String    propertiesFile  = "client.properties";
+        final String    propertiesFile  = "/client.properties";
         final String    propertiesField = "server.base-path";
+        final String    connectionField = "connection.provider";
         try
                 (
                         InputStream input =
                                 this
                                         .getClass()
-                                        .getResourceAsStream( "/" + propertiesFile )
+                                        .getResourceAsStream( propertiesFile )
                 )
         {
             if ( input != null )
@@ -41,6 +43,7 @@ public class ClientProperties
                 properties.load( input );
 
                 this.basePath = properties.getProperty( propertiesField );
+                this.provider = properties.getProperty( connectionField );
             }
             else
             {
@@ -64,4 +67,8 @@ public class ClientProperties
         return this.basePath;
     }
 
+    public String getProviderName()
+    {
+        return this.provider;
+    }
 }

@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
  */
 public class EventsLogInOut extends EventsBase
 {
-
     /* --- checking methods --- */
     protected static void checkListResult
         (

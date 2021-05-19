@@ -43,11 +43,11 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
 
     /* --- library test --- */
     @Test
-    public void GivenServiceNotRunning_WhenConnectViaLibrary_ThenFailesWithinExpecetdTime() throws Exception
+    public void GivenServiceNotRunning_WhenConnectViaLibraryEventLogins_ThenFailedWithinExpectedTime() throws Exception
     {
-        boolean             posted;
-        long                start;
-        EventsCollector collector = new EventsCollector( service );
+        boolean                 posted;
+        long                    start;
+        EventsCollectorLogins   collector = new EventsCollectorLogins( service );
 
         /* --- attempt to post an event - with date/time --- */
         start = System.currentTimeMillis();
@@ -108,7 +108,71 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
         }
     }
 
+    @Test
+    public void GivenServiceNotRunning_WhenConnectViaLibraryEventSingle_ThenFailedWithinExpectedTime() throws Exception
+    {
+        boolean                 posted;
+        long                    start;
+        EventsCollectorCounters collector = new EventsCollectorCounters( service );
+
+        /* --- attempt to post an event - with date/time --- */
+        start = System.currentTimeMillis();
+        try
+        {
+            posted = collector.postEvent
+                    (
+                            "id-1",
+                            asDate( 2021, 5, 14, 23, 3, 58 )
+                    );
+            assertFalse( posted );
+        }
+        catch ( WebClientRequestException e )
+        {
+            assertElapsedTime( start );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception: " + e.getMessage() );
+        }
+
+        /* --- attempt to post an event - without date/time --- */
+        start = System.currentTimeMillis();
+        try
+        {
+            posted = collector.postEvent
+                    (
+                            "id-2"
+                    );
+            assertFalse( posted );
+        }
+        catch ( WebClientRequestException e )
+        {
+            assertElapsedTime( start );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception: " + e.getMessage() );
+        }
+
+        /* --- attempt to list events --- */
+        start = System.currentTimeMillis();
+        try
+        {
+            collector.getEventsList();
+        }
+        catch ( WebClientRequestException e )
+        {
+            assertElapsedTime( start );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception: " + e.getMessage() );
+        }
+    }
+
+    /* --- static properties --- */
     private static final long   CONNECTION_TIMEOUT  = 2500L;
+
     private static void assertElapsedTime( long start )
     {
         long elapsed = System.currentTimeMillis() - start;

@@ -50,8 +50,8 @@ public class EventsCounter extends EventsBase
                         Arrays.asList
                                 (
                                         asDate( 2021, 5, 11, 23, 2, 54 ),
-                                        asDate( 2021, 5, 11, 23,  2, 55 ),
-                                        asDate( 2021, 5, 11, 23,  3,  4 )
+                                        asDate( 2021, 5, 11, 23, 2, 55 ),
+                                        asDate( 2021, 5, 11, 23, 3,  4 )
                                 )
                 );
 
@@ -92,6 +92,17 @@ public class EventsCounter extends EventsBase
         return
                 responses;
     }
+
+    /* --- invalid payload values --- */
+    protected static final List< CounterEvent >                 failures    = new ArrayList<>();
+    static
+    {
+        failures.add( new CounterEvent( "invalid", null ) );
+        failures.add( new CounterEvent( "",        asDate( 2021, 5, 14, 23, 24, 12 ) ) );
+        failures.add( new CounterEvent( null,      asDate( 2021, 5, 14, 23, 24, 36 ) ) );
+        failures.add( new CounterEvent( null,      null ) );
+    }
+
 
     /* --- checking methods --- */
     protected static void checkListResult

@@ -1,6 +1,5 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
-import net.alemas.oss.tools.eventscollector.EventsCollectorApplication;
 import net.alemas.oss.tools.eventscollector.EventsLogInOut;
 import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
 import org.junit.AfterClass;
@@ -8,12 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.util.SocketUtils;
-import org.springframework.util.StringUtils;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,68 +16,31 @@ import static org.junit.Assert.*;
 
 
 /**
- * Checks the library correctness against the service;
+ * Checks the client library correctness for logs in/out events;
  *
  * Created by MASCHERPA on 19/02/2021.
  */
-public class EventsCollectorTest extends EventsLogInOut
+public class EventsCollectorLoginsTest extends EventsLogInOut
 {
     /* --- logging --- */
-    final private static Logger log = LoggerFactory.getLogger( EventsCollectorTest.class );
+    final private static Logger log = LoggerFactory.getLogger( EventsCollectorLoginsTest.class );
 
-    /* --- static context --- */
-    /**
-     * remote service context;
-     */
-    private static ConfigurableApplicationContext   context;
+    /* --- properties --- */
+    private static ServerContext   server;
 
-    /**
-     * the remote service: host name and port;
-     */
-    private static URI                              service;
-
-
+    /* --- class handling --- */
     @BeforeClass
     public static void setUp() throws URISyntaxException
     {
-        int port = setRandomPort( 9000, 9900 );
-
-        context = new SpringApplicationBuilder( EventsCollectorApplication.class ).run();
-        service = new URI( "http", null, "localhost", port, null, null, null );
-    }
-    public static int setRandomPort( int minPort, int maxPort )
-    {
-        int port;
-        try
-        {
-            String userDefinedPort = System.getProperty( "server.port", System.getenv( "SERVER_PORT" ) );
-            if ( StringUtils.isEmpty( userDefinedPort ) )
-            {
-                port = SocketUtils.findAvailableTcpPort( minPort, maxPort );
-                System.setProperty( "server.port", String.valueOf( port ) );
-                log.info( "Server port set to {}.", port) ;
-            }
-            else
-            {
-                port = Integer.valueOf( userDefinedPort );
-                log.info( "Server port already set in environment as {}.", port) ;
-            }
-        }
-        catch ( IllegalStateException e )
-        {
-            port = 8090;
-            log.warn( "No port available in range {}-{}. Default embedded server configuration will be used.", minPort, maxPort );
-        }
-        return
-                port;
+        server = new ServerContext();
     }
 
     @AfterClass
     public static void tearDown()
     {
-        if ( context != null )
+        if ( server != null )
         {
-            context.close();
+            server.close();
         }
     }
 
@@ -93,7 +50,7 @@ public class EventsCollectorTest extends EventsLogInOut
     {
         log.info( "client - begin" );
 
-        EventsCollector collector = new EventsCollector( service );
+        EventsCollectorLogins collector = new EventsCollectorLogins( server.getService() );
 
         /* --- check the collection is empty --- */
         log.info( "test empty collection - begin" );
@@ -166,7 +123,7 @@ public class EventsCollectorTest extends EventsLogInOut
     }
     private void checkListByDate
             (
-                    EventsCollector         collector,
+                    EventsCollectorLogins       collector,
                     List< LogInOutResponse >    expected
             )
     {
@@ -207,7 +164,7 @@ public class EventsCollectorTest extends EventsLogInOut
     }
     private void checkList
             (
-                    EventsCollector         collector,
+                    EventsCollectorLogins       collector,
                     String                      app,
                     LocalDateTime               after,
                     LocalDateTime               before,
@@ -226,8 +183,8 @@ public class EventsCollectorTest extends EventsLogInOut
     {
         log.info( "post of incorrect events - begin" );
 
-        boolean             posted;
-        EventsCollector collector = new EventsCollector( service );
+        boolean                 posted;
+        EventsCollectorLogins   collector = new EventsCollectorLogins( server.getService() );
 
         for ( LogInOutResponse failure : failures )
         {

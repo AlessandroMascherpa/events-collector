@@ -97,6 +97,29 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
         checkListResult( actual, expected );
     }
 
+    @Test
+    public void Failures()
+    {
+        log.info( "post of incorrect events - begin" );
+
+        for ( CounterEvent event : failures )
+        {
+            this.webTestClient
+                    .post()
+                    .uri( this.getUrlPath() )
+                    .contentType( MediaType.APPLICATION_FORM_URLENCODED )
+                    .body
+                            (
+                                    buildBody( event )
+                            )
+                    .exchange()
+                    .expectStatus().isBadRequest()
+            ;
+        }
+
+        log.info( "post of incorrect events - end" );
+    }
+
     /* --- API call payload --- */
     private BodyInserters.FormInserter< String > buildBody( CounterEvent event )
     {
