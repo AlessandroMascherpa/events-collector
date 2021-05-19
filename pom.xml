@@ -62,7 +62,7 @@
         <module>common/main</module>
         <module>common/test</module>
         <module>server</module>
-        <module>client</module>
+        <module>client/react</module>
     </modules>
 
 
