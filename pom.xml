@@ -63,6 +63,7 @@
         <module>common/test</module>
         <module>server</module>
         <module>client/react</module>
+        <module>client/no-react</module>
     </modules>
 
 

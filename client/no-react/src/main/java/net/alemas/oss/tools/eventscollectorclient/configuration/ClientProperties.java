@@ -1,7 +1,11 @@
 package net.alemas.oss.tools.eventscollectorclient.configuration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+
+
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,18 +20,17 @@ import java.util.Properties;
 public class ClientProperties
 {
     /* --- logging --- */
-    final private static Logger log = LoggerFactory.getLogger( ClientProperties.class );
+    private static final Log log = LogFactory.getLog( ClientProperties.class );
 
     /* --- properties --- */
     private String  basePath;
-    private String  provider;
 
     /* --- constructors --- */
     public ClientProperties()
     {
         final String    propertiesFile  = "/client.properties";
         final String    propertiesField = "server.base-path";
-        final String    connectionField = "connection.provider";
+
         try
                 (
                         InputStream input =
@@ -43,7 +46,6 @@ public class ClientProperties
                 properties.load( input );
 
                 this.basePath = properties.getProperty( propertiesField );
-                this.provider = properties.getProperty( connectionField );
             }
             else
             {
@@ -65,11 +67,6 @@ public class ClientProperties
     public String getBasePath()
     {
         return this.basePath;
-    }
-
-    public String getProviderName()
-    {
-        return this.provider;
     }
 
 }
