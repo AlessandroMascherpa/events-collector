@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Client library to post logs in/out events and enquiry the service.
-
+ *
  * Created by MASCHERPA on 14/05/2021.
  */
 public class EventsCollectorLogins extends EventsCollector
