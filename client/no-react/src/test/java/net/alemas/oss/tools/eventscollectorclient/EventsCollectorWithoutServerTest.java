@@ -1,9 +1,7 @@
-package eventscollectorclient;
+package net.alemas.oss.tools.eventscollectorclient;
 
 
 import net.alemas.oss.tools.eventscollector.EventsLogInOut;
-import net.alemas.oss.tools.eventscollectorclient.EventsCollectorCounters;
-import net.alemas.oss.tools.eventscollectorclient.EventsCollectorLogins;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

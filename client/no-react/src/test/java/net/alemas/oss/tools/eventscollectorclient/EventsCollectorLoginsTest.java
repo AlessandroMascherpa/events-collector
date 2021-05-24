@@ -1,8 +1,7 @@
-package eventscollectorclient;
+package net.alemas.oss.tools.eventscollectorclient;
 
 import net.alemas.oss.tools.eventscollector.EventsLogInOut;
 import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
-import net.alemas.oss.tools.eventscollectorclient.EventsCollectorLogins;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

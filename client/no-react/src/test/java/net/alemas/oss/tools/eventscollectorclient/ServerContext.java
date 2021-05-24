@@ -1,4 +1,4 @@
-package eventscollectorclient;
+package net.alemas.oss.tools.eventscollectorclient;
 
 
 import net.alemas.oss.tools.eventscollector.EventsCollectorApplication;
