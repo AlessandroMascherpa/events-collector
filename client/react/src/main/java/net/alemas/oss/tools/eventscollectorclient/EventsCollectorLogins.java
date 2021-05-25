@@ -1,7 +1,7 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 
-import net.alemas.oss.tools.eventscollector.io.LogInOut;
+import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -130,7 +130,7 @@ public class EventsCollectorLogins extends EventsCollector
                             url,
                             user,
                             application,
-                            LogInOut.convertDate( when ),
+                            Base.convertDate( when ),
                             String.valueOf( in )
                     );
         }
@@ -181,7 +181,7 @@ public class EventsCollectorLogins extends EventsCollector
         }
         if ( when != null )
         {
-            body = body.with( "when", LogInOut.convertDate( when ) );
+            body = body.with( "when", Base.convertDate( when ) );
         }
         return
                 body;
@@ -220,11 +220,11 @@ public class EventsCollectorLogins extends EventsCollector
         }
         if ( after != null )
         {
-            builder.queryParam( "after", LogInOut.convertDate( after ) );
+            builder.queryParam( "after", Base.convertDate( after ) );
         }
         if ( before != null )
         {
-            builder.queryParam( "before", LogInOut.convertDate( before ) );
+            builder.queryParam( "before", Base.convertDate( before ) );
         }
         String                  url     = builder.build().toUriString();
 
@@ -235,8 +235,8 @@ public class EventsCollectorLogins extends EventsCollector
                             "listing events - end point '{}' - filter by: application: '{}', after: {}, before: {} - begin",
                             url,
                             application,
-                            LogInOut.convertDate( after ),
-                            LogInOut.convertDate( before )
+                            Base.convertDate( after ),
+                            Base.convertDate( before )
                     );
         }
         List< LogInOutResponse > list =

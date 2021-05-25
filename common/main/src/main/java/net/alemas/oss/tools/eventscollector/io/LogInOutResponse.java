@@ -105,8 +105,8 @@ public class LogInOutResponse extends LogInOut
                         + '['
                         +        "user: '" + this.username + "', "
                         +        "application: '" + this.application + "', "
-                        +        "logged in at: " + LogInOut.convertDate( this.dateLoggedIn ) + "', "
-                        +        "logged out at: " + LogInOut.convertDate( this.dateLoggedOut )
+                        +        "logged in at: " + Base.convertDate( this.dateLoggedIn ) + "', "
+                        +        "logged out at: " + Base.convertDate( this.dateLoggedOut )
                         + ']'
                 ;
     }

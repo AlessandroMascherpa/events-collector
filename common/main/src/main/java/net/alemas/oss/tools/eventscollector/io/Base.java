@@ -23,7 +23,7 @@ public abstract class Base
     private static final String  DATE_UNDEFINED     = "undefined";
 
     /* --- static utility methods --- */
-    private static final DateTimeFormatter formatter	= DateTimeFormatter.ofPattern( LogInOut.DATE_TIME_PATTERN );
+    private static final DateTimeFormatter formatter	= DateTimeFormatter.ofPattern( Base.DATE_TIME_PATTERN );
 
     /**
      * writes a date/time according the format handled by this class;

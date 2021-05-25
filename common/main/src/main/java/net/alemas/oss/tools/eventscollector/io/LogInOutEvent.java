@@ -129,7 +129,7 @@ public class LogInOutEvent extends LogInOut
                 +        "user: '" + this.username + "' "
                 +        "logged " + ( this.in ? "in to" : "out from" ) + ' '
                 +        "application: '" + this.application + "' "
-                +        "at: " + LogInOut.convertDate( this.when )
+                +        "at: " + Base.convertDate( this.when )
                 + ']'
                 ;
     }

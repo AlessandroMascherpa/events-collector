@@ -4,7 +4,7 @@ package net.alemas.oss.tools.eventscollector.controllers;
 import io.swagger.annotations.*;
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetLogins;
-import net.alemas.oss.tools.eventscollector.io.LogInOut;
+import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollector.io.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
 import net.alemas.oss.tools.eventscollector.repositories.LoginRepository;
@@ -154,24 +154,24 @@ public class LoginController
 
                     @ApiParam
                             (
-                                    value           = "To list events after the given date/time; the date/time pattern is: '" + LogInOut.DATE_TIME_PATTERN + "'.",
-                                    format          = LogInOut.DATE_TIME_PATTERN,
+                                    value           = "To list events after the given date/time; the date/time pattern is: '" + Base.DATE_TIME_PATTERN + "'.",
+                                    format          = Base.DATE_TIME_PATTERN,
                                     required        = false,
                                     allowEmptyValue = false
                             )
                     @RequestParam( required = false )
-                    @DateTimeFormat( pattern = LogInOut.DATE_TIME_PATTERN )
+                    @DateTimeFormat( pattern = Base.DATE_TIME_PATTERN )
                     LocalDateTime after,
 
                     @ApiParam
                             (
-                                    value           = "To list events before the given date/time; the date/time pattern is: '" + LogInOut.DATE_TIME_PATTERN + "'.",
-                                    format          = LogInOut.DATE_TIME_PATTERN,
+                                    value           = "To list events before the given date/time; the date/time pattern is: '" + Base.DATE_TIME_PATTERN + "'.",
+                                    format          = Base.DATE_TIME_PATTERN,
                                     required        = false,
                                     allowEmptyValue = false
                             )
                     @RequestParam( required = false )
-                    @DateTimeFormat( pattern = LogInOut.DATE_TIME_PATTERN )
+                    @DateTimeFormat( pattern = Base.DATE_TIME_PATTERN )
                     LocalDateTime before
             )
     {
@@ -181,8 +181,8 @@ public class LoginController
                     (
                             "returning list of events as json objects array - filter by: application: '{}', after: {}, before: {}",
                             application,
-                            LogInOut.convertDate( after ),
-                            LogInOut.convertDate( before )
+                            Base.convertDate( after ),
+                            Base.convertDate( before )
                     );
         }
         return
@@ -225,24 +225,24 @@ public class LoginController
 
                     @ApiParam
                             (
-                                    value           = "To list events after the given date/time; the date/time pattern is: '" + LogInOut.DATE_TIME_PATTERN + "'.",
-                                    format          = LogInOut.DATE_TIME_PATTERN,
+                                    value           = "To list events after the given date/time; the date/time pattern is: '" + Base.DATE_TIME_PATTERN + "'.",
+                                    format          = Base.DATE_TIME_PATTERN,
                                     required        = false,
                                     allowEmptyValue = false
                             )
                     @RequestParam( required = false )
-                    @DateTimeFormat( pattern = LogInOut.DATE_TIME_PATTERN )
+                    @DateTimeFormat( pattern = Base.DATE_TIME_PATTERN )
                     LocalDateTime after,
 
                     @ApiParam
                             (
-                                    value           = "To list events before the given date/time; the date/time pattern is: '" + LogInOut.DATE_TIME_PATTERN + "'.",
-                                    format          = LogInOut.DATE_TIME_PATTERN,
+                                    value           = "To list events before the given date/time; the date/time pattern is: '" + Base.DATE_TIME_PATTERN + "'.",
+                                    format          = Base.DATE_TIME_PATTERN,
                                     required        = false,
                                     allowEmptyValue = false
                             )
                     @RequestParam( required = false )
-                    @DateTimeFormat( pattern = LogInOut.DATE_TIME_PATTERN )
+                    @DateTimeFormat( pattern = Base.DATE_TIME_PATTERN )
                     LocalDateTime before
             )
             throws
@@ -254,8 +254,8 @@ public class LoginController
                     (
                             "returning list of events in spreadsheet file - filter by: application: '{}', after: {}, before: {}",
                             application,
-                            LogInOut.convertDate( after ),
-                            LogInOut.convertDate( before )
+                            Base.convertDate( after ),
+                            Base.convertDate( before )
                     );
         }
 

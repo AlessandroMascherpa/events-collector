@@ -49,12 +49,9 @@ public class CounterResponse extends Counter
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o )  return true;
-        if ( ( o == null ) || ( this.getClass() != o.getClass() ) )  return false;
-
         CounterResponse that = (CounterResponse) o;
         return
-                ( ( ( this.id != null ) && ( this.id.equals( that.id ) ) ) || ( ( this.id == null ) && ( that.id == null ) ) )
+                super.equals( o )
                 &&
                 ( this.counter == that.counter )
                 ;
@@ -63,7 +60,7 @@ public class CounterResponse extends Counter
     @Override
     public int hashCode()
     {
-        int result = ( this.id != null ) ? this.id.hashCode() : 0;
+        int result = super.hashCode();
         result = 31 * result + ( (int) this.counter );
         return
                 result;

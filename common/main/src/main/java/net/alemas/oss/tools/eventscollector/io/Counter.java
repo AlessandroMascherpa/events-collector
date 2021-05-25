@@ -53,4 +53,24 @@ public class Counter extends Base
         }
     }
 
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )  return true;
+        if ( ( o == null ) || ( this.getClass() != o.getClass() ) )  return false;
+
+        Counter that = (Counter) o;
+        return
+                ( ( ( this.id != null ) && ( this.id.equals( that.id ) ) ) || ( ( this.id == null ) && ( that.id == null ) ) )
+                ;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return
+                ( this.id != null ) ? this.id.hashCode() : 0
+                ;
+    }
+
 }

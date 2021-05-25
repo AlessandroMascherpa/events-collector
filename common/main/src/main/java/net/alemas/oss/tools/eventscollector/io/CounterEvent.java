@@ -73,12 +73,9 @@ public class CounterEvent extends Counter
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o )  return true;
-        if ( ( o == null ) || ( this.getClass() != o.getClass() ) )  return false;
-
         CounterEvent that = (CounterEvent) o;
         return
-                ( ( ( this.id != null ) && ( this.id.equals( that.id ) ) ) || ( ( this.id == null ) && ( that.id == null ) ) )
+                super.equals( o )
                 &&
                 ( ( ( this.when != null ) && ( this.when.equals( that.when ) ) ) || ( ( this.when == null ) && ( that.when == null ) ) )
                 ;
@@ -87,7 +84,7 @@ public class CounterEvent extends Counter
     @Override
     public int hashCode()
     {
-        int result = ( this.id != null ) ? this.id.hashCode() : 0;
+        int result = super.hashCode();
         result = 31 * result + ( ( this.when != null ) ? this.when.hashCode() : 0 );
         return
                 result;
@@ -101,7 +98,7 @@ public class CounterEvent extends Counter
                 this.getClass().getSimpleName()
                 + '['
                 +        "id: '" + this.id + "' "
-                +        "at: " + LogInOut.convertDate( this.when )
+                +        "at: " + Base.convertDate( this.when )
                 + ']'
                 ;
     }

@@ -1,9 +1,9 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 
+import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollector.io.CounterEvent;
 import net.alemas.oss.tools.eventscollector.io.CounterResponse;
-import net.alemas.oss.tools.eventscollector.io.LogInOut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -123,7 +123,7 @@ public class EventsCollectorCounters extends EventsCollector
                             "posting single event - end point '{}' - event: id: '{}', when: {} - begin",
                             url,
                             id,
-                            LogInOut.convertDate( when )
+                            Base.convertDate( when )
                     );
         }
         Boolean reply =
