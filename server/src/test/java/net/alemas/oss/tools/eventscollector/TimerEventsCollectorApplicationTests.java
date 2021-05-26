@@ -2,8 +2,8 @@ package net.alemas.oss.tools.eventscollector;
 
 
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
-import net.alemas.oss.tools.eventscollector.io.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.TimingEvent;
+import net.alemas.oss.tools.eventscollector.io.TimingResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
-public class CounterEventsCollectorApplicationTests extends EventsCounter
+public class TimerEventsCollectorApplicationTests extends EventsTiming
 {
     /* --- logging --- */
     final private static Logger log = LoggerFactory.getLogger( CounterEventsCollectorApplicationTests.class );
@@ -34,7 +34,7 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
     @Autowired
     private WebTestClient webTestClient;
 
-	/* --- testing methods --- */
+    /* --- testing methods --- */
     @Test
     public void GivenEmptyStore_WhenStoreEvents_ThenGetStoredEvents()
     {
@@ -47,14 +47,14 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
                 .uri( this.getUrlPath())
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList( CounterResponse.class )
+                .expectBodyList( TimingResponse.class )
                 .hasSize( 0 )
         ;
         log.info( "test empty collection - end" );
 
         /* --- fill in the events --- */
         log.info( "post events - begin" );
-        for ( CounterEvent event : events )
+        for ( TimingEvent event : events )
         {
             this.webTestClient
                     .post()
@@ -79,16 +79,16 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
 
         log.info( "server - end" );
     }
-    private void checkList( List< CounterResponse > expected )
+    private void checkList( List< TimingResponse > expected )
     {
         String                      url     = this.getUrlPath();
 
-        List< CounterResponse >     actual  = this.webTestClient
+        List< TimingResponse >      actual  = this.webTestClient
                 .get()
                 .uri( url )
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList( CounterResponse.class )
+                .expectBodyList( TimingResponse.class )
                 .hasSize( expected.size() )
                 .returnResult()
                 .getResponseBody()
@@ -102,7 +102,7 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
     {
         log.info( "post of incorrect events - begin" );
 
-        for ( CounterEvent event : failures )
+        for ( TimingEvent event : failures )
         {
             this.webTestClient
                     .post()
@@ -121,7 +121,7 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
     }
 
     /* --- API call payload --- */
-    private BodyInserters.FormInserter< String > buildBody( CounterEvent event )
+    private BodyInserters.FormInserter< String > buildBody( TimingEvent event )
     {
         MultiValueMap< String, String > body = new LinkedMultiValueMap<>();
         if ( event != null )
@@ -135,8 +135,10 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
             LocalDateTime when = event.getWhen();
             if ( when != null )
             {
-                body.set( "when", CounterEvent.convertDate( when ) );
+                body.set( "when", TimingEvent.convertDate( when ) );
             }
+
+            body.set( "elapsed", String.valueOf( event.getElapsed() ) );
         }
         return
                 BodyInserters
@@ -147,7 +149,7 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
     /**
      * trailing part of API path;
      */
-    private static final String		URL_PATH	= "/events/counter/";
+    private static final String		URL_PATH	= "/events/timings/";
 
     @Autowired
     private Properties              properties;
