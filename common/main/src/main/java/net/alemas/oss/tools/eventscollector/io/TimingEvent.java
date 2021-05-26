@@ -21,7 +21,7 @@ public class TimingEvent extends CounterEvent
                     description = "How much time the event needed.",
                     nullable    = false
             )
-    protected long  elapsed;
+    protected double    elapsed;
 
     /* --- constructors --- */
     public TimingEvent()
@@ -32,7 +32,7 @@ public class TimingEvent extends CounterEvent
             (
                     String          id,
                     LocalDateTime   when,
-                    long            needed
+                    double          needed
             )
     {
         super( id, when );
@@ -40,12 +40,12 @@ public class TimingEvent extends CounterEvent
     }
 
     /* --- getters'n'setters --- */
-    public long getElapsed()
+    public double getElapsed()
     {
         return this.elapsed;
     }
 
-    public void setElapsed( long needed )
+    public void setElapsed( double needed )
     {
         this.elapsed = needed;
     }
@@ -66,7 +66,7 @@ public class TimingEvent extends CounterEvent
     public int hashCode()
     {
         int result = super.hashCode();
-        result = 31 * result + Long.hashCode( this.elapsed );
+        result = 31 * result + Double.hashCode( this.elapsed );
         return
                 result;
     }

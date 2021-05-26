@@ -119,9 +119,9 @@ public class TimingResponse extends CounterResponse
         return
                 this.getClass().getSimpleName()
                 + '['
-                +        super.toString() + "', "
-                +        "average time: '" + this.average + "', "
-                +        "min time: '" + this.min + "', "
+                +        super.toString() + ", "
+                +        "average time: " + this.average + ", "
+                +        "min time: " + this.min + ", "
                 +        "max time: " + this.max
                 + ']'
                 ;
