@@ -85,7 +85,7 @@ public class CounterController
     {
         if ( log.isInfoEnabled() )
         {
-            log.info( "logging event - event: '{}' - begin", event.toString() );
+            log.info( "single event - event: '{}' - begin", event.toString() );
         }
         try
         {
@@ -95,7 +95,7 @@ public class CounterController
         {
             if ( log.isWarnEnabled() )
             {
-                log.warn( "logging event - failure", e );
+                log.warn( "single event - failure", e );
             }
             throw
                     new ResponseStatusException
@@ -108,7 +108,7 @@ public class CounterController
         }
         if ( log.isInfoEnabled() )
         {
-            log.info( "logging event - end" );
+            log.info( "single event - end" );
         }
     }
 
