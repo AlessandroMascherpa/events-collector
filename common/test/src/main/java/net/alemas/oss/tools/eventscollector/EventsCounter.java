@@ -7,20 +7,18 @@ import net.alemas.oss.tools.eventscollector.io.CounterResponse;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.junit.Assert.*;
-
 
 /**
  * Class with common test data for counter events
  *
  * Created by MASCHERPA on 11/05/2021.
  */
-public class EventsCounter extends EventsBase
+public class EventsCounter extends EventsBase< CounterResponse >
 {
     /* --- payload values --- */
-    protected static final String                               EVENT_ID_1  = "event-1";
-    protected static final String                               EVENT_ID_2  = "event-2";
-    protected static final String                               EVENT_ID_3  = "event-3";
+    protected static final String                               COUNT_ID_1 = "count-1";
+    protected static final String                               COUNT_ID_2 = "count-2";
+    protected static final String                               COUNT_ID_3 = "count-3";
 
     protected static final List< CounterEvent >                 events;
     protected static final List< CounterResponse >              responses;
@@ -29,7 +27,7 @@ public class EventsCounter extends EventsBase
     {
         scenario.put
                 (
-                        EVENT_ID_1,
+                        COUNT_ID_1,
                         Collections.singletonList
                                 (
                                         asDate( 2021, 5, 11, 23, 2, 12 )
@@ -37,7 +35,7 @@ public class EventsCounter extends EventsBase
                 );
         scenario.put
                 (
-                        EVENT_ID_2,
+                        COUNT_ID_2,
                         Arrays.asList
                                 (
                                         asDate( 2021, 5, 11, 23,  2, 43 ),
@@ -46,7 +44,7 @@ public class EventsCounter extends EventsBase
                 );
         scenario.put
                 (
-                        EVENT_ID_3,
+                        COUNT_ID_3,
                         Arrays.asList
                                 (
                                         asDate( 2021, 5, 11, 23, 2, 54 ),
@@ -88,7 +86,6 @@ public class EventsCounter extends EventsBase
                                     )
                     );
         }
-
         return
                 responses;
     }
@@ -101,29 +98,6 @@ public class EventsCounter extends EventsBase
         failures.add( new CounterEvent( "",        asDate( 2021, 5, 14, 23, 24, 12 ) ) );
         failures.add( new CounterEvent( null,      asDate( 2021, 5, 14, 23, 24, 36 ) ) );
         failures.add( new CounterEvent( null,      null ) );
-    }
-
-
-    /* --- checking methods --- */
-    protected static void checkListResult
-        (
-                List< CounterResponse > actual,
-                List< CounterResponse > expected
-        )
-    {
-        assertNotNull( actual );
-        assertFalse( actual.isEmpty() );
-
-        assertTrue
-                (
-                        "Response does not contain all expected items (1) - actual: " + actual + " - expected: " + expected,
-                        actual.containsAll( expected )
-                );
-        assertTrue
-                (
-                        "Response does not contain all expected items (2) - actual: " + actual + " - expected: " + expected,
-                        expected.containsAll( actual )
-                );
     }
 
 }

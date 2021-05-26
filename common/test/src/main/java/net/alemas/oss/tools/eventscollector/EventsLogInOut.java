@@ -14,10 +14,11 @@ import static org.junit.Assert.*;
  *
  * Created by MASCHERPA on 26/02/2021.
  */
-public class EventsLogInOut extends EventsBase
+public class EventsLogInOut extends EventsBase< LogInOutResponse >
 {
     /* --- checking methods --- */
-    protected static void checkListResult
+    @Override
+    protected void checkListResult
         (
                 List< LogInOutResponse > actual,
                 List< LogInOutResponse > expected
