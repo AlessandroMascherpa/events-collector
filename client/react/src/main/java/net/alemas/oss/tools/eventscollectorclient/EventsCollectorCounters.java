@@ -132,7 +132,10 @@ public class EventsCollectorCounters extends EventsCollector
                         .baseUrl( url )
                         .build()
                         .post()
-                        .contentType( MediaType.APPLICATION_FORM_URLENCODED )
+                        .contentType
+                                (
+                                        MediaType.APPLICATION_FORM_URLENCODED
+                                )
                         .body
                                 (
                                         body
@@ -168,7 +171,7 @@ public class EventsCollectorCounters extends EventsCollector
         }
         if ( when != null )
         {
-            body.set( "when", CounterEvent.convertDate( when ) );
+            body.set( "when", Base.convertDate( when ) );
         }
         return
                 BodyInserters
@@ -188,7 +191,7 @@ public class EventsCollectorCounters extends EventsCollector
         {
             log.debug
                     (
-                            "listing events - end point '{}' - begin",
+                            "listing simple events - end point '{}' - begin",
                             url
                     );
         }
@@ -219,7 +222,7 @@ public class EventsCollectorCounters extends EventsCollector
         {
             log.debug
                     (
-                            "listing events - items returned: {} - end",
+                            "listing single events - items returned: {} - end",
                             list.size()
                     );
         }

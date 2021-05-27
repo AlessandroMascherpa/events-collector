@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.alemas.oss.tools.eventscollector.io.CounterEvent;
 import net.alemas.oss.tools.eventscollector.io.CounterResponse;
-import net.alemas.oss.tools.eventscollector.io.LogInOut;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -106,7 +105,7 @@ public class EventsCollectorCounters extends EventsCollector
         )
     {
         boolean reply;
-        String  date    = LogInOut.convertDate( when );
+        String  date    = CounterEvent.convertDate( when );
         String  banner  = "posting single event - end point '" + this.remote.toString() + "' - event: id: '" + id + "', when: " + date + " - ";
         if ( log.isDebugEnabled() )
         {
