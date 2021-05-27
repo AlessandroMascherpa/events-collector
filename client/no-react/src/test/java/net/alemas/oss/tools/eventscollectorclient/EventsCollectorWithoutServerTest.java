@@ -171,6 +171,70 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
         }
     }
 
+    @Test
+    public void GivenServiceNotRunning_WhenConnectViaLibraryEventTiming_ThenFailedWithinExpectedTime() throws Exception
+    {
+        boolean                 posted;
+        long                    start;
+        EventsCollectorTimers   collector = new EventsCollectorTimers( service );
+
+        /* --- attempt to post an event - with date/time --- */
+        start = System.currentTimeMillis();
+        try
+        {
+            posted = collector.postEvent
+                    (
+                            "id-1",
+                            asDate( 2021, 5, 14, 23, 3, 58 ),
+                            0.0D
+                    );
+            assertFalse( posted );
+        }
+        catch ( WebClientRequestException e )
+        {
+            assertElapsedTime( start );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception: " + e.getMessage() );
+        }
+
+        /* --- attempt to post an event - without date/time --- */
+        start = System.currentTimeMillis();
+        try
+        {
+            posted = collector.postEvent
+                    (
+                            "id-2",
+                            0.0D
+                    );
+            assertFalse( posted );
+        }
+        catch ( WebClientRequestException e )
+        {
+            assertElapsedTime( start );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception: " + e.getMessage() );
+        }
+
+        /* --- attempt to list events --- */
+        start = System.currentTimeMillis();
+        try
+        {
+            collector.getEventsList();
+        }
+        catch ( WebClientRequestException e )
+        {
+            assertElapsedTime( start );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception: " + e.getMessage() );
+        }
+    }
+
     /* --- static properties --- */
     private static final long   CONNECTION_TIMEOUT  = 2500L;
 
