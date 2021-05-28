@@ -10,6 +10,7 @@ The service keeps all data in memory, at present there is not a persistent stora
 Events handled by service are:
 
  - events counting
+ - events timing
  - log in/out in a system
 
 
@@ -32,6 +33,20 @@ The end point to keep track of events occurrences is: **/events-collector/events
  - **GET** to get the events identifiers list and, per each event, how many times it occurred
  
 The end point **/events-collector/events/counter/spreadsheet-ml**, with verb **GET**, returns the events list as spreadsheet file.
+
+
+### Events timing
+
+The end point to keep track of event timings is: **/events-collector/events/timings/**, with the following verbs:
+
+ - **POST** to store a timing event, with the following fields in URL encoded form:
+     - **id** the event identifier
+     - **when** the event date, it is the format: `yyyy-MM-dd'T'HH:mm:ss.SSS`, for example: 2021-03-10T14:45:03.527
+     - **elapsed** how much time the event needed
+
+ - **GET** to get the events identifiers list and, per each event, how many times it occurred and the minimum, maximum and average time needed
+ 
+The end point **/events-collector/events/timings/spreadsheet-ml**, with verb **GET**, returns the events list as spreadsheet file.
 
 
 ### Log in/out events
@@ -182,6 +197,9 @@ In directories tree under `server/src/test/batch/` there are some usage examples
 They are:
 
  - **counter** with examples for the event counter end point, they are:
+    + **store.bat** to store some event
+    + **list.bat** to list the stored events
+ - **timer** with examples for the timiner end point, they are:
     + **store.bat** to store some event
     + **list.bat** to list the stored events
  - **loginout** with examples for log in/out end point, they are:
