@@ -1,8 +1,9 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.loginout;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import net.alemas.oss.tools.eventscollector.io.Base;
 
 import java.time.LocalDateTime;
 
@@ -47,13 +48,13 @@ public class LogInOutResponse extends LogInOut
     /* --- constructors --- */
     public LogInOutResponse
         (
-                @JsonProperty( "username" )         String          name,
                 @JsonProperty( "application" )      String          system,
+                @JsonProperty( "username" )         String          name,
                 @JsonProperty( "dateLoggedIn" )     LocalDateTime   dateIn,
                 @JsonProperty( "dateLoggedOut" )    LocalDateTime   dateOut
         )
     {
-        super( name, system );
+        super( system, name );
         this.dateLoggedIn   = dateIn;
         this.dateLoggedOut  = dateOut;
     }
@@ -73,23 +74,20 @@ public class LogInOutResponse extends LogInOut
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o ) return true;
-        if ( ( o == null ) || ( this.getClass() != o.getClass() ) )  return false;
-
         LogInOutResponse that = (LogInOutResponse) o;
-        if ( ( this.username != null )     ? ( ! this.username.equals( that.username ) )         : ( that.username != null ) )      return false;
-        if ( ( this.application != null )  ? ( ! this.application.equals( that.application ) )   : ( that.application != null ) )   return false;
-        if ( ( this.dateLoggedIn != null ) ? ( ! this.dateLoggedIn.equals( that.dateLoggedIn ) ) : ( that.dateLoggedIn != null ) )  return false;
-
         return
-                !( ( this.dateLoggedOut != null ) ? ( ! this.dateLoggedOut.equals( that.dateLoggedOut ) ) : ( that.dateLoggedOut != null ) );
+                super.equals( o )
+                &&
+                ( ( ( this.dateLoggedIn != null ) && ( this.dateLoggedIn.equals( that.dateLoggedIn ) ) ) || ( ( this.dateLoggedIn == null ) && ( that.dateLoggedIn == null ) ) )
+                &&
+                ( ( ( this.dateLoggedOut != null ) && ( this.dateLoggedOut.equals( that.dateLoggedOut ) ) ) || ( ( this.dateLoggedOut == null ) && ( that.dateLoggedOut == null ) ) )
+                ;
     }
 
     @Override
     public int hashCode()
     {
-        int result = ( this.username != null ) ? this.username.hashCode() : 0;
-        result = 31 * result + ( ( this.application   != null ) ? this.application.hashCode() : 0 );
+        int result = super.hashCode();
         result = 31 * result + ( ( this.dateLoggedIn  != null ) ? this.dateLoggedIn.hashCode() : 0 );
         result = 31 * result + ( ( this.dateLoggedOut != null ) ? this.dateLoggedOut.hashCode() : 0 );
         return
@@ -103,10 +101,10 @@ public class LogInOutResponse extends LogInOut
         return
                 this.getClass().getSimpleName()
                         + '['
-                        +        "user: '" + this.username + "', "
-                        +        "application: '" + this.application + "', "
+                        +        "application: '" + this.getApplication() + "', "
+                        +        "user: '" + this.getUsername() + "', "
                         +        "logged in at: " + Base.convertDate( this.dateLoggedIn ) + "', "
-                        +        "logged out at: " + Base.convertDate( this.dateLoggedOut )
+                        +        "logged out at: " + convertDate( this.dateLoggedOut )
                         + ']'
                 ;
     }

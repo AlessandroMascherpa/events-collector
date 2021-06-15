@@ -1,13 +1,10 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 
-import net.alemas.oss.tools.eventscollector.io.Base;
-import net.alemas.oss.tools.eventscollector.io.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
 
@@ -84,12 +81,14 @@ public class EventsCollectorTimer extends EventsCollector
      * the event will be set with current date/time
      * as event timestamp;
      *
-     * @param id        the event identifier;
-     * @param elapsed   the amount of time elapsed for the event;
+     * @param application    the application identifier;
+     * @param id             the event identifier;
+     * @param elapsed        the amount of time elapsed for the event;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
+                String	application,
                 String	id,
                 double  elapsed
         )
@@ -97,6 +96,7 @@ public class EventsCollectorTimer extends EventsCollector
         return
                 this.postEvent
                         (
+                                application,
                                 id,
                                 LocalDateTime.now(),
                                 elapsed
@@ -105,27 +105,30 @@ public class EventsCollectorTimer extends EventsCollector
     /**
      * posts to remote service a timing event;
      *
-     * @param id        the event identifier;
-     * @param when      when the event occurred;
-     * @param elapsed   the amount of time elapsed for the event;
+     * @param application    the application identifier;
+     * @param id             the event identifier;
+     * @param when           when the event occurred;
+     * @param elapsed        the amount of time elapsed for the event;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
+                String			application,
                 String			id,
                 LocalDateTime   when,
                 double          elapsed
         )
     {
         String                                  url     = this.url.build().toUriString();
-        BodyInserters.FormInserter< String >    body    = this.buildBody( id, when, elapsed );
+        BodyInserters.FormInserter< String >    body    = this.buildBody( application, id, when, elapsed );
 
         if ( log.isDebugEnabled() )
         {
             log.debug
                     (
-                            "posting timing event - end point '{}' - event: id: '{}', when: {} - begin",
+                            "posting timing event - end point '{}' - event: application: '{}', id: '{}', when: {} - begin",
                             url,
+                            application,
                             id,
                             TimingEvent.convertDate( when )
                     );
@@ -163,29 +166,26 @@ public class EventsCollectorTimer extends EventsCollector
     }
     private BodyInserters.FormInserter< String > buildBody
             (
+                    String			application,
                     String			id,
                     LocalDateTime   when,
                     double          elapsed
             )
     {
-        MultiValueMap< String, String > body = new LinkedMultiValueMap<>();
-
-        if ( ( id != null ) && ( id.length() > 0 ) )
+        BodyInserters.FormInserter< String > body = super.buildBody( application, when );
+        if ( id != null )
         {
-            body.set( "id", id );
+            body = body.with( "id", id );
         }
-        if ( when != null )
-        {
-            body.set( "when", TimingEvent.convertDate( when ) );
-        }
-        body.set
+        body = body.with
                 (
                         "elapsed",
                         String.valueOf( elapsed )
-                );
+                )
+        ;
+
         return
-                BodyInserters
-                        .fromFormData( body );
+                body;
     }
 
     /**

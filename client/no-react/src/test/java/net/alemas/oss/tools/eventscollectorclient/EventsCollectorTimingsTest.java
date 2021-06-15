@@ -2,8 +2,8 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 
 import net.alemas.oss.tools.eventscollector.EventsTiming;
-import net.alemas.oss.tools.eventscollector.io.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -73,6 +73,7 @@ public class EventsCollectorTimingsTest extends EventsTiming
         {
             posted = collector.postEvent
                     (
+                            event.getApplication(),
                             event.getId(),
                             event.getWhen(),
                             event.getElapsed()
@@ -105,6 +106,7 @@ public class EventsCollectorTimingsTest extends EventsTiming
         {
             posted = collector.postEvent
                     (
+                            failure.getApplication(),
                             failure.getId(),
                             failure.getWhen(),
                             failure.getElapsed()

@@ -2,8 +2,8 @@ package net.alemas.oss.tools.eventscollector;
 
 
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
-import net.alemas.oss.tools.eventscollector.io.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -126,6 +126,12 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
         MultiValueMap< String, String > body = new LinkedMultiValueMap<>();
         if ( event != null )
         {
+            String application = event.getApplication();
+            if ( ( application != null ) && ( application.length() > 0 ) )
+            {
+                body.set( "application", application );
+            }
+
             String id = event.getId();
             if ( ( id != null ) && ( id.length() > 0 ) )
             {

@@ -1,7 +1,7 @@
 package net.alemas.oss.tools.eventscollector.exporters;
 
 
-import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -51,8 +51,8 @@ public class SpreadsheetLogins extends SpreadsheetByList< LogInOutResponse >
     @Override
     protected void setColumnsHeaders( XSSFRow row )
     {
-        this.setColumnHeader( row, 0, "sheet.column-header.username" );
-        this.setColumnHeader( row, 1, "sheet.column-header.application" );
+        this.setColumnHeader( row, 0, "sheet.column-header.application" );
+        this.setColumnHeader( row, 1, "sheet.column-header.username" );
         this.setColumnHeader( row, 2, "sheet.column-header.date-log-in" );
         this.setColumnHeader( row, 3, "sheet.column-header.date-log-out" );
     }
@@ -61,7 +61,7 @@ public class SpreadsheetLogins extends SpreadsheetByList< LogInOutResponse >
     protected EventsConsumer< LogInOutResponse > getConsumer
             (
                     XSSFSheet       theSheet,
-                    XSSFCellStyle theStyle,
+                    XSSFCellStyle   theStyle,
                     int             start
             )
     {
@@ -91,8 +91,8 @@ public class SpreadsheetLogins extends SpreadsheetByList< LogInOutResponse >
                         LogInOutResponse    response
                 )
         {
-            row.createCell( 0, CellType.STRING ).setCellValue( response.getUsername() );
-            row.createCell( 1, CellType.STRING ).setCellValue( response.getApplication() );
+            row.createCell( 0, CellType.STRING ).setCellValue( response.getApplication() );
+            row.createCell( 1, CellType.STRING ).setCellValue( response.getUsername() );
 
             this.setCellDateTime( row, 2, response.getDateLoggedIn() );
             this.setCellDateTime( row, 3, response.getDateLoggedOut() );

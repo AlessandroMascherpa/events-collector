@@ -122,6 +122,7 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
         {
             posted = collector.postEvent
                     (
+                            "app-1",
                             "id-1",
                             asDate( 2021, 5, 14, 23, 3, 58 )
                     );
@@ -142,6 +143,7 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
         {
             posted = collector.postEvent
                     (
+                            "app-1",
                             "id-2"
                     );
             assertFalse( posted );
@@ -184,6 +186,7 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
         {
             posted = collector.postEvent
                     (
+                            "app-1",
                             "id-1",
                             asDate( 2021, 5, 14, 23, 3, 58 ),
                             0.0D
@@ -205,6 +208,7 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
         {
             posted = collector.postEvent
                     (
+                            "app-1",
                             "id-2",
                             0.0D
                     );

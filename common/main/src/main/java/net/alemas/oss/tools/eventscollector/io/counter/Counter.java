@@ -1,7 +1,8 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.counter;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import net.alemas.oss.tools.eventscollector.io.Base;
 
 
 /**
@@ -18,15 +19,20 @@ public class Counter extends Base
                     description = "The unique event identifier.",
                     nullable    = false
             )
-    protected String            id;
+    private String            id;
 
     /* --- constructors --- */
     public Counter()
     {
-        this( null );
+        this( null, null );
     }
-    public Counter( String theId )
+    public Counter
+            (
+                    String  system,
+                    String  theId
+            )
     {
+        super( system );
         this.id = theId;
     }
 
@@ -43,6 +49,7 @@ public class Counter extends Base
     /* --- object checking --- */
     public void isWellFormed() throws IllegalArgumentException
     {
+        super.isWellFormed();
         if ( ( this.id == null ) || ( this.id.length() == 0 ) )
         {
             throw
@@ -56,11 +63,14 @@ public class Counter extends Base
     @Override
     public boolean equals( Object o )
     {
+/* --delete--
         if ( this == o )  return true;
         if ( ( o == null ) || ( this.getClass() != o.getClass() ) )  return false;
-
+*/
         Counter that = (Counter) o;
         return
+                super.equals( o )
+                &&
                 ( ( ( this.id != null ) && ( this.id.equals( that.id ) ) ) || ( ( this.id == null ) && ( that.id == null ) ) )
                 ;
     }
@@ -68,9 +78,10 @@ public class Counter extends Base
     @Override
     public int hashCode()
     {
+        int result = super.hashCode();
+        result = 31 * result + ( ( this.id != null ) ? this.id.hashCode() : 0 );
         return
-                ( this.id != null ) ? this.id.hashCode() : 0
-                ;
+                result;
     }
 
 }

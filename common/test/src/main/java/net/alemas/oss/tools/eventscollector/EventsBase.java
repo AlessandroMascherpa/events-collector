@@ -15,6 +15,11 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class EventsBase< Response >
 {
+    /* --- payload values --- */
+    protected static final String					APP_DOT		= "app-dot";
+    protected static final String					APP_NET		= "app-net";
+    protected static final String					APP_ORG		= "app-org";
+
 
     /* --- payload methods --- */
     protected static LocalDateTime asDate( int year, int month, int day, int hours, int minutes, int seconds )

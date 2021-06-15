@@ -1,4 +1,4 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.counter;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,20 +18,21 @@ public class CounterResponse extends Counter
                     description = "Event counter.",
                     nullable    = false
             )
-    protected long  counter;
+    private long  counter;
 
     /* --- constructors --- */
     public CounterResponse()
     {
-        this( null, 0L );
+        this( null, null, 0L );
     }
     public CounterResponse
             (
+                    String  application,
                     String  id,
                     long    count
             )
     {
-        super( id );
+        super( application, id );
         this.counter = count;
     }
 
@@ -73,7 +74,8 @@ public class CounterResponse extends Counter
         return
                 this.getClass().getSimpleName()
                 + '['
-                +        "id: '" + this.id + "', "
+                +        "application: '" + this.getApplication() + "', "
+                +        "id: '" + this.getId() + "' "
                 +        "count: " + this.counter
                 + ']'
                 ;

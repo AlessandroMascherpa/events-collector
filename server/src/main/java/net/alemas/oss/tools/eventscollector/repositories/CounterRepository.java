@@ -1,8 +1,9 @@
 package net.alemas.oss.tools.eventscollector.repositories;
 
 
-import net.alemas.oss.tools.eventscollector.io.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
@@ -63,7 +64,15 @@ public class CounterRepository
         return
                 Flux
                         .fromIterable( this.repository )
-                        .groupBy( CounterEvent::getId )
+                        .groupBy
+                                (
+                                        event ->
+                                                PairApplicationIdUsernameId.build
+                                                        (
+                                                                event.getApplication(),
+                                                                event.getId()
+                                                        )
+                                )
                         .flatMap
                                 (
                                         grouped ->
@@ -71,11 +80,17 @@ public class CounterRepository
                                                         .collectList()
                                                         .map
                                                                 (
-                                                                        eventsByKey -> new CounterResponse
-                                                                                (
-                                                                                        grouped.key(),
-                                                                                        eventsByKey.size()
-                                                                                )
+                                                                        eventsByKey ->
+                                                                        {
+                                                                            PairApplicationIdUsernameId key = grouped.key();
+                                                                            return
+                                                                                    new CounterResponse
+                                                                                            (
+                                                                                                    key.getApplication(),
+                                                                                                    key.getId(),
+                                                                                                    eventsByKey.size()
+                                                                                            );
+                                                                        }
                                                                 )
                                 )
                 ;

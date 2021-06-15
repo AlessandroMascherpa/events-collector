@@ -1,8 +1,9 @@
 package net.alemas.oss.tools.eventscollector;
 
 
-import net.alemas.oss.tools.eventscollector.io.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,18 +17,18 @@ import java.util.*;
 public class EventsTiming extends EventsBase< TimingResponse >
 {
     /* --- payload values --- */
-    protected static final String                               TIMER_ID_1 = "timer-1";
-    protected static final String                               TIMER_ID_2 = "timer-2";
-    protected static final String                               TIMER_ID_3 = "timer-3";
+    protected static final String                                                       TIMER_ID_1 = "timer-1";
+    protected static final String                                                       TIMER_ID_2 = "timer-2";
+    protected static final String                                                       TIMER_ID_3 = "timer-3";
 
-    protected static final List< TimingEvent >                  events;
-    protected static final List< TimingResponse >               responses;
-    protected static final Map< String, List< EventElapsed > >  scenario    = new HashMap<>();
+    protected static final List< TimingEvent >                                          events;
+    protected static final List< TimingResponse >                                       responses;
+    protected static final Map< PairApplicationIdUsernameId, List< EventElapsed > >     scenario    = new HashMap<>();
     static
     {
         scenario.put
                 (
-                        TIMER_ID_1,
+                        PairApplicationIdUsernameId.build( APP_DOT, TIMER_ID_1 ),
                         Collections.singletonList
                                 (
                                         EventElapsed.build( 2021, 5, 21, 22, 5, 3, 1.0D )
@@ -36,7 +37,7 @@ public class EventsTiming extends EventsBase< TimingResponse >
 
         scenario.put
                 (
-                        TIMER_ID_2,
+                        PairApplicationIdUsernameId.build( APP_DOT, TIMER_ID_2 ),
                         Arrays.asList
                                 (
                                         EventElapsed.build( 2021, 5, 21, 22, 15, 20, 2.0D ),
@@ -46,7 +47,7 @@ public class EventsTiming extends EventsBase< TimingResponse >
 
         scenario.put
                 (
-                        TIMER_ID_3,
+                        PairApplicationIdUsernameId.build( APP_ORG, TIMER_ID_3 ),
                         Arrays.asList
                                 (
                                         EventElapsed.build( 2021, 5, 22, 21, 34, 45, 1.0D ),
@@ -58,27 +59,35 @@ public class EventsTiming extends EventsBase< TimingResponse >
         events      = prepareEvents( scenario );
         responses   = prepareResponses( scenario );
     }
-    private static List< TimingEvent >  prepareEvents( Map< String, List< EventElapsed > > scenario )
+    private static List< TimingEvent >  prepareEvents( Map< PairApplicationIdUsernameId, List< EventElapsed > > scenario )
     {
         List< TimingEvent >  events = new ArrayList<>();
-        for ( Map.Entry< String, List< EventElapsed > > listEntry : scenario.entrySet() )
+        for ( Map.Entry< PairApplicationIdUsernameId, List< EventElapsed > > listEntry : scenario.entrySet() )
         {
+            PairApplicationIdUsernameId pair = listEntry.getKey();
             for ( EventElapsed time : listEntry.getValue() )
             {
                 events.add
                         (
-                                new TimingEvent( listEntry.getKey(), time.when, time.elapsed )
+                                new TimingEvent
+                                        (
+                                                pair.getApplication(),
+                                                pair.getId(),
+                                                time.when,
+                                                time.elapsed
+                                        )
                         );
             }
         }
         return
                 events;
     }
-    private static List< TimingResponse >  prepareResponses( Map< String, List< EventElapsed > > scenario )
+    private static List< TimingResponse >  prepareResponses( Map< PairApplicationIdUsernameId, List< EventElapsed > > scenario )
     {
         List< TimingResponse >  responses = new ArrayList<>();
-        for ( Map.Entry< String, List< EventElapsed > > listEntry : scenario.entrySet() )
+        for ( Map.Entry< PairApplicationIdUsernameId, List< EventElapsed > > listEntry : scenario.entrySet() )
         {
+            PairApplicationIdUsernameId pair    = listEntry.getKey();
             DoubleSummaryStatistics stats   =
                     listEntry
                         .getValue()
@@ -91,7 +100,8 @@ public class EventsTiming extends EventsBase< TimingResponse >
                     (
                             new TimingResponse
                                     (
-                                            listEntry.getKey(),
+                                            pair.getApplication(),
+                                            pair.getId(),
                                             stats.getCount(),
                                             stats.getAverage(),
                                             stats.getMin(),
@@ -126,10 +136,21 @@ public class EventsTiming extends EventsBase< TimingResponse >
     protected static final List< TimingEvent >                 failures    = new ArrayList<>();
     static
     {
-        failures.add( new TimingEvent( "invalid", null,                              0.0D ) );
-        failures.add( new TimingEvent( "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
-        failures.add( new TimingEvent( null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
-        failures.add( new TimingEvent( null,      null,                              0.0D ) );
+        failures.add( new TimingEvent( null,    "invalid", null,                              0.0D ) );
+        failures.add( new TimingEvent( null,    "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
+        failures.add( new TimingEvent( null,    null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
+        failures.add( new TimingEvent( null,    null,      null,                              0.0D ) );
+
+        failures.add( new TimingEvent( "",      "invalid", null,                              0.0D ) );
+        failures.add( new TimingEvent( "",      "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
+        failures.add( new TimingEvent( "",      null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
+        failures.add( new TimingEvent( "",      null,      null,                              0.0D ) );
+
+        failures.add( new TimingEvent( "empty", "invalid", null,                              0.0D ) );
+        failures.add( new TimingEvent( "empty", "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
+        failures.add( new TimingEvent( "empty", null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
+        failures.add( new TimingEvent( "empty", null,      null,                              0.0D ) );
+
     }
 
 }

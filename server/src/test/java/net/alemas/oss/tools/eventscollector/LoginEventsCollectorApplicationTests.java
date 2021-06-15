@@ -1,9 +1,9 @@
 package net.alemas.oss.tools.eventscollector;
 
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
-import net.alemas.oss.tools.eventscollector.io.LogInOut;
-import net.alemas.oss.tools.eventscollector.io.LogInOutEvent;
-import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOut;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -314,8 +314,8 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 		return
                 new LogInOutEvent
                         (
-                                response.getUsername(),
                                 response.getApplication(),
+                                response.getUsername(),
                                 response.getDateLoggedIn(),
                                 true
                         )
@@ -329,8 +329,8 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 		{
 			payload	= new LogInOutEvent
                     (
-                            response.getUsername(),
                             response.getApplication(),
+                            response.getUsername(),
                             out,
                             false
                     );

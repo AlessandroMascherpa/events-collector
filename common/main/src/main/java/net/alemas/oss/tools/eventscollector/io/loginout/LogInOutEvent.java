@@ -1,7 +1,8 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.loginout;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import net.alemas.oss.tools.eventscollector.io.Base;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -46,13 +47,13 @@ public class LogInOutEvent extends LogInOut
     }
     public LogInOutEvent
         (
-                String          name,
                 String          system,
+                String          name,
                 LocalDateTime   date,
                 boolean         enter
         )
     {
-        super( name, system );
+        super( system, name );
         this.in     = enter;
         this.when   = date;
     }
@@ -93,16 +94,11 @@ public class LogInOutEvent extends LogInOut
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o )  return true;
-        if ( ( o == null ) || ( this.getClass() != o.getClass() ) )  return false;
-
         LogInOutEvent that = (LogInOutEvent) o;
         return
+                super.equals( o )
+                &&
                 ( this.in == that.in )
-                &&
-                ( ( ( this.username != null ) && ( this.username.equals( that.username ) ) ) || ( ( this.username == null ) && ( that.username == null ) ) )
-                &&
-                ( ( ( this.application != null ) && ( this.application.equals( that.application ) ) ) || ( ( this.application == null ) && ( that.application == null ) ) )
                 &&
                 ( ( ( this.when != null ) && ( this.when.equals( that.when ) ) ) || ( ( this.when == null ) && ( that.when == null ) ) )
                 ;
@@ -111,9 +107,8 @@ public class LogInOutEvent extends LogInOut
     @Override
     public int hashCode()
     {
-        int result = ( this.username != null ) ? this.username.hashCode() : 0;
-        result = 31 * result + ( ( this.application   != null ) ? this.application.hashCode() : 0 );
-        result = 31 * result + ( ( this.when          != null ) ? this.when.hashCode() : 0 );
+        int result = super.hashCode();
+        result = 31 * result + ( ( this.when != null ) ? this.when.hashCode() : 0 );
         result = 31 * result + ( this.in ? 1 : 0 );
         return
                 result;
@@ -126,9 +121,9 @@ public class LogInOutEvent extends LogInOut
         return
                 this.getClass().getSimpleName()
                 + '['
-                +        "user: '" + this.username + "' "
+                +        "user: '" + this.getUsername() + "' "
                 +        "logged " + ( this.in ? "in to" : "out from" ) + ' '
-                +        "application: '" + this.application + "' "
+                +        "application: '" + this.getApplication() + "' "
                 +        "at: " + Base.convertDate( this.when )
                 + ']'
                 ;

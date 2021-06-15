@@ -1,6 +1,8 @@
 package net.alemas.oss.tools.eventscollector.io;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -21,6 +23,82 @@ public abstract class Base
      * text string used when a date is not defined;
      */
     private static final String  DATE_UNDEFINED     = "undefined";
+
+    /* --- properties --- */
+    @Schema
+            (
+                    required    = true,
+                    description = "The application name where the event occurred.",
+                    nullable    = false
+            )
+    private String             application;
+
+    /* --- constructors --- */
+    public Base
+        (
+                String  system
+        )
+    {
+        this.application    = system;
+    }
+
+    /* --- getters'n'setters --- */
+    public String getApplication()
+    {
+        return this.application;
+    }
+    public void setApplication( String name )
+    {
+        this.application = name;
+    }
+
+    /* --- object checking --- */
+    public void isWellFormed() throws IllegalArgumentException
+    {
+        if ( ( this.application == null ) || "".equals( this.application ) )
+        {
+            throw
+                    new IllegalArgumentException
+                            (
+                                    String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "application" )
+                            );
+        }
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+        if ( ( o == null ) || ( this.getClass() != o.getClass() ) )
+        {
+            return false;
+        }
+
+        Base that = (Base) o;
+        return
+                ( ( ( this.application != null ) && ( this.application.equals( that.application ) ) ) || ( ( this.application == null ) && ( that.application == null ) ) )
+                ;
+    }
+    protected boolean areEqual( Object thisObj, Object thatObj )
+    {
+        return
+                (
+                        ( ( thisObj != null ) && ( thisObj.equals( thatObj ) ) )
+                        ||
+                        ( ( thisObj == null ) && ( thatObj == null ) ) )
+                ;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return
+                ( this.application != null ) ? this.application.hashCode() : 0
+                ;
+    }
 
     /* --- static utility methods --- */
     private static final DateTimeFormatter formatter	= DateTimeFormatter.ofPattern( Base.DATE_TIME_PATTERN );

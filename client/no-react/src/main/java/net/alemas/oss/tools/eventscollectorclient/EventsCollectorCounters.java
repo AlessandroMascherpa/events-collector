@@ -3,8 +3,8 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.alemas.oss.tools.eventscollector.io.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -76,17 +76,20 @@ public class EventsCollectorCounters extends EventsCollector
      * the event will be set with current date/time
      * as event timestamp;
      *
-     * @param id    the event identifier;
+     * @param application    the application identifier;
+     * @param id             the event identifier;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
+                String	application,
                 String	id
         )
     {
         return
                 this.postEvent
                         (
+                                application,
                                 id,
                                 LocalDateTime.now()
                         );
@@ -94,19 +97,21 @@ public class EventsCollectorCounters extends EventsCollector
     /**
      * posts to remote service a single event;
      *
-     * @param id    the event identifier;
-     * @param when  when the event occurred;
+     * @param application    the application identifier;
+     * @param id             the event identifier;
+     * @param when           when the event occurred;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
+                String			application,
                 String			id,
                 LocalDateTime   when
         )
     {
         boolean reply;
         String  date    = CounterEvent.convertDate( when );
-        String  banner  = "posting single event - end point '" + this.remote.toString() + "' - event: id: '" + id + "', when: " + date + " - ";
+        String  banner  = "posting single event - end point '" + this.remote.toString() + "' - event: application: '" + application + "', id: '" + id + "', when: " + date + " - ";
         if ( log.isDebugEnabled() )
         {
             log.debug
@@ -118,6 +123,14 @@ public class EventsCollectorCounters extends EventsCollector
         {
 			/* --- prepare form --- */
             List< NameValuePair > encoded		= new ArrayList<>();
+            encoded.add
+                    (
+                            new BasicNameValuePair
+                                    (
+                                            "application",
+                                            application
+                                    )
+                    );
             encoded.add
                     (
                             new BasicNameValuePair

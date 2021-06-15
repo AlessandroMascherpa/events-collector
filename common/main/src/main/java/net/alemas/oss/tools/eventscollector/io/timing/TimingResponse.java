@@ -1,8 +1,8 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.timing;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
+import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 
 
 /**
@@ -19,7 +19,7 @@ public class TimingResponse extends CounterResponse
                     description = "Average time the event needed.",
                     nullable    = false
             )
-    protected double    average;
+    private double    average;
     
     @Schema
             (
@@ -27,7 +27,7 @@ public class TimingResponse extends CounterResponse
                     description = "Minimum time the event needed.",
                     nullable    = false
             )
-    protected double    min;
+    private double    min;
     
     @Schema
             (
@@ -35,15 +35,16 @@ public class TimingResponse extends CounterResponse
                     description = "Maximum time the event needed.",
                     nullable    = false
             )
-    protected double    max;
+    private double    max;
             
     /* --- constructors --- */
     public TimingResponse()
     {
-     this( null, 0L, 0.0D, 0.0D, 0.0D );
+     this( null, null, 0L, 0.0D, 0.0D, 0.0D );
     }
     public TimingResponse
             (
+                    String  application,
                     String  id,
                     long    count,
                     double  avg,
@@ -51,7 +52,7 @@ public class TimingResponse extends CounterResponse
                     double  max
             )
     {
-        super( id, count );
+        super( application, id, count );
         this.average    = avg;
         this.min        = min;
         this.max        = max;

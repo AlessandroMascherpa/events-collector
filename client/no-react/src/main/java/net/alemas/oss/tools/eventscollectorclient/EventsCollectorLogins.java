@@ -3,9 +3,9 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import net.alemas.oss.tools.eventscollector.io.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.LogInOut;
-import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOut;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
@@ -85,23 +85,23 @@ public class EventsCollectorLogins extends EventsCollector
      * posts to remote service a log in/out event set the current date/time
      * as event timestamp;
      *
-     * @param user           the username;
      * @param application    the application identifier;
+     * @param user           the username;
      * @param in             if the end user logged in;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
-                String			user,
                 String			application,
+                String			user,
                 boolean			in
         )
     {
         return
                 this.postEvent
                         (
-                                user,
                                 application,
+                                user,
                                 LocalDateTime.now(),
                                 in
                         );
@@ -109,23 +109,23 @@ public class EventsCollectorLogins extends EventsCollector
     /**
      * posts to remote service a log in/out event;
      *
-     * @param user           the username;
      * @param application    the application identifier;
+     * @param user           the username;
      * @param when           when the event occurred;
      * @param in             if the end user logged in;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
-                String			user,
                 String			application,
+                String			user,
                 LocalDateTime   when,
                 boolean			in
         )
     {
         boolean reply;
         String  date    = LogInOut.convertDate( when );
-        String  banner  = "posting single event - end point '" + this.remote.toString() + "' - event: username: '" + user + "', application: '" + application + "', when: " + date + ", in: " + in + " - ";
+        String  banner  = "posting single event - end point '" + this.remote.toString() + "' - event: application: '" + application + "', username: '" + user + "', when: " + date + ", in: " + in + " - ";
         if ( log.isDebugEnabled() )
         {
             log.debug

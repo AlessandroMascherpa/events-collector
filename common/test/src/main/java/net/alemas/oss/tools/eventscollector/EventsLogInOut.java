@@ -1,7 +1,7 @@
 package net.alemas.oss.tools.eventscollector;
 
 
-import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,34 +44,30 @@ public class EventsLogInOut extends EventsBase< LogInOutResponse >
     protected static final String					USER_2		= "usr-2@system.dot";
     protected static final String					USER_3		= "usr-3@system.dot";
 
-    protected static final String					APP_DOT		= "app-dot";
-    protected static final String					APP_NET		= "app-net";
-    protected static final String					APP_ORG		= "app-org";
-
     protected static final List< LogInOutResponse > appDot      = new ArrayList<>();
     static
     {
-        appDot.add( new LogInOutResponse( USER_1, APP_DOT, asDate( 2021, 2, 10, 12, 49, 3 ), asDate( 2021, 2, 10, 13, 9, 0 ) ) );
-        appDot.add( new LogInOutResponse( USER_1, APP_DOT, asDate( 2021, 2, 10, 14, 39, 3 ), null ) );
+        appDot.add( new LogInOutResponse( APP_DOT, USER_1, asDate( 2021, 2, 10, 12, 49, 3 ), asDate( 2021, 2, 10, 13, 9, 0 ) ) );
+        appDot.add( new LogInOutResponse( APP_DOT, USER_1, asDate( 2021, 2, 10, 14, 39, 3 ), null ) );
 
-        appDot.add( new LogInOutResponse( USER_2, APP_DOT, asDate( 2021, 2,  9, 14, 39, 3 ), null ) );
+        appDot.add( new LogInOutResponse( APP_DOT, USER_2, asDate( 2021, 2,  9, 14, 39, 3 ), null ) );
     }
 
     protected static final List< LogInOutResponse >	appNet      = new ArrayList<>();
     static
     {
-        appNet.add( new LogInOutResponse( USER_1, APP_NET, asDate( 2021, 2, 10, 13, 49, 3 ), asDate( 2021, 2, 10, 14, 19, 0 ) ) );
-        appNet.add( new LogInOutResponse( USER_1, APP_NET, asDate( 2021, 2, 10, 14, 38, 3 ), asDate( 2021, 2, 10, 14, 45, 3 ) ) );
-        appNet.add( new LogInOutResponse( USER_1, APP_NET, asDate( 2021, 2, 10, 14, 40, 3 ), asDate( 2021, 2, 10, 15, 15, 3 ) ) );
+        appNet.add( new LogInOutResponse( APP_NET, USER_1, asDate( 2021, 2, 10, 13, 49, 3 ), asDate( 2021, 2, 10, 14, 19, 0 ) ) );
+        appNet.add( new LogInOutResponse( APP_NET, USER_1, asDate( 2021, 2, 10, 14, 38, 3 ), asDate( 2021, 2, 10, 14, 45, 3 ) ) );
+        appNet.add( new LogInOutResponse( APP_NET, USER_1, asDate( 2021, 2, 10, 14, 40, 3 ), asDate( 2021, 2, 10, 15, 15, 3 ) ) );
 
-        appNet.add( new LogInOutResponse( USER_1, APP_NET, asDate( 2021, 3, 12, 14, 38, 3 ), null ) );
+        appNet.add( new LogInOutResponse( APP_NET, USER_1, asDate( 2021, 3, 12, 14, 38, 3 ), null ) );
     }
 
     protected static final List< LogInOutResponse >	appDate     = new ArrayList<>();
     static
     {
-        appDate.add( new LogInOutResponse( USER_1, APP_ORG, asDate( 2021, 3, 10, 12, 49, 3 ), asDate( 2021, 3, 10, 13, 9, 0 ) ) );
-        appDate.add( new LogInOutResponse( USER_1, APP_ORG, asDate( 2021, 3, 10, 14, 39, 3 ), asDate( 2021, 3, 10, 14, 45, 7 ) ) );
+        appDate.add( new LogInOutResponse( APP_ORG, USER_1, asDate( 2021, 3, 10, 12, 49, 3 ), asDate( 2021, 3, 10, 13, 9, 0 ) ) );
+        appDate.add( new LogInOutResponse( APP_ORG, USER_1, asDate( 2021, 3, 10, 14, 39, 3 ), asDate( 2021, 3, 10, 14, 45, 7 ) ) );
     }
 
     protected static final List< LogInOutResponse >	responses	= new ArrayList<>();
@@ -85,11 +81,11 @@ public class EventsLogInOut extends EventsBase< LogInOutResponse >
     protected final static List< LogInOutResponse >	failures	= new ArrayList<>();
     static
     {
-        failures.add( new LogInOutResponse( null,   null,     null,   null ) );
-        failures.add( new LogInOutResponse( "",     null,     null,   null ) );
-        failures.add( new LogInOutResponse( "",     "",       null,   null ) );
-        failures.add( new LogInOutResponse( USER_2, APP_NET,  null,   null ) );
-        failures.add( new LogInOutResponse( USER_3, APP_NET,  null,   null ) );
+        failures.add( new LogInOutResponse( null,    null,    null,   null ) );
+        failures.add( new LogInOutResponse( "",      null,    null,   null ) );
+        failures.add( new LogInOutResponse( "",      "",      null,   null ) );
+        failures.add( new LogInOutResponse( APP_NET, USER_2,  null,   null ) );
+        failures.add( new LogInOutResponse( APP_NET, USER_3,  null,   null ) );
     }
 
 }

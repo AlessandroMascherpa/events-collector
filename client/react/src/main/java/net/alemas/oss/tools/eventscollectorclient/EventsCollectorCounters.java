@@ -2,12 +2,9 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 
 import net.alemas.oss.tools.eventscollector.io.Base;
-import net.alemas.oss.tools.eventscollector.io.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
 
@@ -85,17 +82,20 @@ public class EventsCollectorCounters extends EventsCollector
      * the event will be set with current date/time
      * as event timestamp;
      *
-     * @param id    the event identifier;
+     * @param application    the application identifier;
+     * @param id             the event identifier;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
+                String	application,
                 String	id
         )
     {
         return
                 this.postEvent
                         (
+                                application,
                                 id,
                                 LocalDateTime.now()
                         );
@@ -103,25 +103,28 @@ public class EventsCollectorCounters extends EventsCollector
     /**
      * posts to remote service a single event;
      *
-     * @param id    the event identifier;
-     * @param when  when the event occurred;
+     * @param application    the application identifier;
+     * @param id             the event identifier;
+     * @param when           when the event occurred;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
+                String			application,
                 String			id,
                 LocalDateTime   when
         )
     {
         String                                  url     = this.url.build().toUriString();
-        BodyInserters.FormInserter< String >    body    = this.buildBody( id, when );
+        BodyInserters.FormInserter< String >    body    = this.buildBody( application, id, when );
 
         if ( log.isDebugEnabled() )
         {
             log.debug
                     (
-                            "posting single event - end point '{}' - event: id: '{}', when: {} - begin",
+                            "posting single event - end point '{}' - event: application: '{}', id: '{}', when: {} - begin",
                             url,
+                            application,
                             id,
                             Base.convertDate( when )
                     );
@@ -159,23 +162,19 @@ public class EventsCollectorCounters extends EventsCollector
     }
     private BodyInserters.FormInserter< String > buildBody
             (
+                    String			application,
                     String			id,
                     LocalDateTime   when
             )
     {
-        MultiValueMap< String, String > body = new LinkedMultiValueMap<>();
+        BodyInserters.FormInserter< String > body = super.buildBody( application, when );
+        if ( id != null )
+        {
+            body = body.with( "id", id );
+        }
 
-        if ( ( id != null ) && ( id.length() > 0 ) )
-        {
-            body.set( "id", id );
-        }
-        if ( when != null )
-        {
-            body.set( "when", Base.convertDate( when ) );
-        }
         return
-                BodyInserters
-                        .fromFormData( body );
+                body;
     }
 
     /**

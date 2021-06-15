@@ -1,8 +1,8 @@
 package net.alemas.oss.tools.eventscollector.repositories;
 
 
-import net.alemas.oss.tools.eventscollector.io.LogInOutEvent;
-import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -154,8 +154,8 @@ public class LoginRepository
                                                                     (
                                                                             new LogInOutResponse
                                                                                     (
-                                                                                            t.getUsername(),
                                                                                             t.getApplication(),
+                                                                                            t.getUsername(),
                                                                                             t.getWhen(),
                                                                                             ( out != null ) ? out.getWhen() : null
                                                                                     )

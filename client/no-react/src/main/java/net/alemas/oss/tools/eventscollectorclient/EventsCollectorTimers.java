@@ -3,8 +3,8 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.alemas.oss.tools.eventscollector.io.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -74,12 +74,14 @@ public class EventsCollectorTimers extends EventsCollector
      * the event will be set with current date/time
      * as event timestamp;
      *
-     * @param id        the event identifier;
-     * @param elapsed   the amount of time elapsed for the event;
+     * @param application    the application identifier;
+     * @param id             the event identifier;
+     * @param elapsed        the amount of time elapsed for the event;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
+                String	application,
                 String	id,
                 double  elapsed
         )
@@ -87,6 +89,7 @@ public class EventsCollectorTimers extends EventsCollector
         return
                 this.postEvent
                         (
+                                application,
                                 id,
                                 LocalDateTime.now(),
                                 elapsed
@@ -95,13 +98,15 @@ public class EventsCollectorTimers extends EventsCollector
     /**
      * posts to remote service a timing event;
      *
-     * @param id        the event identifier;
-     * @param when      when the event occurred;
-     * @param elapsed   the amount of time elapsed for the event;
+     * @param application    the application identifier;
+     * @param id             the event identifier;
+     * @param when           when the event occurred;
+     * @param elapsed        the amount of time elapsed for the event;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
+                String			application,
                 String			id,
                 LocalDateTime   when,
                 double          elapsed
@@ -109,7 +114,7 @@ public class EventsCollectorTimers extends EventsCollector
     {
         boolean reply;
         String  date    = TimingEvent.convertDate( when );
-        String  banner  = "posting timing event - end point '" + this.remote.toString() + "' - event: id: '" + id + "', when: " + date + " - ";
+        String  banner  = "posting timing event - end point '" + this.remote.toString() + "' - event: application: '" + application + "', id: '" + id + "', when: " + date + " - ";
         if ( log.isDebugEnabled() )
         {
             log.debug
@@ -121,6 +126,14 @@ public class EventsCollectorTimers extends EventsCollector
         {
 			/* --- prepare form --- */
             List< NameValuePair > encoded		= new ArrayList<>();
+            encoded.add
+                    (
+                            new BasicNameValuePair
+                                    (
+                                            "application",
+                                            application
+                                    )
+                    );
             encoded.add
                     (
                             new BasicNameValuePair

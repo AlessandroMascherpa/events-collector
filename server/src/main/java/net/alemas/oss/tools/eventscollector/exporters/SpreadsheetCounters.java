@@ -1,7 +1,7 @@
 package net.alemas.oss.tools.eventscollector.exporters;
 
 
-import net.alemas.oss.tools.eventscollector.io.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -44,13 +44,15 @@ public class SpreadsheetCounters extends SpreadsheetByList< CounterResponse >
     {
         sheet.setColumnWidth( 0, this.columnWidthByCharsLen( 30 ) );
         sheet.setColumnWidth( 1, this.columnWidthByCharsLen( 30 ) );
+        sheet.setColumnWidth( 2, this.columnWidthByCharsLen( 30 ) );
     }
 
     @Override
     protected void setColumnsHeaders( XSSFRow row )
     {
-        this.setColumnHeader( row, 0, "sheet.column-header.event-id" );
-        this.setColumnHeader( row, 1, "sheet.column-header.event-counter" );
+        this.setColumnHeader( row, 0, "sheet.column-header.application" );
+        this.setColumnHeader( row, 1, "sheet.column-header.event-id" );
+        this.setColumnHeader( row, 2, "sheet.column-header.event-counter" );
     }
 
     @Override
@@ -87,8 +89,9 @@ public class SpreadsheetCounters extends SpreadsheetByList< CounterResponse >
                         CounterResponse response
                 )
         {
-            row.createCell( 0, CellType.STRING  ).setCellValue( response.getId() );
-            row.createCell( 1, CellType.NUMERIC ).setCellValue( response.getCounter() );
+            row.createCell( 0, CellType.STRING ).setCellValue( response.getApplication() );
+            row.createCell( 1, CellType.STRING  ).setCellValue( response.getId() );
+            row.createCell( 2, CellType.NUMERIC ).setCellValue( response.getCounter() );
         }
     }
 

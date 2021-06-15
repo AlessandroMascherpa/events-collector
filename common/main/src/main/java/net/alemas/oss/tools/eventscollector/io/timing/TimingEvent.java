@@ -1,7 +1,9 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.timing;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import net.alemas.oss.tools.eventscollector.io.Base;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
 
 import java.time.LocalDateTime;
 
@@ -21,21 +23,22 @@ public class TimingEvent extends CounterEvent
                     description = "How much time the event needed.",
                     nullable    = false
             )
-    protected double    elapsed;
+    private double    elapsed;
 
     /* --- constructors --- */
     public TimingEvent()
     {
-        this( null, null, 0L );
+        this( null, null, null, 0L );
     }
     public TimingEvent
             (
+                    String          application,
                     String          id,
                     LocalDateTime   when,
                     double          needed
             )
     {
-        super( id, when );
+        super( application, id, when );
         this.elapsed = needed;
     }
 
@@ -78,8 +81,9 @@ public class TimingEvent extends CounterEvent
         return
                 this.getClass().getSimpleName()
                 + '['
-                +        "id: '" + this.id + "' "
-                +        "at: " + Base.convertDate( this.when ) + ' '
+                +        "application: '" + this.getApplication() + "', "
+                +        "id: '" + this.getId() + "' "
+                +        "at: " + Base.convertDate( this.getWhen() ) + ", "
                 +        "elapsed time: " + this.elapsed
                 + ']'
                 ;

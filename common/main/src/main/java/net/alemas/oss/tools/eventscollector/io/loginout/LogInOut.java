@@ -1,7 +1,8 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.loginout;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import net.alemas.oss.tools.eventscollector.io.Base;
 
 
 /**
@@ -18,25 +19,17 @@ public abstract class LogInOut extends Base
                     description = "The username of the end user logging in or out.",
                     nullable    = false
             )
-    protected String             username;
-
-    @Schema
-            (
-                    required    = true,
-                    description = "The application name the end user is logging in or out.",
-                    nullable    = false
-            )
-    protected String             application;
+    private String             username;
 
     /* --- constructors --- */
     public LogInOut
         (
-                String  name,
-                String  system
+                String  system,
+                String  name
         )
     {
+        super( system );
         this.username       = name;
-        this.application    = system;
     }
 
     /* --- getters'n'setters --- */
@@ -49,18 +42,10 @@ public abstract class LogInOut extends Base
         this.username = name;
     }
 
-    public String getApplication()
-    {
-        return this.application;
-    }
-    public void setApplication( String name )
-    {
-        this.application = name;
-    }
-
     /* --- object checking --- */
     public void isWellFormed() throws IllegalArgumentException
     {
+        super.isWellFormed();
         if ( ( this.username == null ) || "".equals( this.username ) )
         {
             throw
@@ -69,14 +54,26 @@ public abstract class LogInOut extends Base
                                     String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "username" )
                             );
         }
-        if ( ( this.application == null ) || "".equals( this.application ) )
-        {
-            throw
-                    new IllegalArgumentException
-                            (
-                                    String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "application" )
-                            );
-        }
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        LogInOut that = (LogInOut) o;
+        return
+                super.equals( o )
+                &&
+                ( ( ( this.username != null ) && ( this.username.equals( that.username ) ) ) || ( ( this.username == null ) && ( that.username == null ) ) )
+                ;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = super.hashCode();
+        result = 31 * result + ( ( this.username != null ) ? this.username.hashCode() : 0 );
+        return
+                result;
     }
 
 }

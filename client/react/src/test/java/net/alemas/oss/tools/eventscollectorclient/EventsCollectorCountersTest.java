@@ -1,8 +1,8 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 import net.alemas.oss.tools.eventscollector.EventsCounter;
-import net.alemas.oss.tools.eventscollector.io.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -70,6 +70,7 @@ public class EventsCollectorCountersTest extends EventsCounter
         {
             posted = collector.postEvent
                     (
+                            event.getApplication(),
                             event.getId(),
                             event.getWhen()
                     );
@@ -101,6 +102,7 @@ public class EventsCollectorCountersTest extends EventsCounter
         {
             posted = collector.postEvent
                     (
+                            failure.getApplication(),
                             failure.getId(),
                             failure.getWhen()
                     );

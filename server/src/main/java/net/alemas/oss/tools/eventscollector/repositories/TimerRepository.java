@@ -1,8 +1,9 @@
 package net.alemas.oss.tools.eventscollector.repositories;
 
 
-import net.alemas.oss.tools.eventscollector.io.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
+import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
@@ -63,7 +64,15 @@ public class TimerRepository
         return
                 Flux
                         .fromIterable( this.repository )
-                        .groupBy( TimingEvent::getId )
+                        .groupBy
+                                (
+                                        event ->
+                                                PairApplicationIdUsernameId.build
+                                                        (
+                                                                event.getApplication(),
+                                                                event.getId()
+                                                        )
+                                )
                         .flatMap
                                 (
                                         grouped ->
@@ -77,14 +86,20 @@ public class TimerRepository
                                                                 )
                                                         .map
                                                                 (
-                                                                        eventsByKey -> new TimingResponse
-                                                                                (
-                                                                                        grouped.key(),
-                                                                                        eventsByKey.getCount(),
-                                                                                        eventsByKey.getAverage(),
-                                                                                        eventsByKey.getMin(),
-                                                                                        eventsByKey.getMax()
-                                                                                )
+                                                                        eventsByKey ->
+                                                                        {
+                                                                            PairApplicationIdUsernameId key = grouped.key();
+                                                                            return
+                                                                                    new TimingResponse
+                                                                                            (
+                                                                                                    key.getApplication(),
+                                                                                                    key.getId(),
+                                                                                                    eventsByKey.getCount(),
+                                                                                                    eventsByKey.getAverage(),
+                                                                                                    eventsByKey.getMin(),
+                                                                                                    eventsByKey.getMax()
+                                                                                            );
+                                                                        }
                                                                 )
                                 )
                 ;

@@ -2,7 +2,7 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 
 import net.alemas.oss.tools.eventscollector.io.Base;
-import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -81,15 +81,15 @@ public class EventsCollectorLogins extends EventsCollector
      * posts to remote service a log in/out event set the current date/time
      * as event timestamp;
      *
-     * @param user           the username;
      * @param application    the application identifier;
+     * @param user           the username;
      * @param in             if the end user logged in;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
-                String			user,
                 String			application,
+                String			user,
                 boolean			in
         )
     {
@@ -105,16 +105,16 @@ public class EventsCollectorLogins extends EventsCollector
     /**
      * posts to remote service a log in/out event;
      *
-     * @param user           the username;
      * @param application    the application identifier;
+     * @param user           the username;
      * @param when           when the event occurred;
      * @param in             if the end user logged in;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
     public boolean postEvent
         (
-                String			user,
                 String			application,
+                String			user,
                 LocalDateTime   when,
                 boolean			in
         )
@@ -126,10 +126,10 @@ public class EventsCollectorLogins extends EventsCollector
         {
             log.debug
                     (
-                            "posting log in/out event - end point '{}' - event: user: '{}', application: '{}', when: {}, in: {} - begin",
+                            "posting log in/out event - end point '{}' - event: application: '{}', user: '{}', when: {}, in: {} - begin",
                             url,
-                            user,
                             application,
+                            user,
                             Base.convertDate( when ),
                             String.valueOf( in )
                     );
@@ -170,19 +170,13 @@ public class EventsCollectorLogins extends EventsCollector
                     boolean			in
             )
     {
-        BodyInserters.FormInserter< String > body = BodyInserters.fromFormData( "in", String.valueOf( in ) );
+        BodyInserters.FormInserter< String > body = super.buildBody( application, when );
         if ( user != null )
         {
             body = body.with( "username", user );
         }
-        if ( application != null )
-        {
-            body = body.with( "application", application );
-        }
-        if ( when != null )
-        {
-            body = body.with( "when", Base.convertDate( when ) );
-        }
+        body = body.with( "in", String.valueOf( in ) );
+
         return
                 body;
     }

@@ -1,7 +1,7 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 import net.alemas.oss.tools.eventscollector.EventsLogInOut;
-import net.alemas.oss.tools.eventscollector.io.LogInOutResponse;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -70,8 +70,8 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
         {
             posted = collector.postEvent
                     (
-                            response.getUsername(),
                             response.getApplication(),
+                            response.getUsername(),
                             response.getDateLoggedIn(),
                             true
                     );
@@ -81,8 +81,8 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
             {
                 posted = collector.postEvent
                         (
-                                response.getUsername(),
                                 response.getApplication(),
+                                response.getUsername(),
                                 response.getDateLoggedOut(),
                                 false
                         );
@@ -190,8 +190,8 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
         {
             posted = collector.postEvent
                     (
-                            failure.getUsername(),
                             failure.getApplication(),
+                            failure.getUsername(),
                             failure.getDateLoggedIn(),
                             true
                     );
@@ -199,8 +199,8 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
 
             posted = collector.postEvent
                     (
-                            failure.getUsername(),
                             failure.getApplication(),
+                            failure.getUsername(),
                             failure.getDateLoggedOut(),
                             false
                     );

@@ -1,7 +1,8 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.counter;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import net.alemas.oss.tools.eventscollector.io.Base;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -29,20 +30,21 @@ public class CounterEvent extends Counter
      * is not correctly parsed by method {@code WebTestClient.ResponseSpec.expectBody(...)}
      * in test suite.
      */
-    protected LocalDateTime     when;
+    private LocalDateTime     when;
 
     /* --- constructors --- */
     public CounterEvent()
     {
-        this( null, null );
+        this( null, null, null );
     }
     public CounterEvent
             (
-                    String id,
-                    LocalDateTime when
+                    String          application,
+                    String          id,
+                    LocalDateTime   when
             )
     {
-        super( id );
+        super( application, id );
         this.when   = when;
     }
 
@@ -97,7 +99,8 @@ public class CounterEvent extends Counter
         return
                 this.getClass().getSimpleName()
                 + '['
-                +        "id: '" + this.id + "' "
+                +        "application: '" + this.getApplication() + "', "
+                +        "id: '" + this.getId() + "' "
                 +        "at: " + Base.convertDate( this.when )
                 + ']'
                 ;
