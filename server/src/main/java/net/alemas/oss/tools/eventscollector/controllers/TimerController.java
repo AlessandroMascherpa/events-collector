@@ -33,7 +33,7 @@ import java.io.IOException;
  * Created by MASCHERPA on 26/05/2021.
  */
 @RestController
-@RequestMapping( "${server.base-path}/events/timings" )
+@RequestMapping( "${server.base-path}/events/timing" )
 @Api
         (
                 description = "API controller to collect timing events and to provide statistics about them."
@@ -159,7 +159,7 @@ public class TimerController
             )
     @RequestMapping
             (
-                    value       = "/spreadsheet-ml",
+                    value       = "timings.xlsx",
                     method      = RequestMethod.GET,
                     produces    = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )

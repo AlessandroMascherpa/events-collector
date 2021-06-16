@@ -28,7 +28,7 @@ public class EventsCollectorTimer extends EventsCollector
     /**
      * service path;
      */
-    private static final String PATH_BASE   = "/events/timings/";
+    private static final String PATH_BASE   = "/events/timing/";
 
     /* --- constructors --- */
     /**

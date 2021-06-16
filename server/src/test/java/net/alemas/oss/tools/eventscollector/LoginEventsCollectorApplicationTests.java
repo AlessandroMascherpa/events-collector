@@ -275,7 +275,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
     /**
      * trailing part of API path;
      */
-    private static final String		URL_PATH	= "/events/logs-in-out/";
+    private static final String		URL_PATH	= "/events/log-in-out/";
 
     @Autowired
     private Properties              properties;

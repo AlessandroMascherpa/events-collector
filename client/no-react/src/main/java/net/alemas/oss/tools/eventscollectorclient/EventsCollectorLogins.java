@@ -32,7 +32,7 @@ public class EventsCollectorLogins extends EventsCollector
     /**
      * service path;
      */
-    private static final String PATH_BASE   = "/events/logs-in-out/";
+    private static final String PATH_BASE   = "/events/log-in-out/";
 
     /* --- properties --- */
     protected final JsonMapper mapper =

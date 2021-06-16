@@ -32,12 +32,12 @@ The end point to keep track of events occurrences is: **/events-collector/events
 
  - **GET** to get the events identifiers list and, per each event, how many times it occurred
  
-The end point **/events-collector/events/counter/spreadsheet-ml**, with verb **GET**, returns the events list as spreadsheet file.
+The end point **/events-collector/events/counter/counters.xlsx**, with verb **GET**, returns the events list as spreadsheet file.
 
 
 ### Events timing
 
-The end point to keep track of event timings is: **/events-collector/events/timings/**, with the following verbs:
+The end point to keep track of event timings is: **/events-collector/events/timing/**, with the following verbs:
 
  - **POST** to store a timing event, with the following fields in URL encoded form:
      - **id** the event identifier
@@ -46,12 +46,12 @@ The end point to keep track of event timings is: **/events-collector/events/timi
 
  - **GET** to get the events identifiers list and, per each event, how many times it occurred and the minimum, maximum and average time needed
  
-The end point **/events-collector/events/timings/spreadsheet-ml**, with verb **GET**, returns the events list as spreadsheet file.
+The end point **/events-collector/events/timing/timings.xlsx**, with verb **GET**, returns the events list as spreadsheet file.
 
 
 ### Log in/out events
 
-The end points that keep track of users activity in a system is: **/events-collector/events/logs-in-out/**, with the following verbs:
+The end points that keep track of users activity in a system is: **/events-collector/events/log-in-out/**, with the following verbs:
  
  - **POST** to store new log in/out event, with the following fields in URL encoded form:
      - **username** the end user account
@@ -65,7 +65,7 @@ The end points that keep track of users activity in a system is: **/events-colle
      - **before** to get only events before or equal the given date/time
    All the above parameters are optional, but, if defined, they are checked in **and**.
 
-The end point **/events-collector/events/logs-in-out/spreadsheet-ml**, with verb **GET**, returns list of log in and put events as spreadsheet file.
+The end point **/events-collector/events/log-in-out/logs-in-out.xlsx**, with verb **GET**, returns list of log in and put events as spreadsheet file.
 For this end point, the query parameters: **application**, **after** and **before** are also available.
 
 
@@ -208,5 +208,5 @@ They are:
     + **application.bat**, to list all events filtered by the application name given on command line;
 
 Statistical data returned as spreadsheet file can be opened directly in spreadsheet applications like MS Excel.
-To do so, just open the **Open** dialog box used to load files and, in the **File name** entry field, type the end point URL: http://localhost:8090/events-collector/events/logs-in-out/spreadsheet-ml, and then open the file.
+To do so, just open the **Open** dialog box used to load files and, in the **File name** entry field, type the end point URL: http://localhost:8090/events-collector/events/log-in-out/logs-in-out.xlsx, and then open the file.
 You can filter the events list as well by following URL with query parameters.

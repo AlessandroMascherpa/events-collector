@@ -155,7 +155,7 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
     /**
      * trailing part of API path;
      */
-    private static final String		URL_PATH	= "/events/timings/";
+    private static final String		URL_PATH	= "/events/timing/";
 
     @Autowired
     private Properties              properties;

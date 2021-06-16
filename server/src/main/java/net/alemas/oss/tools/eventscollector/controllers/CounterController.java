@@ -159,7 +159,7 @@ public class CounterController
             )
     @RequestMapping
             (
-                    value       = "/spreadsheet-ml",
+                    value       = "counters.xlsx",
                     method      = RequestMethod.GET,
                     produces    = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )

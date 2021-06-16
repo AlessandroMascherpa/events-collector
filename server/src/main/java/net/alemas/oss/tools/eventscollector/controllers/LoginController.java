@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
  * Created by MASCHERPA on 04/02/2021.
  */
 @RestController
-@RequestMapping( "${server.base-path}/events/logs-in-out" )
+@RequestMapping( "${server.base-path}/events/log-in-out" )
 @Api
         (
                 description = "API controller to collect log in/out events and to provide statistics about events."
@@ -209,7 +209,7 @@ public class LoginController
             )
     @RequestMapping
             (
-                    value       = "/spreadsheet-ml",
+                    value       = "logs-in-out.xlsx",
                     method      = RequestMethod.GET
             )
     private ResponseEntity< Mono< Resource > >  getSpreadsheetLogsInOut
