@@ -53,6 +53,12 @@ public class LoginController
     @Autowired
     private ServerConfiguration properties;
 
+    /**
+     * spread sheet exporter;
+     */
+    @Autowired
+    private SpreadsheetLogins   exporter;
+
 
     /* --- constructors --- */
     /* none */
@@ -252,7 +258,7 @@ public class LoginController
         {
             log.info
                     (
-                            "returning list of events in spreadsheet file - filter by: application: '{}', after: {}, before: {}",
+                            "returning list of events as spreadsheet - filter by: application: '{}', after: {}, before: {}",
                             application,
                             Base.convertDate( after ),
                             Base.convertDate( before )
@@ -275,8 +281,7 @@ public class LoginController
                                         Mono.fromCallable
                                                 (
                                                         () ->
-                                                                SpreadsheetLogins
-                                                                        .getInstance()
+                                                                this.exporter
                                                                         .export
                                                                                 (
                                                                                         this.repository.list( application, after, before )

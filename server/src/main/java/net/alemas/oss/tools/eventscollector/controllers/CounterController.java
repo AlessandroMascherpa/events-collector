@@ -56,6 +56,12 @@ public class CounterController
     @Autowired
     private ServerConfiguration     properties;
 
+    /**
+     * spread sheet exporter;
+     */
+    @Autowired
+    private SpreadsheetCounters     exporter;
+
 
     /* --- constructors --- */
     /* none */
@@ -169,7 +175,7 @@ public class CounterController
     {
         if ( log.isInfoEnabled() )
         {
-            log.info( "returning list of events in spreadsheet file" );
+            log.info( "returning list of events as spreadsheet" );
         }
 
         String name =
@@ -188,8 +194,7 @@ public class CounterController
                                         Mono.fromCallable
                                                 (
                                                         () ->
-                                                                SpreadsheetCounters
-                                                                        .getInstance()
+                                                                this.exporter
                                                                         .export
                                                                                 (
                                                                                         this.repository.groupById()

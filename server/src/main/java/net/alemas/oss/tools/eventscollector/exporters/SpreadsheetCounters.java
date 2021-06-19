@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -14,30 +14,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
  *
  * Created by MASCHERPA on 13/05/2021.
  */
+@Service
 public class SpreadsheetCounters extends SpreadsheetByList< CounterResponse >
 {
-    /* --- singleton --- */
-    /**
-     * this class;
-     */
-    protected static SpreadsheetCounters  instance;
-
-    /* --- constructors --- */
-    /**
-     * the single instance of this class;
-     *
-     * @return this class;
-     */
-    public static synchronized SpreadsheetCounters getInstance()
-    {
-        if ( instance == null )
-        {
-            instance = new SpreadsheetCounters();
-        }
-        return
-                instance;
-    }
-
     /* --- implemented methods --- */
     @Override
     protected void setColumnsWidths( XSSFSheet sheet )

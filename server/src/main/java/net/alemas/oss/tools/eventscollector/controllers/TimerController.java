@@ -56,6 +56,12 @@ public class TimerController
     @Autowired
     private ServerConfiguration properties;
 
+    /**
+     * spread sheet exporter;
+     */
+    @Autowired
+    private SpreadsheetTimers   exporter;
+
 
     /* --- constructors --- */
     /* none */
@@ -169,7 +175,7 @@ public class TimerController
     {
         if ( log.isInfoEnabled() )
         {
-            log.info( "returning list of timers in spreadsheet file" );
+            log.info( "returning list of timers as spreadsheet" );
         }
 
         String name =
@@ -188,8 +194,7 @@ public class TimerController
                                         Mono.fromCallable
                                                 (
                                                         () ->
-                                                                SpreadsheetTimers
-                                                                        .getInstance()
+                                                                this.exporter
                                                                         .export
                                                                                 (
                                                                                         this.repository.groupById()

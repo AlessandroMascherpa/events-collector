@@ -1,11 +1,14 @@
 package net.alemas.oss.tools.eventscollector.exporters;
 
 
+import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
+import org.apache.poi.ooxml.POIXMLProperties;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.usermodel.*;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import reactor.core.publisher.Flux;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -31,6 +35,12 @@ public abstract class SpreadsheetByList< Response >
      * text messages resource;
      */
     private ResourceBundle              resources   = ResourceBundle.getBundle( "messages/spreadsheet" );
+
+    /**
+     * server configuration properties;
+     */
+    @Autowired
+    private ServerConfiguration         properties;
 
 
     /* --- constructors --- */
@@ -52,14 +62,23 @@ public abstract class SpreadsheetByList< Response >
             IOException
     {
         /* --- create book and sheet --- */
-        XSSFWorkbook    book    = new XSSFWorkbook();
-        XSSFSheet       sheet   = book.createSheet
+        String          sheetName   = this.resources.getString( "sheet.name" );
+        XSSFWorkbook    book        = new XSSFWorkbook();
+        XSSFSheet       sheet       = book.createSheet
                 (
                         WorkbookUtil.createSafeSheetName
                                 (
-                                        this.resources.getString( "sheet.name" )
+                                        sheetName
                                 )
                 );
+
+        /* --- workbook properties --- */
+        POIXMLProperties                properties  = book.getProperties();
+        POIXMLProperties.CoreProperties core        = properties.getCoreProperties();
+
+        core.setCreator( this.properties.getFileNameSpreadsheet() );
+        core.setCreated( Optional.of( new Date() ) );
+        core.setTitle( sheetName );
 
         /* --- cell styles --- */
         XSSFCreationHelper  helper  = book.getCreationHelper();
@@ -76,7 +95,6 @@ public abstract class SpreadsheetByList< Response >
 
         /* --- columns widths --- */
         this.setColumnsWidths( sheet );
-
 
         /* --- fill the sheet: columns header --- */
         XSSFRow row = sheet.createRow( 0 );

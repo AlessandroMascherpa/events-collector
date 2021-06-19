@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -14,30 +14,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
  *
  * Created by MASCHERPA on 26/05/2021.
  */
+@Service
 public class SpreadsheetTimers extends SpreadsheetByList< TimingResponse >
 {
-    /* --- singleton --- */
-    /**
-     * this class;
-     */
-    protected static SpreadsheetTimers  instance;
-
-    /* --- constructors --- */
-    /**
-     * the single instance of this class;
-     *
-     * @return this class;
-     */
-    public static synchronized SpreadsheetTimers getInstance()
-    {
-        if ( instance == null )
-        {
-            instance = new SpreadsheetTimers();
-        }
-        return
-                instance;
-    }
-
     /* --- implemented methods --- */
     @Override
     protected void setColumnsWidths( XSSFSheet sheet )
