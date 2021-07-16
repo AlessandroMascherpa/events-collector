@@ -92,7 +92,7 @@ public abstract class EventsCollector
     }
 
     /* --- connectors --- */
-    public int postEvent
+    protected int postEvent
         (
                 List< NameValuePair >  body
         )
