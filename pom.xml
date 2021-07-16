@@ -47,8 +47,12 @@
 
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
 
+        <jackson-annotations.version>2.12.4</jackson-annotations.version>
         <poi-ooxml.version>5.0.0</poi-ooxml.version>
+        <httpclient.version>4.5.13</httpclient.version>
+
         <swagger.version>3.0.0</swagger.version>
+        <swagger-annotations.version>2.1.7</swagger-annotations.version>
 
         <junit.version>4.13.1</junit.version>
 
