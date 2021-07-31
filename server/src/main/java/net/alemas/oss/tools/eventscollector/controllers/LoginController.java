@@ -186,9 +186,9 @@ public class LoginController
             log.info
                     (
                             "returning list of events as json objects array - filter by: application: '{}', after: {}, before: {}",
-                            application,
-                            Base.convertDate( after ),
-                            Base.convertDate( before )
+                            ( application != null ) ? application.replaceAll( "[\r\n]", "" ) : null,
+                            Base.convertDate( after ).replaceAll( "[\r\n]", "" ),
+                            Base.convertDate( before ).replaceAll( "[\r\n]", "" )
                     );
         }
         return
@@ -259,9 +259,9 @@ public class LoginController
             log.info
                     (
                             "returning list of events as spreadsheet - filter by: application: '{}', after: {}, before: {}",
-                            application,
-                            Base.convertDate( after ),
-                            Base.convertDate( before )
+                            ( application != null ) ? application.replaceAll( "[\r\n]", "" ) : null,
+                            Base.convertDate( after ).replaceAll( "[\r\n]", "" ),
+                            Base.convertDate( before ).replaceAll( "[\r\n]", "" )
                     );
         }
 
