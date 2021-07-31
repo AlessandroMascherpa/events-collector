@@ -27,15 +27,15 @@ public class LoginRepository
     /**
      * maximum events in the repository;
      */
-    private final int   REPOSITORY_SIZE_LIMIT       = 2000;
+    private static final int   REPOSITORY_SIZE_LIMIT       = 2000;
     /**
      * minimum events in the repository;
      */
-    private final int   REPOSITORY_SIZE_MIN         = 1500;
+    private static final int   REPOSITORY_SIZE_MIN         = 1500;
     /**
      * oldest event since now;
      */
-    private final long  REPOSITORY_WINDOW_DAYS      = 15;
+    private static final long  REPOSITORY_WINDOW_DAYS      = 15;
 
 
     /* --- properties -- */

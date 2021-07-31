@@ -24,11 +24,11 @@ public class TimerRepository
     /**
      * maximum events in the repository;
      */
-    private final int   REPOSITORY_SIZE_LIMIT       = 2000;
+    private static final int   REPOSITORY_SIZE_LIMIT       = 2000;
     /**
      * minimum events in the repository;
      */
-    private final int   REPOSITORY_SIZE_MIN         = 1500;
+    private static final int   REPOSITORY_SIZE_MIN         = 1500;
 
 
     /* --- properties -- */
