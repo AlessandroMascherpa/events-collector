@@ -57,11 +57,15 @@ public class TimingEvent extends CounterEvent
     @Override
     public boolean equals( Object o )
     {
-        TimingEvent that = (TimingEvent) o;
+        TimingEvent that = ( o instanceof TimingEvent ) ? ( (TimingEvent) o ) : null;
         return
-                super.equals( o )
-                &&
-                ( this.elapsed == that.elapsed )
+                (
+                        ( that != null )
+                        &&
+                        super.equals( o )
+                        &&
+                        ( this.elapsed == that.elapsed )
+                )
                 ;
     }
 

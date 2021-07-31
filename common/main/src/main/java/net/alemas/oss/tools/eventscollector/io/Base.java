@@ -77,9 +77,17 @@ public abstract class Base
             return false;
         }
 
-        Base that = (Base) o;
+        Base that = ( o instanceof Base ) ? ( (Base) o ) : null;
         return
-                ( ( ( this.application != null ) && ( this.application.equals( that.application ) ) ) || ( ( this.application == null ) && ( that.application == null ) ) )
+                (
+                        ( that != null )
+                        &&
+                        (
+                                ( ( this.application != null ) && ( this.application.equals( that.application ) ) )
+                                ||
+                                ( ( this.application == null ) && ( that.application == null ) )
+                        )
+                )
                 ;
     }
     protected boolean areEqual( Object thisObj, Object thatObj )

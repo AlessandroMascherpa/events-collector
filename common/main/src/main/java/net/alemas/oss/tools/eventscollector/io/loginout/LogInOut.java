@@ -59,11 +59,19 @@ public abstract class LogInOut extends Base
     @Override
     public boolean equals( Object o )
     {
-        LogInOut that = (LogInOut) o;
+        LogInOut that = ( o instanceof LogInOut ) ? ( (LogInOut) o ) : null;
         return
-                super.equals( o )
-                &&
-                ( ( ( this.username != null ) && ( this.username.equals( that.username ) ) ) || ( ( this.username == null ) && ( that.username == null ) ) )
+                (
+                        ( that != null )
+                        &&
+                        super.equals( o )
+                        &&
+                        (
+                                ( ( this.username != null ) && ( this.username.equals( that.username ) ) )
+                                ||
+                                ( ( this.username == null ) && ( that.username == null ) )
+                        )
+                )
                 ;
     }
 

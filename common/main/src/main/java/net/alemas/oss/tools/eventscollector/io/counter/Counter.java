@@ -63,15 +63,19 @@ public class Counter extends Base
     @Override
     public boolean equals( Object o )
     {
-/* --delete--
-        if ( this == o )  return true;
-        if ( ( o == null ) || ( this.getClass() != o.getClass() ) )  return false;
-*/
-        Counter that = (Counter) o;
+        Counter that = ( o instanceof Counter ) ? ( (Counter) o ) : null;
         return
-                super.equals( o )
-                &&
-                ( ( ( this.id != null ) && ( this.id.equals( that.id ) ) ) || ( ( this.id == null ) && ( that.id == null ) ) )
+                (
+                        ( that != null )
+                        &&
+                        super.equals( o )
+                        &&
+                        (
+                                ( ( this.id != null ) && ( this.id.equals( that.id ) ) )
+                                ||
+                                ( ( this.id == null ) && ( that.id == null ) )
+                        )
+                )
                 ;
     }
 

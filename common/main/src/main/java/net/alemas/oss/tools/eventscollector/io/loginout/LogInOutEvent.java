@@ -94,13 +94,21 @@ public class LogInOutEvent extends LogInOut
     @Override
     public boolean equals( Object o )
     {
-        LogInOutEvent that = (LogInOutEvent) o;
+        LogInOutEvent that = ( o instanceof  LogInOutEvent ) ? ( (LogInOutEvent) o ) : null;
         return
-                super.equals( o )
-                &&
-                ( this.in == that.in )
-                &&
-                ( ( ( this.when != null ) && ( this.when.equals( that.when ) ) ) || ( ( this.when == null ) && ( that.when == null ) ) )
+                (
+                        ( that != null )
+                        &&
+                        super.equals( o )
+                        &&
+                        ( this.in == that.in )
+                        &&
+                        (
+                                ( ( this.when != null ) && ( this.when.equals( that.when ) ) )
+                                ||
+                                ( ( this.when == null ) && ( that.when == null ) )
+                        )
+                )
                 ;
     }
 

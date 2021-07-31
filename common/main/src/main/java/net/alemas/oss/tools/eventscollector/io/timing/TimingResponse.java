@@ -90,15 +90,19 @@ public class TimingResponse extends CounterResponse
     @Override
     public boolean equals( Object o )
     {
-        TimingResponse that = (TimingResponse) o;
+        TimingResponse that = ( o instanceof TimingResponse ) ? ( (TimingResponse) o ) : null;
         return
-                super.equals( o )
-                &&
-                ( this.average == that.average )
-                &&
-                ( this.min == that.min )
-                &&
-                ( this.max == that.max )
+                (
+                        ( that != null )
+                        &&
+                        super.equals( o )
+                        &&
+                        ( this.average == that.average )
+                        &&
+                        ( this.min == that.min )
+                        &&
+                        ( this.max == that.max )
+                )
                 ;
     }
 

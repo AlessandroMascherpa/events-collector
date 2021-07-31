@@ -75,11 +75,19 @@ public class CounterEvent extends Counter
     @Override
     public boolean equals( Object o )
     {
-        CounterEvent that = (CounterEvent) o;
+        CounterEvent that = ( o instanceof CounterEvent ) ? ( (CounterEvent) o ) :null;
         return
-                super.equals( o )
-                &&
-                ( ( ( this.when != null ) && ( this.when.equals( that.when ) ) ) || ( ( this.when == null ) && ( that.when == null ) ) )
+                (
+                        ( that != null )
+                        &&
+                        super.equals( o )
+                        &&
+                        (
+                                ( ( this.when != null ) && ( this.when.equals( that.when ) ) )
+                                ||
+                                ( ( this.when == null ) && ( that.when == null ) )
+                        )
+                )
                 ;
     }
 

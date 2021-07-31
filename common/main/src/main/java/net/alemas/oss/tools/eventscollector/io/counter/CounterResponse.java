@@ -50,11 +50,15 @@ public class CounterResponse extends Counter
     @Override
     public boolean equals( Object o )
     {
-        CounterResponse that = (CounterResponse) o;
+        CounterResponse that = ( o instanceof CounterResponse ) ? ( (CounterResponse) o ) : null;
         return
-                super.equals( o )
-                &&
-                ( this.counter == that.counter )
+                (
+                        ( that != null )
+                        &&
+                        super.equals( o )
+                        &&
+                        ( this.counter == that.counter )
+                )
                 ;
     }
 

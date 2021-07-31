@@ -74,13 +74,25 @@ public class LogInOutResponse extends LogInOut
     @Override
     public boolean equals( Object o )
     {
-        LogInOutResponse that = (LogInOutResponse) o;
+        LogInOutResponse that = ( o instanceof LogInOutResponse ) ? ( (LogInOutResponse) o ) : null;
         return
-                super.equals( o )
-                &&
-                ( ( ( this.dateLoggedIn != null ) && ( this.dateLoggedIn.equals( that.dateLoggedIn ) ) ) || ( ( this.dateLoggedIn == null ) && ( that.dateLoggedIn == null ) ) )
-                &&
-                ( ( ( this.dateLoggedOut != null ) && ( this.dateLoggedOut.equals( that.dateLoggedOut ) ) ) || ( ( this.dateLoggedOut == null ) && ( that.dateLoggedOut == null ) ) )
+                (
+                        ( that != null )
+                        &&
+                        super.equals( o )
+                        &&
+                        (
+                                ( ( this.dateLoggedIn != null ) && ( this.dateLoggedIn.equals( that.dateLoggedIn ) ) )
+                                ||
+                                ( ( this.dateLoggedIn == null ) && ( that.dateLoggedIn == null ) )
+                        )
+                        &&
+                        (
+                                ( ( this.dateLoggedOut != null ) && ( this.dateLoggedOut.equals( that.dateLoggedOut ) ) )
+                                ||
+                                ( ( this.dateLoggedOut == null ) && ( that.dateLoggedOut == null ) )
+                        )
+                )
                 ;
     }
 
