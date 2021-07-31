@@ -148,17 +148,21 @@ public class EventsCollectorCounters extends EventsCollector
                                         response ->
                                                 Mono.just
                                                         (
-                                                                response.statusCode().equals( HttpStatus.NO_CONTENT )
+                                                                ( response != null )
+                                                                &&
+                                                                HttpStatus.NO_CONTENT.equals( response.statusCode() )
                                                         )
                                 )
                         .block()
                 ;
+        boolean response = ( reply != null ) && reply;      // by SpotBugs
+
         if ( log.isDebugEnabled() )
         {
-            log.debug( "posting event - successful posted: {} - end", reply );
+            log.debug( "posting event - successful posted: {} - end", response );
         }
         return
-                reply;
+                response;
     }
     private BodyInserters.FormInserter< String > buildBody
             (
@@ -207,7 +211,7 @@ public class EventsCollectorCounters extends EventsCollector
                         .exchangeToFlux
                                 (
                                         response ->
-                                                response.statusCode().equals( HttpStatus.OK )
+                                                ( ( response != null ) && HttpStatus.OK.equals( response.statusCode() ) )
                                                         ? response.bodyToFlux( CounterResponse.class )
                                                         : null
                                 )
