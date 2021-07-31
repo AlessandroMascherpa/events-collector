@@ -140,6 +140,7 @@
                             <version>${findsecbugs-plugin.version}</version>
                         </plugin>
                     </plugins>
+                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
                 </configuration>
             </plugin>
 
