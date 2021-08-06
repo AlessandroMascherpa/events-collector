@@ -82,11 +82,7 @@ public class CounterEvent extends Counter
                         &&
                         super.equals( o )
                         &&
-                        (
-                                ( ( this.when != null ) && ( this.when.equals( that.when ) ) )
-                                ||
-                                ( ( this.when == null ) && ( that.when == null ) )
-                        )
+                        areEqual( that.when, that.when )
                 )
                 ;
     }

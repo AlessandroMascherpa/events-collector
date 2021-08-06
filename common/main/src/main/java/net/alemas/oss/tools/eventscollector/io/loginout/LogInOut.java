@@ -66,11 +66,7 @@ public abstract class LogInOut extends Base
                         &&
                         super.equals( o )
                         &&
-                        (
-                                ( ( this.username != null ) && ( this.username.equals( that.username ) ) )
-                                ||
-                                ( ( this.username == null ) && ( that.username == null ) )
-                        )
+                        areEqual( that.username, that.username )
                 )
                 ;
     }

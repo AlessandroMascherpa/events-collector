@@ -103,11 +103,7 @@ public class LogInOutEvent extends LogInOut
                         &&
                         ( this.in == that.in )
                         &&
-                        (
-                                ( ( this.when != null ) && ( this.when.equals( that.when ) ) )
-                                ||
-                                ( ( this.when == null ) && ( that.when == null ) )
-                        )
+                        areEqual( this.when, that.when )
                 )
                 ;
     }

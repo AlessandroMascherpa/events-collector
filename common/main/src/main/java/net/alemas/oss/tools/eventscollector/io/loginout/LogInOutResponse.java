@@ -81,17 +81,9 @@ public class LogInOutResponse extends LogInOut
                         &&
                         super.equals( o )
                         &&
-                        (
-                                ( ( this.dateLoggedIn != null ) && ( this.dateLoggedIn.equals( that.dateLoggedIn ) ) )
-                                ||
-                                ( ( this.dateLoggedIn == null ) && ( that.dateLoggedIn == null ) )
-                        )
+                        areEqual( that.dateLoggedIn, that.dateLoggedIn )
                         &&
-                        (
-                                ( ( this.dateLoggedOut != null ) && ( this.dateLoggedOut.equals( that.dateLoggedOut ) ) )
-                                ||
-                                ( ( this.dateLoggedOut == null ) && ( that.dateLoggedOut == null ) )
-                        )
+                        areEqual( that.dateLoggedOut, that.dateLoggedOut )
                 )
                 ;
     }

@@ -70,11 +70,7 @@ public class Counter extends Base
                         &&
                         super.equals( o )
                         &&
-                        (
-                                ( ( this.id != null ) && ( this.id.equals( that.id ) ) )
-                                ||
-                                ( ( this.id == null ) && ( that.id == null ) )
-                        )
+                        areEqual( that.id, that.id )
                 )
                 ;
     }

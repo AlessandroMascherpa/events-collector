@@ -82,15 +82,11 @@ public abstract class Base
                 (
                         ( that != null )
                         &&
-                        (
-                                ( ( this.application != null ) && ( this.application.equals( that.application ) ) )
-                                ||
-                                ( ( this.application == null ) && ( that.application == null ) )
-                        )
+                        areEqual( that.application, that.application )
                 )
                 ;
     }
-    protected boolean areEqual( Object thisObj, Object thatObj )
+    protected static boolean areEqual( Object thisObj, Object thatObj )
     {
         return
                 (
