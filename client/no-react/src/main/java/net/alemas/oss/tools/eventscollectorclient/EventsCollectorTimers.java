@@ -124,43 +124,11 @@ public class EventsCollectorTimers extends EventsCollector
         }
         try
         {
-			/* --- prepare form --- */
-            List< NameValuePair > encoded		= new ArrayList<>();
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "application",
-                                            application
-                                    )
-                    );
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "id",
-                                            id
-                                    )
-                    );
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "when",
-                                            TimingEvent.convertDate( when )
-                                    )
-                    );
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "elapsed",
-                                            String.valueOf( elapsed )
-                                    )
-                    );
+            /* --- prepare body --- */
+            TimingEvent event = new TimingEvent( application, id, when, elapsed );
 
 			/* --- execute call and check reply --- */
-            int status = super.postEvent( encoded );
+            int status = super.postEvent( event );
 
             reply = ( status == HttpStatus.SC_NO_CONTENT );
 

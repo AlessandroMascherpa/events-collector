@@ -121,35 +121,11 @@ public class EventsCollectorCounters extends EventsCollector
         }
         try
         {
-			/* --- prepare form --- */
-            List< NameValuePair > encoded		= new ArrayList<>();
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "application",
-                                            application
-                                    )
-                    );
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "id",
-                                            id
-                                    )
-                    );
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "when",
-                                            CounterEvent.convertDate( when )
-                                    )
-                    );
+            /* --- prepare body --- */
+            CounterEvent event = new CounterEvent( application, id, when );
 
 			/* --- execute call and check reply --- */
-            int status = super.postEvent( encoded );
+            int status = super.postEvent( event );
 
             reply = ( status == HttpStatus.SC_NO_CONTENT );
 

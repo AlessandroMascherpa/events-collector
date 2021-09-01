@@ -1,26 +1,28 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollectorclient.configuration.ClientProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 
 /**
@@ -38,6 +40,8 @@ public abstract class EventsCollector
     protected final RequestConfig       config;
 
     protected final URI                 remote;
+
+    private final   ObjectMapper        mapper;
 
 	/* --- constructor --- */
     public EventsCollector
@@ -89,16 +93,26 @@ public abstract class EventsCollector
                                 null
                         )
         ;
+
+        this.mapper =
+                JsonMapper
+                    .builder()
+                    .addModule( new JavaTimeModule() )
+                    .build()
+                ;
     }
 
     /* --- connectors --- */
     protected int postEvent
         (
-                List< NameValuePair >  body
+                Base  event
         )
             throws
                 IOException
     {
+        /* --- prepare body --- */
+        String body = this.mapper.writeValueAsString( event );
+
         /* --- prepare call --- */
         HttpEntityEnclosingRequestBase request	= new HttpPost
                 (
@@ -107,11 +121,11 @@ public abstract class EventsCollector
         request.setHeader
                 (
                         HttpHeaders.CONTENT_TYPE,
-                        ContentType.APPLICATION_FORM_URLENCODED.getMimeType()
+                        ContentType.APPLICATION_JSON.getMimeType()
                 );
         request.setEntity
                 (
-                        new UrlEncodedFormEntity( body )
+                        new StringEntity( body, ContentType.APPLICATION_JSON )
                 );
         request.setConfig
                 (

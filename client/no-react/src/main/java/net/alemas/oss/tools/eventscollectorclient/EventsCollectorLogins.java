@@ -3,13 +3,11 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOut;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.message.BasicNameValuePair;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -17,7 +15,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -135,43 +132,11 @@ public class EventsCollectorLogins extends EventsCollector
         }
         try
         {
-			/* --- prepare form --- */
-            List< NameValuePair > encoded		= new ArrayList<>();
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "username",
-                                            user
-                                    )
-                    );
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "application",
-                                            application
-                                    )
-                    );
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "when",
-                                            CounterEvent.convertDate( when )
-                                    )
-                    );
-            encoded.add
-                    (
-                            new BasicNameValuePair
-                                    (
-                                            "in",
-                                            String.valueOf( in )
-                                    )
-                    );
+            /* --- prepare body --- */
+            LogInOutEvent event = new LogInOutEvent( application, user, when, in );
 
 			/* --- execute call and check reply --- */
-            int status = super.postEvent( encoded );
+            int status = super.postEvent( event );
 
             reply = ( status == HttpStatus.SC_NO_CONTENT );
 
