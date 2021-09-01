@@ -13,11 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -59,10 +56,11 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
             this.webTestClient
                     .post()
                     .uri( this.getUrlPath() )
-                    .contentType( MediaType.APPLICATION_FORM_URLENCODED )
+                    .contentType( MediaType.APPLICATION_JSON )
                     .body
                             (
-                                    buildBody( event )
+                                    Mono.just( event ),
+                                    CounterEvent.class
                             )
                     .exchange()
                     .expectStatus().isNoContent()
@@ -107,10 +105,11 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
             this.webTestClient
                     .post()
                     .uri( this.getUrlPath() )
-                    .contentType( MediaType.APPLICATION_FORM_URLENCODED )
+                    .contentType( MediaType.APPLICATION_JSON )
                     .body
                             (
-                                    buildBody( event )
+                                    Mono.just( event ),
+                                    CounterEvent.class
                             )
                     .exchange()
                     .expectStatus().isBadRequest()
@@ -118,35 +117,6 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
         }
 
         log.info( "post of incorrect events - end" );
-    }
-
-    /* --- API call payload --- */
-    private BodyInserters.FormInserter< String > buildBody( CounterEvent event )
-    {
-        MultiValueMap< String, String > body = new LinkedMultiValueMap<>();
-        if ( event != null )
-        {
-            String application = event.getApplication();
-            if ( ( application != null ) && ( application.length() > 0 ) )
-            {
-                body.set( "application", application );
-            }
-
-            String id = event.getId();
-            if ( ( id != null ) && ( id.length() > 0 ) )
-            {
-                body.set( "id", id );
-            }
-
-            LocalDateTime when = event.getWhen();
-            if ( when != null )
-            {
-                body.set( "when", CounterEvent.convertDate( when ) );
-            }
-        }
-        return
-                BodyInserters
-                        .fromFormData( body );
     }
 
     /* --- URL related methods --- */

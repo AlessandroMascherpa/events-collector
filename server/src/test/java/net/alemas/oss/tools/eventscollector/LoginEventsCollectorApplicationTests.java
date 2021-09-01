@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -84,16 +84,18 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 		LogInOutEvent event;
 		for ( LogInOutResponse response : responses )
 		{
+            event = getLogIn( response );
 			this.webTestClient
 					.post()
 					.uri( this.getUrlPath() )
-					.contentType( MediaType.APPLICATION_FORM_URLENCODED )
+					.contentType( MediaType.APPLICATION_JSON )
 					.body
-							(
-                                    buildBody( getLogIn( response ) )
-							)
-					.exchange()
-					.expectStatus().isNoContent()
+                            (
+                                    Mono.just( event ),
+                                    LogInOutResponse.class
+                            )
+                    .exchange()
+                    .expectStatus().isNoContent()
 			;
 
 
@@ -103,11 +105,12 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 				this.webTestClient
 						.post()
 						.uri( this.getUrlPath() )
-						.contentType( MediaType.APPLICATION_FORM_URLENCODED )
+						.contentType( MediaType.APPLICATION_JSON )
 						.body
-								(
-                                        buildBody( event )
-								)
+                                (
+                                        Mono.just( event ),
+                                        LogInOutResponse.class
+                                )
 						.exchange()
 						.expectStatus().isNoContent()
 				;
@@ -217,27 +220,32 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
     {
 		log.info( "post of incorrect events - begin" );
 
+        LogInOutEvent event;
         for ( LogInOutResponse response : failures )
         {
+            event = getLogIn( response );
             this.webTestClient
                     .post()
                     .uri( this.getUrlPath() )
-                    .contentType( MediaType.APPLICATION_FORM_URLENCODED )
+                    .contentType( MediaType.APPLICATION_JSON )
                     .body
                             (
-                                    buildBody( getLogIn( response ) )
+                                    Mono.just( event ),
+                                    LogInOutResponse.class
                             )
-                    .exchange()
+                                    .exchange()
                     .expectStatus().isBadRequest()
             ;
 
+            event = getLogOut( response );
             this.webTestClient
                     .post()
                     .uri( this.getUrlPath() )
-                    .contentType( MediaType.APPLICATION_FORM_URLENCODED )
+                    .contentType( MediaType.APPLICATION_JSON )
                     .body
                             (
-                                    buildBody( getLogOut( response ) )
+                                    ( event != null ) ? Mono.just( event ) : Mono.empty(),
+                                    LogInOutResponse.class
                             )
                     .exchange()
                     .expectStatus().isBadRequest()
@@ -245,29 +253,6 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
         }
 
         log.info( "post of incorrect events - end" );
-    }
-
-    private BodyInserters.FormInserter< String > buildBody( LogInOutEvent event )
-    {
-        BodyInserters.FormInserter< String > body = null;
-        if ( event != null )
-        {
-            body = BodyInserters.fromFormData( "in", String.valueOf( event.isIn() ) );
-            if ( event.getUsername() != null )
-            {
-                body = body.with( "username", event.getUsername() );
-            }
-            if ( event.getApplication() != null )
-            {
-                body = body.with( "application", event.getApplication() );
-            }
-            if ( event.getWhen() != null )
-            {
-                body = body.with( "when", LogInOut.convertDate( event.getWhen() ) );
-            }
-        }
-        return
-                body;
     }
 
 
