@@ -15,10 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -84,10 +81,13 @@ public class TimerController
             (
                     value		= "/",
                     method		= RequestMethod.POST,
-                    consumes	= MediaType.APPLICATION_FORM_URLENCODED_VALUE
+                    consumes	= MediaType.APPLICATION_JSON_VALUE
             )
     @ResponseStatus( HttpStatus.NO_CONTENT )
-    private void addCounter( TimingEvent event )
+    private void addCounter
+        (
+                @RequestBody TimingEvent event
+        )
     {
         if ( log.isInfoEnabled() )
         {

@@ -313,10 +313,13 @@ public class LoginController
             (
                     value		= "/",
                     method		= RequestMethod.POST,
-                    consumes	= MediaType.APPLICATION_FORM_URLENCODED_VALUE
+                    consumes	= MediaType.APPLICATION_JSON_VALUE
             )
     @ResponseStatus( HttpStatus.NO_CONTENT )
-    private void addLogin( LogInOutEvent event )
+    private void addLogin
+            (
+                    @RequestBody LogInOutEvent event
+            )
     {
         if ( log.isInfoEnabled() )
         {
