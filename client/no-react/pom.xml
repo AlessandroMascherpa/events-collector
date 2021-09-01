@@ -37,10 +37,6 @@
     <distributionManagement />
     <issueManagement />
 
-    <properties>
-        <jackson-core.version>2.12.3</jackson-core.version>
-    </properties>
-
 
     <dependencies>
 

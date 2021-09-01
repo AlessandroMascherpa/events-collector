@@ -48,6 +48,7 @@
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
 
         <jackson-annotations.version>2.12.4</jackson-annotations.version>
+        <jackson-core.version>2.12.4</jackson-core.version>
         <poi-ooxml.version>5.0.0</poi-ooxml.version>
         <httpclient.version>4.5.13</httpclient.version>
 
