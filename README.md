@@ -14,7 +14,7 @@ Events handled by service are:
  - log in/out in a system
 
 
-Client library is also provided, both for ready to use and as example.
+Client library is also provided, both for ready to use library and for usage example.
 
 
 ### OpenDOC
@@ -26,11 +26,12 @@ Web API online documentation is available at address: http://localhost:8090/even
 
 The end point to keep track of events occurrences is: **/events-collector/events/counter/**, with the following verbs:
 
- - **POST** to store a single event, with the following fields in URL encoded form:
+ - **POST** to store a single event, with the following fields as JSON object:
+     - **application** the system where the event occurred
      - **id** the event identifier
      - **when** the event date, it is the format: `yyyy-MM-dd'T'HH:mm:ss.SSS`, for example: 2021-03-10T14:45:03.527
 
- - **GET** to get the events identifiers list and, per each event, how many times it occurred
+ - **GET** to get the events list and, per each event, how many times it occurred
  
 The end point **/events-collector/events/counter/counters.xlsx**, with verb **GET**, returns the events list as spreadsheet file.
 
@@ -39,12 +40,13 @@ The end point **/events-collector/events/counter/counters.xlsx**, with verb **GE
 
 The end point to keep track of event timings is: **/events-collector/events/timing/**, with the following verbs:
 
- - **POST** to store a timing event, with the following fields in URL encoded form:
+ - **POST** to store a timing event, with the following fields as JSON object:
+     - **application** the system where the event occurred
      - **id** the event identifier
      - **when** the event date, it is the format: `yyyy-MM-dd'T'HH:mm:ss.SSS`, for example: 2021-03-10T14:45:03.527
      - **elapsed** how much time the event needed
 
- - **GET** to get the events identifiers list and, per each event, how many times it occurred and the minimum, maximum and average time needed
+ - **GET** to get the events list and, per each event, how many times it occurred and the minimum, maximum and average time needed
  
 The end point **/events-collector/events/timing/timings.xlsx**, with verb **GET**, returns the events list as spreadsheet file.
 
@@ -53,16 +55,16 @@ The end point **/events-collector/events/timing/timings.xlsx**, with verb **GET*
 
 The end points that keep track of users activity in a system is: **/events-collector/events/log-in-out/**, with the following verbs:
  
- - **POST** to store new log in/out event, with the following fields in URL encoded form:
-     - **username** the end user account
+ - **POST** to store new log in/out event, with the following fields as JSON object:
      - **application** in which system the event occurred
+     - **username** the end user account
      - **in** boolean value to say whether the user logged in or out
      - **when** the event date, it is the format: `yyyy-MM-dd'T'HH:mm:ss.SSS`, for example: 2021-03-10T14:45:03.527
 
  - **GET** to get a list of log in and out events; to avoid to get all events the list can be filtered with query parameters:
      - **application** to get only the events linked to the given application name
-     - **after** to get only events after or equal the given date/time
-     - **before** to get only events before or equal the given date/time
+     - **after** to get only events after or at the given date/time
+     - **before** to get only events before or at the given date/time
    All the above parameters are optional, but, if defined, they are checked in **and**.
 
 The end point **/events-collector/events/log-in-out/logs-in-out.xlsx**, with verb **GET**, returns list of log in and put events as spreadsheet file.
@@ -208,5 +210,5 @@ They are:
     + **application.bat**, to list all events filtered by the application name given on command line;
 
 Statistical data returned as spreadsheet file can be opened directly in spreadsheet applications like MS Excel.
-To do so, just open the **Open** dialog box used to load files and, in the **File name** entry field, type the end point URL: http://localhost:8090/events-collector/events/log-in-out/logs-in-out.xlsx, and then open the file.
-You can filter the events list as well by following URL with query parameters.
+To do so, just open the **Open** dialog box used to load files and, in the **File name** entry field, type the end point URL, for example: http://localhost:8090/events-collector/events/log-in-out/logs-in-out.xlsx, and then open the file.
+You can filter the events list as well by appending the URL with query parameters as seen before.
