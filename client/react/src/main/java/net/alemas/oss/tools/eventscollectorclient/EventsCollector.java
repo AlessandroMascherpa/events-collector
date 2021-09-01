@@ -4,14 +4,10 @@ package net.alemas.oss.tools.eventscollectorclient;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
-import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollectorclient.configuration.ClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.netty.http.client.HttpClient;
@@ -20,7 +16,6 @@ import reactor.netty.resources.ConnectionProvider;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 
 /**
@@ -146,29 +141,6 @@ public abstract class EventsCollector
                                          new ReactorClientHttpConnector( http )
                                  )
          ;
-    }
-
-    /* --- common methods --- */
-    protected BodyInserters.FormInserter< String > buildBody
-    (
-            String			application,
-            LocalDateTime   when
-    )
-    {
-        MultiValueMap< String, String > body = new LinkedMultiValueMap<>();
-
-        if ( ( application != null ) && ( application.length() > 0 ) )
-        {
-            body.set( "application", application );
-        }
-        if ( when != null )
-        {
-            body.set( "when", Base.convertDate( when ) );
-        }
-        return
-                BodyInserters
-                        .fromFormData( body )
-                ;
     }
 
 }

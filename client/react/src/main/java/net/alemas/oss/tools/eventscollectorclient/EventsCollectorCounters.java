@@ -2,10 +2,10 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 
 import net.alemas.oss.tools.eventscollector.io.Base;
+import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -115,8 +115,8 @@ public class EventsCollectorCounters extends EventsCollector
                 LocalDateTime   when
         )
     {
-        String                                  url     = this.url.build().toUriString();
-        BodyInserters.FormInserter< String >    body    = this.buildBody( application, id, when );
+        String          url     = this.url.build().toUriString();
+        CounterEvent    event   = this.buildBody( application, id, when );
 
         if ( log.isDebugEnabled() )
         {
@@ -137,11 +137,12 @@ public class EventsCollectorCounters extends EventsCollector
                         .post()
                         .contentType
                                 (
-                                        MediaType.APPLICATION_FORM_URLENCODED
+                                        MediaType.APPLICATION_JSON
                                 )
                         .body
                                 (
-                                        body
+                                        Mono.just( event ),
+                                        CounterEvent.class
                                 )
                         .exchangeToMono
                                 (
@@ -164,21 +165,21 @@ public class EventsCollectorCounters extends EventsCollector
         return
                 response;
     }
-    private BodyInserters.FormInserter< String > buildBody
+    private CounterEvent buildBody
             (
                     String			application,
                     String			id,
                     LocalDateTime   when
             )
     {
-        BodyInserters.FormInserter< String > body = super.buildBody( application, when );
-        if ( id != null )
-        {
-            body = body.with( "id", id );
-        }
-
         return
-                body;
+                new CounterEvent
+                        (
+                                application,
+                                id,
+                                when
+                        )
+                ;
     }
 
     /**

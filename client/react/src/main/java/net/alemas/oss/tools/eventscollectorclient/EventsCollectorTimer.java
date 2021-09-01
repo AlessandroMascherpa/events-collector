@@ -5,7 +5,6 @@ import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -119,8 +118,8 @@ public class EventsCollectorTimer extends EventsCollector
                 double          elapsed
         )
     {
-        String                                  url     = this.url.build().toUriString();
-        BodyInserters.FormInserter< String >    body    = this.buildBody( application, id, when, elapsed );
+        String          url     = this.url.build().toUriString();
+        TimingEvent     event   = this.buildBody( application, id, when, elapsed );
 
         if ( log.isDebugEnabled() )
         {
@@ -141,11 +140,12 @@ public class EventsCollectorTimer extends EventsCollector
                         .post()
                         .contentType
                                 (
-                                        MediaType.APPLICATION_FORM_URLENCODED
+                                        MediaType.APPLICATION_JSON
                                 )
                         .body
                                 (
-                                        body
+                                        Mono.just( event ),
+                                        TimingEvent.class
                                 )
                         .exchangeToMono
                                 (
@@ -168,7 +168,7 @@ public class EventsCollectorTimer extends EventsCollector
         return
                 response;
     }
-    private BodyInserters.FormInserter< String > buildBody
+    private TimingEvent buildBody
             (
                     String			application,
                     String			id,
@@ -176,20 +176,15 @@ public class EventsCollectorTimer extends EventsCollector
                     double          elapsed
             )
     {
-        BodyInserters.FormInserter< String > body = super.buildBody( application, when );
-        if ( id != null )
-        {
-            body = body.with( "id", id );
-        }
-        body = body.with
-                (
-                        "elapsed",
-                        String.valueOf( elapsed )
-                )
-        ;
-
         return
-                body;
+                new TimingEvent
+                        (
+                                application,
+                                id,
+                                when,
+                                elapsed
+                        )
+                ;
     }
 
     /**

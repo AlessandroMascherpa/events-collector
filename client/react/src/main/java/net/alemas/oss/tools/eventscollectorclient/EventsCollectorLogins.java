@@ -2,11 +2,11 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 
 import net.alemas.oss.tools.eventscollector.io.Base;
+import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
@@ -119,8 +119,8 @@ public class EventsCollectorLogins extends EventsCollector
                 boolean			in
         )
     {
-        String                                  url     = this.url.build().toUriString();
-        BodyInserters.FormInserter< String >    body    = this.buildBody( user, application, when, in );
+        String          url     = this.url.build().toUriString();
+        LogInOutEvent   event   = this.buildBody( user, application, when, in );
 
         if ( log.isDebugEnabled() )
         {
@@ -140,10 +140,11 @@ public class EventsCollectorLogins extends EventsCollector
                         .baseUrl( url )
                         .build()
                         .post()
-                        .contentType( MediaType.APPLICATION_FORM_URLENCODED )
+                        .contentType( MediaType.APPLICATION_JSON )
                         .body
                                 (
-                                        body
+                                        Mono.just( event ),
+                                        LogInOutEvent.class
                                 )
                         .exchangeToMono
                                 (
@@ -166,7 +167,7 @@ public class EventsCollectorLogins extends EventsCollector
         return
                 response;
     }
-    private BodyInserters.FormInserter< String > buildBody
+    private LogInOutEvent buildBody
             (
                     String			user,
                     String			application,
@@ -174,15 +175,15 @@ public class EventsCollectorLogins extends EventsCollector
                     boolean			in
             )
     {
-        BodyInserters.FormInserter< String > body = super.buildBody( application, when );
-        if ( user != null )
-        {
-            body = body.with( "username", user );
-        }
-        body = body.with( "in", String.valueOf( in ) );
-
         return
-                body;
+                new LogInOutEvent
+                        (
+                                application,
+                                user,
+                                when,
+                                in
+        )
+                ;
     }
 
     /**
