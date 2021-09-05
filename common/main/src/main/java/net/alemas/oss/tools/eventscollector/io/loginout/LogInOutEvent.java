@@ -123,13 +123,16 @@ public class LogInOutEvent extends LogInOut
     public String toString()
     {
         return
-                this.getClass().getSimpleName()
-                + '['
-                +        "user: '" + this.getUsername() + "' "
-                +        "logged " + ( this.in ? "in to" : "out from" ) + ' '
-                +        "application: '" + this.getApplication() + "' "
-                +        "at: " + Base.convertDate( this.when )
-                + ']'
+                Base.safeLogString
+                        (
+                                this.getClass().getSimpleName()
+                                + '['
+                                +        "user: '" + this.getUsername() + "' "
+                                +        "logged " + ( this.in ? "in to" : "out from" ) + ' '
+                                +        "application: '" + this.getApplication() + "' "
+                                +        "at: " + Base.convertDate( this.when )
+                                + ']'
+                        )
                 ;
     }
 

@@ -2,6 +2,7 @@ package net.alemas.oss.tools.eventscollector.io.counter;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import net.alemas.oss.tools.eventscollector.io.Base;
 
 
 /**
@@ -76,12 +77,15 @@ public class CounterResponse extends Counter
     public String toString()
     {
         return
-                this.getClass().getSimpleName()
-                + '['
-                +        "application: '" + this.getApplication() + "', "
-                +        "id: '" + this.getId() + "' "
-                +        "count: " + this.counter
-                + ']'
+                Base.safeLogString
+                        (
+                                this.getClass().getSimpleName()
+                                + '['
+                                +        "application: '" + this.getApplication() + "', "
+                                +        "id: '" + this.getId() + "' "
+                                +        "count: " + this.counter
+                                + ']'
+                        )
                 ;
     }
 

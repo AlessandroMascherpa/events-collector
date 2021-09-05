@@ -101,12 +101,15 @@ public class CounterEvent extends Counter
     public String toString()
     {
         return
-                this.getClass().getSimpleName()
-                + '['
-                +        "application: '" + this.getApplication() + "', "
-                +        "id: '" + this.getId() + "' "
-                +        "at: " + Base.convertDate( this.when )
-                + ']'
+                Base.safeLogString
+                        (
+                                this.getClass().getSimpleName()
+                                + '['
+                                +        "application: '" + this.getApplication() + "', "
+                                +        "id: '" + this.getId() + "' "
+                                +        "at: " + Base.convertDate( this.when )
+                                + ']'
+                        )
                 ;
     }
 

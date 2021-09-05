@@ -104,6 +104,15 @@ public abstract class Base
                 ;
     }
 
+    /* --- debug related --- */
+    public static String safeLogString( String msg )
+    {
+        return
+                ( msg != null )
+                ? msg.replaceAll( "[\r\n]", "<cr/lf>" )
+                : "<null>"
+                ;
+    }
     /* --- static utility methods --- */
     private static final DateTimeFormatter formatter	= DateTimeFormatter.ofPattern( Base.DATE_TIME_PATTERN );
 

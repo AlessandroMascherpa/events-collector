@@ -2,6 +2,7 @@ package net.alemas.oss.tools.eventscollector.io.timing;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 
 
@@ -122,13 +123,16 @@ public class TimingResponse extends CounterResponse
     public String toString()
     {
         return
-                this.getClass().getSimpleName()
-                + '['
-                +        super.toString() + ", "
-                +        "average time: " + this.average + ", "
-                +        "min time: " + this.min + ", "
-                +        "max time: " + this.max
-                + ']'
+                Base.safeLogString
+                        (
+                                this.getClass().getSimpleName()
+                                + '['
+                                +        super.toString() + ", "
+                                +        "average time: " + this.average + ", "
+                                +        "min time: " + this.min + ", "
+                                +        "max time: " + this.max
+                                + ']'
+                        )
                 ;
     }
 

@@ -34,4 +34,20 @@
         <Bug pattern="MS_MUTABLE_COLLECTION_PKGPROTECT" />
     </Match>
 
+    <!-- events-collector-server -->
+    <Match>
+        <Class name="net.alemas.oss.tools.eventscollector.controllers.CounterController" />
+        <Bug pattern="CRLF_INJECTION_LOGS" />
+    </Match>
+
+    <Match>
+        <Class name="net.alemas.oss.tools.eventscollector.controllers.TimerController" />
+        <Bug pattern="CRLF_INJECTION_LOGS" />
+    </Match>
+
+    <Match>
+        <Class name="net.alemas.oss.tools.eventscollector.controllers.LoginController" />
+        <Bug pattern="CRLF_INJECTION_LOGS" />
+    </Match>
+
 </FindBugsFilter>

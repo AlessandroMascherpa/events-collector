@@ -83,13 +83,16 @@ public class TimingEvent extends CounterEvent
     public String toString()
     {
         return
-                this.getClass().getSimpleName()
-                + '['
-                +        "application: '" + this.getApplication() + "', "
-                +        "id: '" + this.getId() + "' "
-                +        "at: " + Base.convertDate( this.getWhen() ) + ", "
-                +        "elapsed time: " + this.elapsed
-                + ']'
+                Base.safeLogString
+                        (
+                                this.getClass().getSimpleName()
+                                + '['
+                                +        "application: '" + this.getApplication() + "', "
+                                +        "id: '" + this.getId() + "' "
+                                +        "at: " + Base.convertDate( this.getWhen() ) + ", "
+                                +        "elapsed time: " + this.elapsed
+                                + ']'
+                        )
                 ;
     }
 

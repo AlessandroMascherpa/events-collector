@@ -103,13 +103,16 @@ public class LogInOutResponse extends LogInOut
     public String toString()
     {
         return
-                this.getClass().getSimpleName()
-                        + '['
-                        +        "application: '" + this.getApplication() + "', "
-                        +        "user: '" + this.getUsername() + "', "
-                        +        "logged in at: " + Base.convertDate( this.dateLoggedIn ) + "', "
-                        +        "logged out at: " + convertDate( this.dateLoggedOut )
-                        + ']'
+                Base.safeLogString
+                        (
+                                this.getClass().getSimpleName()
+                                + '['
+                                +        "application: '" + this.getApplication() + "', "
+                                +        "user: '" + this.getUsername() + "', "
+                                +        "logged in at: " + Base.convertDate( this.dateLoggedIn ) + "', "
+                                +        "logged out at: " + convertDate( this.dateLoggedOut )
+                                + ']'
+                        )
                 ;
     }
 
