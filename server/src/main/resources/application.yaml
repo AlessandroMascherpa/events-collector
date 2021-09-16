@@ -11,6 +11,8 @@ server:
 
     the-host-name: your-host.net
 
+    shutdown: graceful
+
     error:
       include-message:  always
 
