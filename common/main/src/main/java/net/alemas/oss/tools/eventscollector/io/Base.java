@@ -92,7 +92,8 @@ public abstract class Base
                 (
                         ( ( thisObj != null ) && ( thisObj.equals( thatObj ) ) )
                         ||
-                        ( ( thisObj == null ) && ( thatObj == null ) ) )
+                        ( ( thisObj == null ) && ( thatObj == null ) )
+                )
                 ;
     }
 
