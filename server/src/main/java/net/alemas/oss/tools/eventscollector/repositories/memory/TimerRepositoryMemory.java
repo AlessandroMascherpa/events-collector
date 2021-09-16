@@ -4,6 +4,8 @@ package net.alemas.oss.tools.eventscollector.repositories.memory;
 import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.repositories.TimerRepository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
@@ -18,19 +20,14 @@ import java.util.stream.Collectors;
  * Created by MASCHERPA on 26/05/2021.
  */
 @Repository
-public class TimerRepositoryMemory
+@ConditionalOnProperty
+        (
+                value           = "server.repository.type",
+                havingValue     = "memory",
+                matchIfMissing  = true
+        )
+public class TimerRepositoryMemory implements TimerRepository
 {
-    /* --- constants --- */
-    /**
-     * maximum events in the repository;
-     */
-    private static final int   REPOSITORY_SIZE_LIMIT       = 2000;
-    /**
-     * minimum events in the repository;
-     */
-    private static final int   REPOSITORY_SIZE_MIN         = 1500;
-
-
     /* --- properties -- */
     private List< TimingEvent > repository  = new ArrayList<>();
 

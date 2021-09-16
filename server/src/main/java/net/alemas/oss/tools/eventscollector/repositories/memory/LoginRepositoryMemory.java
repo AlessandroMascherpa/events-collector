@@ -3,6 +3,8 @@ package net.alemas.oss.tools.eventscollector.repositories.memory;
 
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
+import net.alemas.oss.tools.eventscollector.repositories.LoginRepository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -21,23 +23,14 @@ import java.util.stream.Collectors;
  * Created by MASCHERPA on 04/02/2021.
  */
 @Repository
-public class LoginRepositoryMemory
+@ConditionalOnProperty
+        (
+                value           = "server.repository.type",
+                havingValue     = "memory",
+                matchIfMissing  = true
+        )
+public class LoginRepositoryMemory implements LoginRepository
 {
-    /* --- constants --- */
-    /**
-     * maximum events in the repository;
-     */
-    private static final int   REPOSITORY_SIZE_LIMIT       = 2000;
-    /**
-     * minimum events in the repository;
-     */
-    private static final int   REPOSITORY_SIZE_MIN         = 1500;
-    /**
-     * oldest event since now;
-     */
-    private static final long  REPOSITORY_WINDOW_DAYS      = 15;
-
-
     /* --- properties -- */
     private List< LogInOutEvent > repository  = new ArrayList<>();
 
