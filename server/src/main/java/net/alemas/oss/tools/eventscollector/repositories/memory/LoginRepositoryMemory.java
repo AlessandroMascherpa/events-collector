@@ -1,4 +1,4 @@
-package net.alemas.oss.tools.eventscollector.repositories;
+package net.alemas.oss.tools.eventscollector.repositories.memory;
 
 
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * Created by MASCHERPA on 04/02/2021.
  */
 @Repository
-public class LoginRepository
+public class LoginRepositoryMemory
 {
     /* --- constants --- */
     /**

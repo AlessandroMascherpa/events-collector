@@ -1,4 +1,4 @@
-package net.alemas.oss.tools.eventscollector.repositories;
+package net.alemas.oss.tools.eventscollector.repositories.memory;
 
 
 import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * Created by MASCHERPA on 26/05/2021.
  */
 @Repository
-public class TimerRepository
+public class TimerRepositoryMemory
 {
     /* --- constants --- */
     /**
