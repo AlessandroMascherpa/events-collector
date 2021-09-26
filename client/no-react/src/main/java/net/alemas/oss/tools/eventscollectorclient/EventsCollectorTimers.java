@@ -6,16 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Client library to post timing events and enquiry the service.
@@ -161,8 +159,33 @@ public class EventsCollectorTimers extends EventsCollector
      * @return list of events grouped by identifier;
      */
     public List< TimingResponse > getEventsList()
+            throws
+                URISyntaxException
     {
-        String banner  = "getting list of timing events - end point '" + this.remote.toString() + "' - ";
+        return
+                this.getEventsList( null, null, null );
+    }
+
+    /**
+     * lists all timing events grouped by its identifier;
+     * events are filtered by formal parameters;
+     *
+     * @param application   at which application the event must belong to;
+     * @param after         events occurred after the given date;
+     * @param before        events occurred before the given date;
+     * @return list of events grouped by identifier;
+     */
+    public List< TimingResponse > getEventsList
+        (
+                String        application,
+                LocalDateTime after,
+                LocalDateTime before
+        )
+            throws
+                URISyntaxException
+    {
+        URI     uri     = super.buildUri( application, after, before );
+        String  banner  = "getting list of counting events - end point '" + uri.toString() + "' - ";
         if ( log.isDebugEnabled() )
         {
             log.debug
@@ -174,7 +197,7 @@ public class EventsCollectorTimers extends EventsCollector
         List< TimingResponse > list = null;
         try
         {
-            InputStream stream = super.getEventsList( this.remote );
+            InputStream stream = super.getEventsList( uri );
             if ( stream != null )
             {
                 ObjectMapper mapper = new ObjectMapper();

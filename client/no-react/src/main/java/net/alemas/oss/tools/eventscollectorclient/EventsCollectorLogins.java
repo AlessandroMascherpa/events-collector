@@ -7,8 +7,6 @@ import net.alemas.oss.tools.eventscollector.io.loginout.LogInOut;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.utils.URIBuilder;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -193,22 +191,8 @@ public class EventsCollectorLogins extends EventsCollector
             throws
                 URISyntaxException
     {
-        URIBuilder builder = new URIBuilder( this.remote );
-        if ( StringUtils.hasText( application ) )
-        {
-            builder.addParameter( "application", application.trim() );
-        }
-        if ( after != null )
-        {
-            builder.addParameter( "after", LogInOut.convertDate( after ) );
-        }
-        if ( before != null )
-        {
-            builder.addParameter( "before", LogInOut.convertDate( before ) );
-        }
-        URI     uri     = builder.build();
-
-        String banner  = "listing events - end point '" + uri.toString() + "' - ";
+        URI     uri     = super.buildUri( application, after, before );
+        String  banner  = "listing events - end point '" + uri.toString() + "' - ";
         if ( log.isDebugEnabled() )
         {
             log.debug

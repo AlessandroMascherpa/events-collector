@@ -15,14 +15,17 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 
 
 /**
@@ -37,7 +40,7 @@ public abstract class EventsCollector
     protected static final Log log = LogFactory.getLog( EventsCollector.class );
 
     /* --- properties --- */
-    protected final RequestConfig       config;
+    private final   RequestConfig       config;
 
     protected final URI                 remote;
 
@@ -145,7 +148,34 @@ public abstract class EventsCollector
                 ;
     }
 
-    public InputStream getEventsList
+    protected URI buildUri
+            (
+                    String        application,
+                    LocalDateTime after,
+                    LocalDateTime before
+            )
+            throws
+                URISyntaxException
+    {
+        URIBuilder builder = new URIBuilder( this.remote );
+        if ( StringUtils.hasText( application ) )
+        {
+            builder.addParameter( "application", application.trim() );
+        }
+        if ( after != null )
+        {
+            builder.addParameter( "after", Base.convertDate( after ) );
+        }
+        if ( before != null )
+        {
+            builder.addParameter( "before", Base.convertDate( before ) );
+        }
+        return
+                builder.build()
+                ;
+    }
+
+    protected InputStream getEventsList
             (
                     URI  uri
             )
