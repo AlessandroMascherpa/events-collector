@@ -11,22 +11,6 @@ import reactor.core.publisher.Flux;
  *
  * Created by MASCHERPA on 14/09/2021.
  */
-public interface TimerRepository extends Repository
+public interface TimerRepository extends Repository< TimingEvent, TimingResponse >
 {
-    /* --- handlers --- */
-    /**
-     * inserts in the repository a new event;
-     *
-     * @param event    the event to add;
-     * @throws IllegalArgumentException if the event was not well formed;
-     */
-    void add( TimingEvent event ) throws IllegalArgumentException;
-
-    /**
-     * lists all events stored grouped by their identifier;
-     *
-     * @return the list of stored events;
-     */
-    Flux< TimingResponse > groupById();
-
 }

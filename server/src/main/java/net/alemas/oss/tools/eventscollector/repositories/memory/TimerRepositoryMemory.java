@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,12 +27,15 @@ import java.util.stream.Collectors;
                 havingValue     = "memory",
                 matchIfMissing  = true
         )
-public class TimerRepositoryMemory implements TimerRepository
+public class TimerRepositoryMemory
+        implements
+            TimerRepository, RepositoryMemoryConstants
 {
     /* --- properties -- */
     private List< TimingEvent > repository  = new ArrayList<>();
 
     /* --- handlers --- */
+    @Override
     public void add( TimingEvent event ) throws IllegalArgumentException
     {
         if ( event == null )
@@ -56,11 +60,53 @@ public class TimerRepositoryMemory implements TimerRepository
         this.repository.add( event );
     }
 
-    public Flux< TimingResponse > groupById()
+    @Override
+    public Flux< TimingEvent > list
+            (
+                    String          application,
+                    LocalDateTime   after,
+                    LocalDateTime   before
+            )
     {
         return
                 Flux
                         .fromIterable( this.repository )
+                        .filter
+                                (
+                                        event ->
+                                                this.filterByApplicationAndDate
+                                                        (
+                                                                event,
+                                                                application,
+                                                                after,
+                                                                before
+                                                        )
+                                )
+                ;
+    }
+
+    @Override
+    public Flux< TimingResponse > groupById
+            (
+                    String          application,
+                    LocalDateTime   after,
+                    LocalDateTime   before
+            )
+    {
+        return
+                Flux
+                        .fromIterable( this.repository )
+                        .filter
+                                (
+                                        event ->
+                                                this.filterByApplicationAndDate
+                                                        (
+                                                                event,
+                                                                application,
+                                                                after,
+                                                                before
+                                                        )
+                                )
                         .groupBy
                                 (
                                         event ->
@@ -99,6 +145,24 @@ public class TimerRepositoryMemory implements TimerRepository
                                                                         }
                                                                 )
                                 )
+                ;
+    }
+
+    protected boolean filterByApplicationAndDate
+            (
+                    TimingEvent     event,
+                    String          application,
+                    LocalDateTime   after,
+                    LocalDateTime   before
+            )
+    {
+        LocalDateTime when = event.getWhen();
+        return
+                ( ( application == null ) || ( event.getApplication().equals( application ) ) )
+                &&
+                ( ( after == null )  || ( when.compareTo( after ) >= 0 ) )
+                &&
+                ( ( before == null ) || ( when.compareTo( before ) <= 0 ) )
                 ;
     }
 

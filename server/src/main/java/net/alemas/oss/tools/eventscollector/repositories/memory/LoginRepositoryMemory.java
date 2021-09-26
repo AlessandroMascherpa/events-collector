@@ -29,12 +29,15 @@ import java.util.stream.Collectors;
                 havingValue     = "memory",
                 matchIfMissing  = true
         )
-public class LoginRepositoryMemory implements LoginRepository
+public class LoginRepositoryMemory
+        implements
+            LoginRepository, RepositoryMemoryConstants
 {
     /* --- properties -- */
     private List< LogInOutEvent > repository  = new ArrayList<>();
 
     /* --- handlers --- */
+    @Override
     public void add( LogInOutEvent event ) throws IllegalArgumentException
     {
         if ( event == null )
@@ -83,14 +86,33 @@ public class LoginRepositoryMemory implements LoginRepository
 
     static private final long          SECONDS_IN_OUT_WINDOW = ( 20 * 60 );
 
-    public Flux< LogInOutResponse >  list
+    public Flux< LogInOutEvent >  list
             (
                     String        application,
                     LocalDateTime after,
                     LocalDateTime before
             )
     {
+        return
+                Flux
+                        .fromIterable( this.repository )
+                        .filter
+                                (
+                                        event ->
+                                                this.filterByApplicationAndDate
+                                                        (
+                                                                event,
+                                                                application,
+                                                                after,
+                                                                before
+                                                        )
+                                )
+                ;
+    }
 
+    @Override
+    public Flux< LogInOutResponse > groupById( String application, LocalDateTime after, LocalDateTime before )
+    {
         List< LogInOutEvent >    outs
                 = this.repository
                 .stream()

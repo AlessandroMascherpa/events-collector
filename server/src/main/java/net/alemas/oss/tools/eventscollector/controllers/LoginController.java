@@ -192,7 +192,7 @@ public class LoginController
                     );
         }
         return
-                this.repository.list
+                this.repository.groupById
                         (
                                 application,
                                 after,
@@ -284,7 +284,8 @@ public class LoginController
                                                                 this.exporter
                                                                         .export
                                                                                 (
-                                                                                        this.repository.list( application, after, before )
+                                                                                        this.repository
+                                                                                                .groupById( application, after, before )
                                                                                 )
                                                 )
                                         .subscribeOn

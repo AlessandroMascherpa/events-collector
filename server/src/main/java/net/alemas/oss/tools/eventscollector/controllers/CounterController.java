@@ -1,12 +1,10 @@
 package net.alemas.oss.tools.eventscollector.controllers;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetCounters;
+import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import net.alemas.oss.tools.eventscollector.repositories.CounterRepository;
@@ -14,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,6 +21,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 
 /**
@@ -138,7 +138,39 @@ public class CounterController
                     produces    = MediaType.APPLICATION_JSON_VALUE
             )
     @ResponseStatus( HttpStatus.OK )
-    private Flux< CounterResponse > getEventsGroupedById()
+    private Flux< CounterResponse > getEventsGroupedById
+            (
+                    @ApiParam
+                            (
+                                    value           = "To list events linked to an application name.",
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    String        application,
+
+                    @ApiParam
+                            (
+                                    value           = "To list events after the given date/time; the date/time pattern is: '" + Base.DATE_TIME_PATTERN + "'.",
+                                    format          = Base.DATE_TIME_PATTERN,
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    @DateTimeFormat( pattern = Base.DATE_TIME_PATTERN )
+                    LocalDateTime after,
+
+                    @ApiParam
+                            (
+                                    value           = "To list events before the given date/time; the date/time pattern is: '" + Base.DATE_TIME_PATTERN + "'.",
+                                    format          = Base.DATE_TIME_PATTERN,
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    @DateTimeFormat( pattern = Base.DATE_TIME_PATTERN )
+                    LocalDateTime before
+            )
     {
         if ( log.isInfoEnabled() )
         {
@@ -146,7 +178,7 @@ public class CounterController
         }
         return
                 this.repository
-                        .groupById()
+                        .groupById( application, after, before )
                 ;
     }
 
@@ -169,7 +201,39 @@ public class CounterController
                     method      = RequestMethod.GET,
                     produces    = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
-    private ResponseEntity< Mono< Resource > > getEventsGroupedByIdAsSpreadsheet()
+    private ResponseEntity< Mono< Resource > > getEventsGroupedByIdAsSpreadsheet
+            (
+                    @ApiParam
+                            (
+                                    value           = "To list events linked to an application name.",
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    String        application,
+
+                    @ApiParam
+                            (
+                                    value           = "To list events after the given date/time; the date/time pattern is: '" + Base.DATE_TIME_PATTERN + "'.",
+                                    format          = Base.DATE_TIME_PATTERN,
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    @DateTimeFormat( pattern = Base.DATE_TIME_PATTERN )
+                    LocalDateTime after,
+
+                    @ApiParam
+                            (
+                                    value           = "To list events before the given date/time; the date/time pattern is: '" + Base.DATE_TIME_PATTERN + "'.",
+                                    format          = Base.DATE_TIME_PATTERN,
+                                    required        = false,
+                                    allowEmptyValue = false
+                            )
+                    @RequestParam( required = false )
+                    @DateTimeFormat( pattern = Base.DATE_TIME_PATTERN )
+                    LocalDateTime before
+            )
             throws
                 IOException
     {
@@ -197,7 +261,13 @@ public class CounterController
                                                                 this.exporter
                                                                         .export
                                                                                 (
-                                                                                        this.repository.groupById()
+                                                                                        this.repository
+                                                                                                .groupById
+                                                                                                        (
+                                                                                                                application,
+                                                                                                                after,
+                                                                                                                before
+                                                                                                        )
                                                                                 )
                                                 )
                                             .subscribeOn

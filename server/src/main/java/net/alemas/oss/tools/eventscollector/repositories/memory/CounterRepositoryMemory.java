@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,12 +27,14 @@ import java.util.stream.Collectors;
                 havingValue     = "memory",
                 matchIfMissing  = true
         )
-public class CounterRepositoryMemory implements CounterRepository
+public class CounterRepositoryMemory
+        implements CounterRepository, RepositoryMemoryConstants
 {
     /* --- properties -- */
     private List< CounterEvent > repository  = new ArrayList<>();
 
     /* --- handlers --- */
+    @Override
     public void add( CounterEvent event ) throws IllegalArgumentException
     {
         if ( event == null )
@@ -56,11 +59,54 @@ public class CounterRepositoryMemory implements CounterRepository
         this.repository.add( event );
     }
 
-    public Flux< CounterResponse > groupById()
+    @Override
+    public Flux< CounterEvent > list
+            (
+                    String          application,
+                    LocalDateTime   after,
+                    LocalDateTime   before
+            )
     {
         return
                 Flux
                         .fromIterable( this.repository )
+                        .filter
+                                (
+                                        event ->
+                                                this.filterByApplicationAndDate
+                                                        (
+                                                                event,
+                                                                application,
+                                                                after,
+                                                                before
+                                                        )
+                                )
+                ;
+    }
+
+
+    @Override
+    public Flux< CounterResponse > groupById
+            (
+                    String          application,
+                    LocalDateTime   after,
+                    LocalDateTime   before
+            )
+    {
+        return
+                Flux
+                        .fromIterable( this.repository )
+                        .filter
+                                (
+                                        event ->
+                                                this.filterByApplicationAndDate
+                                                        (
+                                                                event,
+                                                                application,
+                                                                after,
+                                                                before
+                                                        )
+                                )
                         .groupBy
                                 (
                                         event ->
@@ -90,6 +136,24 @@ public class CounterRepositoryMemory implements CounterRepository
                                                                         }
                                                                 )
                                 )
+                ;
+    }
+
+    protected boolean filterByApplicationAndDate
+            (
+                    CounterEvent    event,
+                    String          application,
+                    LocalDateTime   after,
+                    LocalDateTime   before
+            )
+    {
+        LocalDateTime when = event.getWhen();
+        return
+                ( ( application == null ) || ( event.getApplication().equals( application ) ) )
+                &&
+                ( ( after == null )  || ( when.compareTo( after ) >= 0 ) )
+                &&
+                ( ( before == null ) || ( when.compareTo( before ) <= 0 ) )
                 ;
     }
 
