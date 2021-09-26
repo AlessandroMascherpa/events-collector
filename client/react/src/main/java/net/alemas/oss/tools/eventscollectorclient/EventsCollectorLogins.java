@@ -6,8 +6,6 @@ import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
-import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -119,7 +117,7 @@ public class EventsCollectorLogins extends EventsCollector
                 boolean			in
         )
     {
-        String          url     = this.url.build().toUriString();
+        String          url     = super.buildUrl();
         LogInOutEvent   event   = this.buildBody( user, application, when, in );
 
         if ( log.isDebugEnabled() )
@@ -212,20 +210,7 @@ public class EventsCollectorLogins extends EventsCollector
                 LocalDateTime before
         )
     {
-        UriComponentsBuilder builder = this.url.cloneBuilder();
-        if ( StringUtils.hasText( application ) )
-        {
-            builder.queryParam( "application", application.trim() );
-        }
-        if ( after != null )
-        {
-            builder.queryParam( "after", Base.convertDate( after ) );
-        }
-        if ( before != null )
-        {
-            builder.queryParam( "before", Base.convertDate( before ) );
-        }
-        String                  url     = builder.build().toUriString();
+        String  url     = super.buildUrl( application, after, before );
 
         if ( log.isDebugEnabled() )
         {

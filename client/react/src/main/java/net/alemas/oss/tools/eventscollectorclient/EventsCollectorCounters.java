@@ -115,7 +115,7 @@ public class EventsCollectorCounters extends EventsCollector
                 LocalDateTime   when
         )
     {
-        String          url     = this.url.build().toUriString();
+        String          url     = super.buildUrl();
         CounterEvent    event   = this.buildBody( application, id, when );
 
         if ( log.isDebugEnabled() )
@@ -189,7 +189,26 @@ public class EventsCollectorCounters extends EventsCollector
      */
     public List< CounterResponse > getEventsList()
     {
-        String  url = this.url.build().toUriString();
+        return
+                this.getEventsList( null, null, null );
+    }
+    /**
+     * lists all single events grouped by its identifier;
+     * events are filtered by formal parameters;
+     *
+     * @param application   at which application the event must belong to;
+     * @param after         events occurred after the given date;
+     * @param before        events occurred before the given date;
+     * @return list of events grouped by identifier;
+     */
+    public List< CounterResponse > getEventsList
+        (
+                String        application,
+                LocalDateTime after,
+                LocalDateTime before
+        )
+    {
+        String  url     = super.buildUrl( application, after, before );
 
         if ( log.isDebugEnabled() )
         {

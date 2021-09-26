@@ -4,10 +4,12 @@ package net.alemas.oss.tools.eventscollectorclient;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollectorclient.configuration.ClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.netty.http.client.HttpClient;
@@ -16,6 +18,7 @@ import reactor.netty.resources.ConnectionProvider;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 
 /**
@@ -33,7 +36,7 @@ public abstract class EventsCollector
     /**
      * remote service URL;
      */
-    protected UriComponentsBuilder  url;
+    private UriComponentsBuilder    url;
 
     /**
      * reactive client connector;
@@ -143,4 +146,38 @@ public abstract class EventsCollector
          ;
     }
 
+    protected String buildUrl()
+    {
+        return
+                this.url
+                        .build()
+                        .toUriString()
+                ;
+    }
+    protected String buildUrl
+            (
+                    String        application,
+                    LocalDateTime after,
+                    LocalDateTime before
+            )
+    {
+        UriComponentsBuilder builder = this.url.cloneBuilder();
+        if ( StringUtils.hasText( application ) )
+        {
+            builder.queryParam( "application", application.trim() );
+        }
+        if ( after != null )
+        {
+            builder.queryParam( "after", Base.convertDate( after ) );
+        }
+        if ( before != null )
+        {
+            builder.queryParam( "before", Base.convertDate( before ) );
+        }
+        return
+                builder
+                        .build()
+                        .toUriString()
+                ;
+    }
 }

@@ -118,7 +118,7 @@ public class EventsCollectorTimer extends EventsCollector
                 double          elapsed
         )
     {
-        String          url     = this.url.build().toUriString();
+        String          url     = super.buildUrl();
         TimingEvent     event   = this.buildBody( application, id, when, elapsed );
 
         if ( log.isDebugEnabled() )
@@ -194,7 +194,26 @@ public class EventsCollectorTimer extends EventsCollector
      */
     public List< TimingResponse > getEventsList()
     {
-        String  url = this.url.build().toUriString();
+        return
+                this.getEventsList( null, null, null );
+    }
+    /**
+     * lists all timing events grouped by its identifier;
+     * events are filtered by formal parameters;
+     *
+     * @param application   at which application the event must belong to;
+     * @param after         events occurred after the given date;
+     * @param before        events occurred before the given date;
+     * @return list of events grouped by identifier;
+     */
+    public List< TimingResponse > getEventsList
+        (
+                String        application,
+                LocalDateTime after,
+                LocalDateTime before
+        )
+    {
+        String  url     = super.buildUrl( application, after, before );
 
         if ( log.isDebugEnabled() )
         {
