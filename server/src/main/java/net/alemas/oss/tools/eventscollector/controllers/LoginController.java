@@ -270,11 +270,17 @@ public class LoginController
                         .getFileNameSpreadsheet()
                 ;
 
+        ContentDisposition attachment =
+                ContentDisposition
+                        .attachment()
+                        .filename( name + ".log-in-out.xlsx" )
+                        .build()
+                ;
         return
                 ResponseEntity
                         .ok()
                         .header( HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
-                        .header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".log-in-out.xlsx" )
+                        .header( HttpHeaders.CONTENT_DISPOSITION, attachment.toString() )
                         .cacheControl( CacheControl.noCache() )
                         .body
                                 (

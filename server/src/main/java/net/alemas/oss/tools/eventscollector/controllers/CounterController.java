@@ -247,11 +247,17 @@ public class CounterController
                         .getFileNameSpreadsheet()
                 ;
 
+        ContentDisposition attachment =
+                ContentDisposition
+                        .attachment()
+                        .filename( name + ".counters.xlsx" )
+                        .build()
+                ;
         return
                 ResponseEntity
                         .ok()
                         .header( HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
-                        .header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".counters.xlsx" )
+                        .header( HttpHeaders.CONTENT_DISPOSITION, attachment.toString() )
                         .cacheControl( CacheControl.noCache() )
                         .body
                                 (

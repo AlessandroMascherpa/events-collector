@@ -247,11 +247,17 @@ public class TimerController
                         .getFileNameSpreadsheet()
                 ;
 
+        ContentDisposition attachment =
+                ContentDisposition
+                        .attachment()
+                        .filename( name + ".timers.xlsx" )
+                        .build()
+                ;
         return
                 ResponseEntity
                         .ok()
                         .header( HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
-                        .header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".timers.xlsx" )
+                        .header( HttpHeaders.CONTENT_DISPOSITION, attachment.toString() )
                         .cacheControl( CacheControl.noCache() )
                         .body
                                 (
