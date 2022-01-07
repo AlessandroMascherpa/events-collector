@@ -63,7 +63,7 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
                                     CounterEvent.class
                             )
                     .exchange()
-                    .expectStatus().isNoContent()
+                    .expectStatus().isCreated()
             ;
         }
         log.info( "post events - end" );

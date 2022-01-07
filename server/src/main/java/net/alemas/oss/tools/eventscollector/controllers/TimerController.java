@@ -67,13 +67,13 @@ public class TimerController
     @ApiOperation
             (
                     value = "To store a timer event.",
-                    code = 204
+                    code = 201
             )
     @ApiResponses
             (
                     value =
                             {
-                                    @ApiResponse( code = 204, message = "Event stored" ),
+                                    @ApiResponse( code = 201, message = "Event stored" ),
                                     @ApiResponse( code = 404, message = "If client posted an invalid event." )
                             }
             )
@@ -83,7 +83,7 @@ public class TimerController
                     method		= RequestMethod.POST,
                     consumes	= MediaType.APPLICATION_JSON_VALUE
             )
-    @ResponseStatus( HttpStatus.NO_CONTENT )
+    @ResponseStatus( HttpStatus.CREATED )
     private void addCounter
         (
                 @RequestBody TimingEvent event

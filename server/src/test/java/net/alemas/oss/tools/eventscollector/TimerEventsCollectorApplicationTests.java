@@ -63,7 +63,7 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
                                     TimingEvent.class
                             )
                     .exchange()
-                    .expectStatus().isNoContent()
+                    .expectStatus().isCreated()
             ;
         }
         log.info( "post events - end" );

@@ -95,7 +95,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
                                     LogInOutResponse.class
                             )
                     .exchange()
-                    .expectStatus().isNoContent()
+                    .expectStatus().isCreated()
 			;
 
 
@@ -112,7 +112,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
                                         LogInOutResponse.class
                                 )
 						.exchange()
-						.expectStatus().isNoContent()
+						.expectStatus().isCreated()
 				;
 			}
 		}

@@ -306,13 +306,13 @@ public class LoginController
     @ApiOperation
             (
                     value = "To store a log in/out event.",
-                    code = 204
+                    code = 201
             )
     @ApiResponses
             (
                     value =
                             {
-                                    @ApiResponse( code = 204, message = "Event stored" ),
+                                    @ApiResponse( code = 201, message = "Event stored" ),
                                     @ApiResponse( code = 404, message = "If client posted an invalid log in/out event." )
                             }
             )
@@ -322,7 +322,7 @@ public class LoginController
                     method		= RequestMethod.POST,
                     consumes	= MediaType.APPLICATION_JSON_VALUE
             )
-    @ResponseStatus( HttpStatus.NO_CONTENT )
+    @ResponseStatus( HttpStatus.CREATED )
     private void addLogin
             (
                     @RequestBody LogInOutEvent event
