@@ -39,14 +39,13 @@ public abstract class SpreadsheetByList< Response >
     /**
      * server configuration properties;
      */
-    @Autowired
-    private ServerConfiguration         properties;
+    private final ServerConfiguration   properties;
 
 
     /* --- constructors --- */
-    protected SpreadsheetByList()
+    protected SpreadsheetByList( ServerConfiguration configuration )
     {
-        /* none */
+        this.properties = configuration;
     }
 
     /* --- exporter methods --- */
