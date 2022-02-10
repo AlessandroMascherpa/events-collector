@@ -57,9 +57,9 @@
 
         <junit.version>4.13.1</junit.version>
 
-        <pgpverify-maven-plugin.version>1.14.0</pgpverify-maven-plugin.version>
-        <dependency-check-maven.version>6.2.2</dependency-check-maven.version>
-        <spotbugs.version>4.3.0</spotbugs.version>
+        <pgpverify-maven-plugin.version>1.16.0</pgpverify-maven-plugin.version>
+        <dependency-check-maven.version>6.5.3</dependency-check-maven.version>
+        <spotbugs.version>4.5.3.0</spotbugs.version>
         <findsecbugs-plugin.version>1.11.0</findsecbugs-plugin.version>
 
     </properties>
