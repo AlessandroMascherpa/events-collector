@@ -19,7 +19,8 @@ Client library is also provided, both for ready to use library and for usage exa
 
 ### OpenDOC
 
-Web API online documentation is available at address: http://localhost:8090/events-collector/swagger-ui/
+Web API online [documentation](http://localhost:8090/events-collector/swagger-ui/) is also available
+when the service is running. 
 
 
 ### Events counting
@@ -114,6 +115,17 @@ or you can copy the file ```application.yml``` in the same directory where the j
 The external configuration file overwrites the internal one.
 
 
+By default, the server keeps the values in memory up to **1000** items.
+It is also available to store values in a persistent storage, at present in the following databases:
+ - **Postgres**
+
+To change the storage you can update the ```application.yml``` configuration file or set the following environment variables:
+
+ - ```EVENTS_COLLECTOR_REPOSITORY_TYPE``` set to ```postgres```
+ - ```EVENTS_COLLECTOR_REPOSITORY_URL``` set to the database URL as: ```r2dbc:postgresql://<username>:<password>@<hostname>:5432/events-collector```;
+   where **<_username_>**, **<_password_>** and **<_hostname_>** must be replaced with your database configuration.
+
+
 ### As a service on Linux system
 
 Before the application is set as service, set the jar owner and mode:
@@ -190,6 +202,20 @@ To install in your local repository the client library, from the project root di
 
    ```sh
    mvn  install  -am -pl :events-collector-client
+   ```
+
+
+## Intellij IDEA
+
+Intellij IDE does not deal correctly (at writing time) with the maven extension for project versioning according
+the project git history handled by the maven extension [jgitver](https://jgitver.github.io/) in multi-module projects.
+
+To avoid problems at project import time, follow the path: **Settings** > **Build** ... > **Build Tools** > **Maven** > **Importing**
+
+to open the importing setting page and in the **VM Options for importer** entry field set:
+
+   ```
+      -Djgitver.skip=true  -Dversioning.disable=true
    ```
 
 
