@@ -1,6 +1,6 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
-import net.alemas.oss.tools.eventscollector.EventsCounter;
+import net.alemas.oss.tools.eventscollector.io.EventsCounter;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.junit.AfterClass;

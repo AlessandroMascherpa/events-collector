@@ -1,7 +1,7 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 
-import net.alemas.oss.tools.eventscollector.EventsTiming;
+import net.alemas.oss.tools.eventscollector.io.EventsTiming;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.junit.AfterClass;

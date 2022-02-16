@@ -1,6 +1,7 @@
 package net.alemas.oss.tools.eventscollector;
 
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
+import net.alemas.oss.tools.eventscollector.io.EventsLogInOut;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOut;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;

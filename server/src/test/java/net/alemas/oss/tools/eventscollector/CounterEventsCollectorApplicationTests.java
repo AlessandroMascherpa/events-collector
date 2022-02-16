@@ -2,6 +2,7 @@ package net.alemas.oss.tools.eventscollector;
 
 
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
+import net.alemas.oss.tools.eventscollector.io.EventsCounter;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.junit.jupiter.api.Test;

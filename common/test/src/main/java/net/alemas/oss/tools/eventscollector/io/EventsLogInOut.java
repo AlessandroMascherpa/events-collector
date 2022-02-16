@@ -1,4 +1,4 @@
-package net.alemas.oss.tools.eventscollector;
+package net.alemas.oss.tools.eventscollector.io;
 
 
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;

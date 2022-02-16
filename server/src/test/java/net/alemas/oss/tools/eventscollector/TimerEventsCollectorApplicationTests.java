@@ -2,6 +2,7 @@ package net.alemas.oss.tools.eventscollector;
 
 
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
+import net.alemas.oss.tools.eventscollector.io.EventsTiming;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.junit.jupiter.api.Test;
