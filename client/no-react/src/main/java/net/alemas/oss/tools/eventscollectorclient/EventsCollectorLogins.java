@@ -136,7 +136,7 @@ public class EventsCollectorLogins extends EventsCollector
 			/* --- execute call and check reply --- */
             int status = super.postEvent( event );
 
-            reply = ( status == HttpStatus.SC_NO_CONTENT );
+            reply = ( status == HttpStatus.SC_CREATED );
 
             if ( log.isInfoEnabled() )
             {

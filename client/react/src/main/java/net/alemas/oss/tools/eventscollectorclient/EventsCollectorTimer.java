@@ -154,7 +154,7 @@ public class EventsCollectorTimer extends EventsCollector
                                                         (
                                                                 ( response != null )
                                                                 &&
-                                                                HttpStatus.NO_CONTENT.equals( response.statusCode() )
+                                                                HttpStatus.CREATED.equals( response.statusCode() )
                                                         )
                                 )
                         .block()
