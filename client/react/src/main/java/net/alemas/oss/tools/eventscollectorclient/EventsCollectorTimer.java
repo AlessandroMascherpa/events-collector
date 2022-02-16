@@ -251,7 +251,7 @@ public class EventsCollectorTimer extends EventsCollector
             log.debug
                     (
                             "listing timing events - items returned: {} - end",
-                            list.size()
+                            ( ( list != null ) ? list.size() : 0 )
                     );
         }
         return

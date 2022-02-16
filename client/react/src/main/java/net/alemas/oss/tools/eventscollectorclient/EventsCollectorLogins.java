@@ -251,7 +251,7 @@ public class EventsCollectorLogins extends EventsCollector
             log.debug
                     (
                             "listing events - items returned: {} - end",
-                            list.size()
+                            ( ( list != null ) ? list.size() : 0 )
                     );
         }
         return

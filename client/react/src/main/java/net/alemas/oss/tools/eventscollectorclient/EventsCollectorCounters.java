@@ -246,7 +246,7 @@ public class EventsCollectorCounters extends EventsCollector
             log.debug
                     (
                             "listing single events - items returned: {} - end",
-                            list.size()
+                            ( ( list != null ) ? list.size() : 0 )
                     );
         }
         return
