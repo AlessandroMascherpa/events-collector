@@ -220,7 +220,6 @@ public class EventsCollectorTimers extends EventsCollector
         }
         catch ( IOException e )
         {
-            list = null;
             if ( log.isErrorEnabled() )
             {
                 log.error

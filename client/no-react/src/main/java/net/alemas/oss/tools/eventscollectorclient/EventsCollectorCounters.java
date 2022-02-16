@@ -215,7 +215,6 @@ public class EventsCollectorCounters extends EventsCollector
         }
         catch ( IOException e )
         {
-            list = null;
             if ( log.isErrorEnabled() )
             {
                 log.error
