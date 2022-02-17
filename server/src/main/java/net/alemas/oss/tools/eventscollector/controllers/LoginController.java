@@ -2,6 +2,7 @@ package net.alemas.oss.tools.eventscollector.controllers;
 
 
 import io.swagger.annotations.*;
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetLogins;
 import net.alemas.oss.tools.eventscollector.io.Base;
@@ -30,7 +31,7 @@ import java.time.LocalDateTime;
  * Created by MASCHERPA on 04/02/2021.
  */
 @RestController
-@RequestMapping( "${server.base-path}/events/log-in-out" )
+@RequestMapping( "${server.base-path}" + EndpointsPaths.REQUEST_PATH_LOGIN_BASE )
 @Api
         (
                 description = "API controller to collect log in/out events and to provide statistics about events."
@@ -142,7 +143,7 @@ public class LoginController
             )
     @RequestMapping
             (
-                    value       = "/",
+                    value       = EndpointsPaths.REQUEST_PATH_LOGIN_EVENT,
                     method      = RequestMethod.GET,
                     produces    = MediaType.APPLICATION_JSON_VALUE
             )
@@ -215,7 +216,7 @@ public class LoginController
             )
     @RequestMapping
             (
-                    value       = "logs-in-out.xlsx",
+                    value       = EndpointsPaths.REQUEST_PATH_LOGIN_EVENT_XLSX,
                     method      = RequestMethod.GET
             )
     private ResponseEntity< Mono< Resource > >  getSpreadsheetLogsInOut
@@ -318,7 +319,7 @@ public class LoginController
             )
     @RequestMapping
             (
-                    value		= "/",
+                    value		= EndpointsPaths.REQUEST_PATH_LOGIN_EVENT,
                     method		= RequestMethod.POST,
                     consumes	= MediaType.APPLICATION_JSON_VALUE
             )

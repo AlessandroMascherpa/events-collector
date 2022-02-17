@@ -2,6 +2,7 @@ package net.alemas.oss.tools.eventscollector.controllers;
 
 
 import io.swagger.annotations.*;
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetCounters;
 import net.alemas.oss.tools.eventscollector.io.Base;
@@ -30,7 +31,7 @@ import java.time.LocalDateTime;
  * Created by MASCHERPA on 06/05/2021.
  */
 @RestController
-@RequestMapping( "${server.base-path}/events/counter" )
+@RequestMapping( "${server.base-path}" + EndpointsPaths.REQUEST_PATH_COUNTER_BASE )
 @Api
         (
                 description = "API controller to collect single events and to provide statistics about them."
@@ -79,7 +80,7 @@ public class CounterController
             )
     @RequestMapping
             (
-                    value		= "/",
+                    value		= EndpointsPaths.REQUEST_PATH_COUNTER_EVENT,
                     method		= RequestMethod.POST,
                     consumes	= MediaType.APPLICATION_JSON_VALUE
             )
@@ -133,7 +134,7 @@ public class CounterController
             )
     @RequestMapping
             (
-                    value       = "/",
+                    value       = EndpointsPaths.REQUEST_PATH_COUNTER_EVENT,
                     method      = RequestMethod.GET,
                     produces    = MediaType.APPLICATION_JSON_VALUE
             )
@@ -197,7 +198,7 @@ public class CounterController
             )
     @RequestMapping
             (
-                    value       = "counters.xlsx",
+                    value       = EndpointsPaths.REQUEST_PATH_COUNTER_EVENT_XLSX,
                     method      = RequestMethod.GET,
                     produces    = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )

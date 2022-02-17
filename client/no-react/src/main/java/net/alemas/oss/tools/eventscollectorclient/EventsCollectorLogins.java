@@ -3,6 +3,7 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOut;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
@@ -27,7 +28,7 @@ public class EventsCollectorLogins extends EventsCollector
     /**
      * service path;
      */
-    private static final String PATH_BASE   = "/events/log-in-out/";
+    private static final String PATH_BASE   = EndpointsPaths.FULL_PATH_LOGIN_EVENT;
 
     /* --- properties --- */
     protected final JsonMapper mapper =

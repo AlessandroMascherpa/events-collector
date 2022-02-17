@@ -1,6 +1,7 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class EventsCollectorTimer extends EventsCollector
     /**
      * service path;
      */
-    private static final String PATH_BASE   = "/events/timing/";
+    private static final String PATH_BASE   = EndpointsPaths.FULL_PATH_TIMER_EVENT;
 
     /* --- constructors --- */
     /**

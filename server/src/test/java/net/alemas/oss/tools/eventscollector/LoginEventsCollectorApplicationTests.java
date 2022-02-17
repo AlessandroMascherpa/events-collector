@@ -1,5 +1,6 @@
 package net.alemas.oss.tools.eventscollector;
 
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
 import net.alemas.oss.tools.eventscollector.io.EventsLogInOut;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOut;
@@ -71,7 +72,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 
 		this.webTestClient
 				.get()
-				.uri( this.getUrlPath())
+				.uri( this.getUrlPath() )
 				.exchange()
 				.expectStatus().isOk()
 				.expectBodyList( LogInOutResponse.class )
@@ -261,7 +262,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
     /**
      * trailing part of API path;
      */
-    private static final String		URL_PATH	= "/events/log-in-out/";
+    private static final String		URL_PATH	= EndpointsPaths.FULL_PATH_LOGIN_EVENT;
 
     @Autowired
     private Properties              properties;

@@ -2,6 +2,7 @@ package net.alemas.oss.tools.eventscollector.controllers;
 
 
 import io.swagger.annotations.*;
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetTimers;
 import net.alemas.oss.tools.eventscollector.io.Base;
@@ -30,7 +31,7 @@ import java.time.LocalDateTime;
  * Created by MASCHERPA on 26/05/2021.
  */
 @RestController
-@RequestMapping( "${server.base-path}/events/timing" )
+@RequestMapping( "${server.base-path}" + EndpointsPaths.REQUEST_PATH_TIMER_BASE )
 @Api
         (
                 description = "API controller to collect timing events and to provide statistics about them."
@@ -79,7 +80,7 @@ public class TimerController
             )
     @RequestMapping
             (
-                    value		= "/",
+                    value		= EndpointsPaths.REQUEST_PATH_TIMER_EVENT,
                     method		= RequestMethod.POST,
                     consumes	= MediaType.APPLICATION_JSON_VALUE
             )
@@ -133,7 +134,7 @@ public class TimerController
             )
     @RequestMapping
             (
-                    value       = "/",
+                    value       = EndpointsPaths.REQUEST_PATH_TIMER_EVENT,
                     method      = RequestMethod.GET,
                     produces    = MediaType.APPLICATION_JSON_VALUE
             )
@@ -197,7 +198,7 @@ public class TimerController
             )
     @RequestMapping
             (
-                    value       = "timings.xlsx",
+                    value       = EndpointsPaths.REQUEST_PATH_TIMER_EVENT_XLSX,
                     method      = RequestMethod.GET,
                     produces    = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )

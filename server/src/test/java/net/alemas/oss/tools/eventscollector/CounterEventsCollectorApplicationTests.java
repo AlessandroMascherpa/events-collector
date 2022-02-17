@@ -1,6 +1,7 @@
 package net.alemas.oss.tools.eventscollector;
 
 
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
 import net.alemas.oss.tools.eventscollector.io.EventsCounter;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
@@ -42,7 +43,7 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
         log.info( "test empty collection - begin" );
         this.webTestClient
                 .get()
-                .uri( this.getUrlPath())
+                .uri( this.getUrlPath() )
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList( CounterResponse.class )
@@ -124,13 +125,13 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
     /**
      * trailing part of API path;
      */
-    private static final String		URL_PATH	= "/events/counter/";
+    private static final String		URL_PATH	= EndpointsPaths.FULL_PATH_COUNTER_EVENT;
 
     @Autowired
     private Properties              properties;
 
     /**
-     * get the full API path;
+     * get the full API path to store event;
      *
      * @return the API path;
      */

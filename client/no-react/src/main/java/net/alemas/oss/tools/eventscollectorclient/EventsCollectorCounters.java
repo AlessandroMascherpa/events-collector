@@ -3,6 +3,7 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.apache.http.HttpStatus;
@@ -27,7 +28,7 @@ public class EventsCollectorCounters extends EventsCollector
     /**
      * service path;
      */
-    private static final String PATH_BASE   = "/events/counter/";
+    private static final String PATH_BASE   = EndpointsPaths.FULL_PATH_COUNTER_EVENT;
 
     /* --- constructors --- */
     /**

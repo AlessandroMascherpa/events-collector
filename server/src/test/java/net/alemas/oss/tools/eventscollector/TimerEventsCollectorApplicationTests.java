@@ -1,6 +1,7 @@
 package net.alemas.oss.tools.eventscollector;
 
 
+import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
 import net.alemas.oss.tools.eventscollector.io.EventsTiming;
 import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
@@ -42,7 +43,7 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
         log.info( "test empty collection - begin" );
         this.webTestClient
                 .get()
-                .uri( this.getUrlPath())
+                .uri( this.getUrlPath() )
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList( TimingResponse.class )
@@ -124,7 +125,7 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
     /**
      * trailing part of API path;
      */
-    private static final String		URL_PATH	= "/events/timing/";
+    private static final String		URL_PATH	= EndpointsPaths.FULL_PATH_TIMER_EVENT;
 
     @Autowired
     private Properties              properties;
