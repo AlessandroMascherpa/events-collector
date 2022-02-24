@@ -20,8 +20,6 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 
 
 @ExtendWith( SpringExtension.class )
@@ -45,30 +43,6 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 
 		/* --- test empty collection --- */
         log.info( "test empty collection - begin" );
-
-		this.webTestClient
-				.get()
-				.uri( this.getUrlPath( "0" ) )
-				.accept( MediaType.APPLICATION_JSON )
-				.exchange()
-				.expectStatus().isNotFound()
-		;
-
-		this.webTestClient
-				.get()
-				.uri( this.getUrlPath( "1" ) )
-				.accept( MediaType.APPLICATION_JSON )
-				.exchange()
-				.expectStatus().isNotFound()
-		;
-
-		this.webTestClient
-				.get()
-				.uri( this.getUrlPath( "-1" ) )
-                .accept( MediaType.APPLICATION_JSON )
-				.exchange()
-				.expectStatus().isNotFound()
-		;
 
 		this.webTestClient
 				.get()
@@ -119,21 +93,6 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 			}
 		}
         log.info( "post events - end" );
-
-		/* --- check inserted events - single record --- */
-        log.info( "get single event - begin" );
-		LogInOutEvent result = this.webTestClient
-				.get()
-				.uri( this.getUrlPath( "0" ) )
-				.accept( MediaType.APPLICATION_JSON )
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody( LogInOutEvent.class )
-				.returnResult()
-				.getResponseBody()
-				;
-		assertEquals( getLogIn( responses.get( 0 ) ), result );
-        log.info( "get single event - end" );
 
 		/* --- check inserted events - all records --- */
         log.info( "get all events - begin" );
@@ -275,23 +234,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
     private String  getUrlPath()
     {
         return
-                this.getUrlPath( null );
-    }
-    /**
-     * get the full API path with the trailing row number;
-     *
-     * @param row    the row number;
-     * @return the API path;
-     */
-    private String  getUrlPath( String row )
-    {
-        String path = this.properties.getBasePath() + URL_PATH;
-        if ( row != null )
-        {
-            path = path + row;
-        }
-        return
-                path;
+                this.properties.getBasePath() + URL_PATH;
     }
 
 

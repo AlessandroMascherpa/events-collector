@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -63,24 +62,6 @@ public class LoginRepositoryMemory
             ;
         }
         this.repository.add( event );
-    }
-
-    public Mono< LogInOutEvent >  getByRowNumber( int row ) throws ArrayIndexOutOfBoundsException
-    {
-        int size = this.repository.size();
-        if ( ( row < 0 ) || ( row >= size ) )
-        {
-            throw
-                    new ArrayIndexOutOfBoundsException
-                            (
-                                    ( row < 0 )
-                                    ? "Attempt to access row by using negative index."
-                                    : String.format( "Attempt to access row at index: %d, but there are only %d items.", row, size )
-                            )
-                    ;
-        }
-        return
-                Mono.just( this.repository.get( row ) );
     }
 
 

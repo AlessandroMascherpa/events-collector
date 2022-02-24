@@ -87,13 +87,6 @@ public class LoginRepositoryPostgres
     }
 
     @Override
-    @Deprecated
-    public Mono< LogInOutEvent > getByRowNumber( int row ) throws ArrayIndexOutOfBoundsException
-    {
-        return null;
-    }
-
-    @Override
     protected Statement createStatementForList
             (
                     Connection      connection,
