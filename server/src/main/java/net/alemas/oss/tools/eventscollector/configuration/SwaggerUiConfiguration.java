@@ -23,8 +23,14 @@ public class SwaggerUiConfiguration
 {
     /* --- properties --- */
     @SuppressWarnings( "SpringJavaAutowiringInspection" )
+    private final ServerConfiguration properties;
+
+    /* --- constructors --- */
     @Autowired
-    private ServerConfiguration properties;
+    public SwaggerUiConfiguration( ServerConfiguration properties )
+    {
+        this.properties = properties;
+    }
 
     /* --- swagger methods --- */
     @Bean

@@ -45,24 +45,32 @@ public class CounterController
     /*
      * add here any data repository that supports non-blocking reactive streams;
      */
-    @Autowired
-    private CounterRepository       repository;
+    private final CounterRepository       repository;
 
     /**
      * server configuration properties;
      */
-    @Autowired
-    private ServerConfiguration     properties;
+    private final ServerConfiguration     properties;
 
     /**
      * spread sheet exporter;
      */
-    @Autowired
-    private SpreadsheetCounters     exporter;
+    private final SpreadsheetCounters     exporter;
 
 
     /* --- constructors --- */
-    /* none */
+    @Autowired
+    public CounterController
+        (
+                CounterRepository   repository,
+                ServerConfiguration properties,
+                SpreadsheetCounters exporter
+        )
+    {
+        this.repository = repository;
+        this.properties = properties;
+        this.exporter   = exporter;
+    }
 
     /* --- end-points --- */
     @ApiOperation

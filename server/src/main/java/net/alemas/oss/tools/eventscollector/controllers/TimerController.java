@@ -45,24 +45,32 @@ public class TimerController
     /*
      * add here any data repository that supports non-blocking reactive streams;
      */
-    @Autowired
     private TimerRepository     repository;
 
     /**
      * server configuration properties;
      */
-    @Autowired
     private ServerConfiguration properties;
 
     /**
      * spread sheet exporter;
      */
-    @Autowired
     private SpreadsheetTimers   exporter;
 
 
     /* --- constructors --- */
-    /* none */
+    @Autowired
+    public TimerController
+        (
+                TimerRepository     repository,
+                ServerConfiguration properties,
+                SpreadsheetTimers   exporter
+        )
+    {
+        this.repository = repository;
+        this.properties = properties;
+        this.exporter   = exporter;
+    }
 
     /* --- end-points --- */
     @ApiOperation

@@ -45,24 +45,32 @@ public class LoginController
     /*
      * add here any data repository that supports non-blocking reactive streams;
      */
-    @Autowired
-    private LoginRepository     repository;
+    private final LoginRepository     repository;
 
     /**
      * server configuration properties;
      */
-    @Autowired
-    private ServerConfiguration properties;
+    private final ServerConfiguration properties;
 
     /**
      * spread sheet exporter;
      */
-    @Autowired
-    private SpreadsheetLogins   exporter;
+    private final SpreadsheetLogins   exporter;
 
 
     /* --- constructors --- */
-    /* none */
+    @Autowired
+    public LoginController
+        (
+                LoginRepository     repository,
+                ServerConfiguration properties,
+                SpreadsheetLogins   exporter
+        )
+    {
+        this.repository = repository;
+        this.properties = properties;
+        this.exporter   = exporter;
+    }
 
     /* --- end-points --- */
     @ApiOperation
