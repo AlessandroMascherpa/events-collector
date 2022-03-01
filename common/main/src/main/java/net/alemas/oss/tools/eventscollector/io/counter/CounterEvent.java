@@ -59,6 +59,7 @@ public class CounterEvent extends Counter
     }
 
     /* --- object checking --- */
+    @Override
     public void isWellFormed() throws IllegalArgumentException
     {
         super.isWellFormed();

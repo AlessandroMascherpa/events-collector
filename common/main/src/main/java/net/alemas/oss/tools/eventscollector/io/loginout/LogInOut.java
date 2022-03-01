@@ -43,6 +43,7 @@ public abstract class LogInOut extends Base
     }
 
     /* --- object checking --- */
+    @Override
     public void isWellFormed() throws IllegalArgumentException
     {
         super.isWellFormed();

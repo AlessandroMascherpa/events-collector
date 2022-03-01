@@ -47,6 +47,7 @@ public class Counter extends Base
     }
 
     /* --- object checking --- */
+    @Override
     public void isWellFormed() throws IllegalArgumentException
     {
         super.isWellFormed();

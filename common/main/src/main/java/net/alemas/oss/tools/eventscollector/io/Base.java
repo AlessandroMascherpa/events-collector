@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
  *
  * Created by MASCHERPA on 04/05/2021.
  */
-public abstract class Base
+public abstract class Base implements WellFormed
 {
     /* --- constants --- */
     /**
@@ -53,6 +53,7 @@ public abstract class Base
     }
 
     /* --- object checking --- */
+    @Override
     public void isWellFormed() throws IllegalArgumentException
     {
         if ( ( this.application == null ) || "".equals( this.application ) )

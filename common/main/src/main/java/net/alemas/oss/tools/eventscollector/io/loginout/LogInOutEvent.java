@@ -78,6 +78,7 @@ public class LogInOutEvent extends LogInOut
     }
 
     /* --- object checking --- */
+    @Override
     public void isWellFormed() throws IllegalArgumentException
     {
         super.isWellFormed();
