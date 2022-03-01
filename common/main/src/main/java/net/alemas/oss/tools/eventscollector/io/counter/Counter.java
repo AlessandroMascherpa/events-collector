@@ -3,6 +3,7 @@ package net.alemas.oss.tools.eventscollector.io.counter;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import net.alemas.oss.tools.eventscollector.io.Base;
+import net.alemas.oss.tools.eventscollector.io.NotWellFormed;
 
 
 /**
@@ -48,13 +49,13 @@ public class Counter extends Base
 
     /* --- object checking --- */
     @Override
-    public void isWellFormed() throws IllegalArgumentException
+    public void isWellFormed() throws NotWellFormed
     {
         super.isWellFormed();
         if ( ( this.id == null ) || ( this.id.length() == 0 ) )
         {
             throw
-                    new IllegalArgumentException
+                    new NotWellFormed
                             (
                                     String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "id" )
                             );

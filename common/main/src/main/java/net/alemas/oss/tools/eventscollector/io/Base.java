@@ -54,12 +54,12 @@ public abstract class Base implements WellFormed
 
     /* --- object checking --- */
     @Override
-    public void isWellFormed() throws IllegalArgumentException
+    public void isWellFormed() throws NotWellFormed
     {
         if ( ( this.application == null ) || "".equals( this.application ) )
         {
             throw
-                    new IllegalArgumentException
+                    new NotWellFormed
                             (
                                     String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "application" )
                             );

@@ -12,6 +12,6 @@ public interface WellFormed
      *
      * @throws IllegalArgumentException if the event is not well-formed;
      */
-    void isWellFormed() throws IllegalArgumentException;
+    void isWellFormed() throws NotWellFormed;
 
 }

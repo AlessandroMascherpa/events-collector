@@ -3,6 +3,7 @@ package net.alemas.oss.tools.eventscollector.io.loginout;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import net.alemas.oss.tools.eventscollector.io.Base;
+import net.alemas.oss.tools.eventscollector.io.NotWellFormed;
 
 
 /**
@@ -44,13 +45,13 @@ public abstract class LogInOut extends Base
 
     /* --- object checking --- */
     @Override
-    public void isWellFormed() throws IllegalArgumentException
+    public void isWellFormed() throws NotWellFormed
     {
         super.isWellFormed();
         if ( ( this.username == null ) || "".equals( this.username ) )
         {
             throw
-                    new IllegalArgumentException
+                    new NotWellFormed
                             (
                                     String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "username" )
                             );

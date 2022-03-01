@@ -3,6 +3,7 @@ package net.alemas.oss.tools.eventscollector.io.counter;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import net.alemas.oss.tools.eventscollector.io.Base;
+import net.alemas.oss.tools.eventscollector.io.NotWellFormed;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -60,13 +61,13 @@ public class CounterEvent extends Counter
 
     /* --- object checking --- */
     @Override
-    public void isWellFormed() throws IllegalArgumentException
+    public void isWellFormed() throws NotWellFormed
     {
         super.isWellFormed();
         if ( this.when == null )
         {
             throw
-                    new IllegalArgumentException
+                    new NotWellFormed
                             (
                                     String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "when" )
                             );
