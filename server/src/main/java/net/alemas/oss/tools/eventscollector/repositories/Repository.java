@@ -19,7 +19,7 @@ public interface Repository< Event extends Base, Response extends Base >
      * inserts in the repository a new event;
      *
      * @param event    the event to add;
-     * @throws IllegalArgumentException if the event was not well formed;
+     * @throws IllegalArgumentException if the event was not well-formed;
      */
     void add( Event event ) throws IllegalArgumentException;
 

@@ -28,7 +28,8 @@ import java.util.stream.Collectors;
                 matchIfMissing  = true
         )
 public class CounterRepositoryMemory
-        implements CounterRepository, RepositoryMemoryConstants
+        implements
+            CounterRepository, RepositoryMemoryConstants
 {
     /* --- properties -- */
     private List< CounterEvent > repository  = new ArrayList<>();
@@ -58,6 +59,7 @@ public class CounterRepositoryMemory
         }
         this.repository.add( event );
     }
+
 
     @Override
     public Flux< CounterEvent > list

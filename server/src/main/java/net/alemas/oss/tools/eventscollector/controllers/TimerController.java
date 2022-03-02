@@ -45,17 +45,17 @@ public class TimerController
     /*
      * add here any data repository that supports non-blocking reactive streams;
      */
-    private TimerRepository     repository;
+    private final TimerRepository     repository;
 
     /**
      * server configuration properties;
      */
-    private ServerConfiguration properties;
+    private final ServerConfiguration properties;
 
     /**
      * spread sheet exporter;
      */
-    private SpreadsheetTimers   exporter;
+    private final SpreadsheetTimers   exporter;
 
 
     /* --- constructors --- */

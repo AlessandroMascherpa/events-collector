@@ -52,7 +52,8 @@ public class CounterEvent extends Counter
     /* --- getters'n'setters --- */
     public LocalDateTime getWhen()
     {
-        return this.when;
+        return
+                this.when;
     }
     public void setWhen( LocalDateTime when )
     {

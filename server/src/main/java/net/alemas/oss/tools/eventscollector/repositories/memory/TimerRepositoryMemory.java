@@ -60,6 +60,7 @@ public class TimerRepositoryMemory
         this.repository.add( event );
     }
 
+
     @Override
     public Flux< TimingEvent > list
             (
@@ -84,6 +85,7 @@ public class TimerRepositoryMemory
                                 )
                 ;
     }
+
 
     @Override
     public Flux< TimingResponse > groupById
