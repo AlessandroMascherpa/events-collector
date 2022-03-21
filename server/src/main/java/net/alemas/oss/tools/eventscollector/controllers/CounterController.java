@@ -259,7 +259,7 @@ public class CounterController
         ContentDisposition attachment =
                 ContentDisposition
                         .attachment()
-                        .filename( name + ".counters.xlsx" )
+                        .filename( name + '.' + EndpointsPaths.EXPORTED_FILE_NAME_COUNTER )
                         .build()
                 ;
         return

@@ -259,7 +259,7 @@ public class TimerController
         ContentDisposition attachment =
                 ContentDisposition
                         .attachment()
-                        .filename( name + ".timers.xlsx" )
+                        .filename( name + '.' + EndpointsPaths.EXPORTED_FILE_NAME_TIMER )
                         .build()
                 ;
         return

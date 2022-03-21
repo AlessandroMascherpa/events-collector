@@ -218,7 +218,7 @@ public class LoginController
         ContentDisposition attachment =
                 ContentDisposition
                         .attachment()
-                        .filename( name + ".log-in-out.xlsx" )
+                        .filename( name + '.' + EndpointsPaths.EXPORTED_FILE_NAME_LOGIN )
                         .build()
                 ;
         return

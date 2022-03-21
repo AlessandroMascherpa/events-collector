@@ -61,8 +61,15 @@ public class ServerConfiguration
     {
         if ( this.fileNameSpreadsheet == null )
         {
-            // remove heading slash from path;
-            this.fileNameSpreadsheet = this.basePath.substring( 1 );
+            String path = this.basePath;
+            if ( ( path != null ) && ( path.length() > 0 ) )
+            {
+                path = path.substring
+                        (
+                                ( path.charAt( 0 ) == '/' ) ? 1 : 0
+                        );
+            }
+            this.fileNameSpreadsheet = path;
         }
         return
                 this.fileNameSpreadsheet;
