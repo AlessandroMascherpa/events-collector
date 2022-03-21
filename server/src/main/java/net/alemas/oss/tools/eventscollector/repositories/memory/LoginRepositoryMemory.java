@@ -142,7 +142,7 @@ public class LoginRepositoryMemory
                                                                                                     &&
                                                                                                     t.getWhen().isBefore( o.getWhen() )
                                                                                                     &&
-                                                                                                    ( ChronoUnit.SECONDS.between( o.getWhen(), t.getWhen() ) < SECONDS_IN_OUT_WINDOW )
+                                                                                                    t.getSession().equals( o.getSession() )
                                                                                             )
                                                                             )
                                                                     .findFirst()

@@ -82,6 +82,7 @@ public class EventsCollectorLogins extends EventsCollector
      *
      * @param application    the application identifier;
      * @param user           the username;
+     * @param idSession      the session identifier;
      * @param in             if the end user logged in;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
@@ -89,6 +90,7 @@ public class EventsCollectorLogins extends EventsCollector
         (
                 String			application,
                 String			user,
+                String          idSession,
                 boolean			in
         )
     {
@@ -97,6 +99,7 @@ public class EventsCollectorLogins extends EventsCollector
                         (
                                 user,
                                 application,
+                                idSession,
                                 LocalDateTime.now(),
                                 in
                         );
@@ -106,6 +109,7 @@ public class EventsCollectorLogins extends EventsCollector
      *
      * @param application    the application identifier;
      * @param user           the username;
+     * @param idSession      the session identifier;
      * @param when           when the event occurred;
      * @param in             if the end user logged in;
      * @return true, if the remote service accepted the event; false, otherwise;
@@ -114,21 +118,23 @@ public class EventsCollectorLogins extends EventsCollector
         (
                 String			application,
                 String			user,
+                String          idSession,
                 LocalDateTime   when,
                 boolean			in
         )
     {
         String          url     = super.buildUrl();
-        LogInOutEvent   event   = this.buildBody( user, application, when, in );
+        LogInOutEvent   event   = this.buildBody( user, application, idSession, when, in );
 
         if ( log.isDebugEnabled() )
         {
             log.debug
                     (
-                            "posting log in/out event - end point '{}' - event: application: '{}', user: '{}', when: {}, in: {} - begin",
+                            "posting log in/out event - end point '{}' - event: application: '{}', user: '{}', session: '{}', when: {}, in: {} - begin",
                             url,
                             application,
                             user,
+                            idSession,
                             Base.convertDate( when ),
                             String.valueOf( in )
                     );
@@ -170,6 +176,7 @@ public class EventsCollectorLogins extends EventsCollector
             (
                     String			user,
                     String			application,
+                    String          idSession,
                     LocalDateTime   when,
                     boolean			in
             )
@@ -179,6 +186,7 @@ public class EventsCollectorLogins extends EventsCollector
                         (
                                 application,
                                 user,
+                                idSession,
                                 when,
                                 in
         )

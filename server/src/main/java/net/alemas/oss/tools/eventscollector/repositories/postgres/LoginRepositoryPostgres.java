@@ -67,13 +67,14 @@ public class LoginRepositoryPostgres
                                                 .createStatement
                                                         (
                                                                 "insert into "
-                                                                + TABLE + "( application, username, date, \"in\" )"
-                                                                + " values( $1, $2, $3, $4 )"
+                                                                + TABLE + "( application, username, session_id, date, \"in\" )"
+                                                                + " values( $1, $2, $3, $4, $5 )"
                                                         )
                                                 .bind( "$1", event.getApplication() )
                                                 .bind( "$2", event.getUsername() )
-                                                .bind( "$3", event.getWhen() )
-                                                .bind( "$4", event.isIn() )
+                                                .bind( "$3", event.getSession() )
+                                                .bind( "$4", event.getWhen() )
+                                                .bind( "$5", event.isIn() )
                                                 .execute()
                         )
                 .flatMap( Result::getRowsUpdated )
@@ -124,8 +125,9 @@ public class LoginRepositoryPostgres
                         (
                                 row.get( "application", String.class ),
                                 row.get( "username", String.class ),
+                                row.get( "session_id", String.class ),
                                 row.get( "date", LocalDateTime.class ),
-                                row.get( "in", Boolean.class )
+                                Boolean.TRUE.equals( row.get( "in", Boolean.class ) )
                         );
     }
 
@@ -167,7 +169,11 @@ public class LoginRepositoryPostgres
                                         +   " and "
                                         +       "loggedin.username = loggedout.username"
                                         +   " and "
+                                        +       "loggedin.session_id = loggedout.session_id"
+                                        +   " and "
                                         +       "loggedin.date < loggedout.date"
+                                        +   " order by "
+                                        +       "application" + ',' + "username" + ',' + "date_in"
                 ;
 
         CreateWhereStatement    where   =

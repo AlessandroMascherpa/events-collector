@@ -21,6 +21,14 @@ public class LogInOutEvent extends LogInOut
     @Schema
             (
                     required    = true,
+                    description = "The session identifier the username is logging in or out.",
+                    nullable    = false
+            )
+    private String              session;
+
+    @Schema
+            (
+                    required    = true,
                     description = "True, if the end user is logging in; false, otherwise.",
                     nullable    = true
             )
@@ -44,22 +52,34 @@ public class LogInOutEvent extends LogInOut
     /* --- constructors --- */
     public LogInOutEvent()
     {
-        this( null, null, null, false );
+        this( null, null, null, null, false );
     }
     public LogInOutEvent
         (
                 String          system,
                 String          name,
+                String          idSession,
                 LocalDateTime   date,
                 boolean         enter
         )
     {
         super( system, name );
-        this.in     = enter;
-        this.when   = date;
+        this.session    = idSession;
+        this.in         = enter;
+        this.when       = date;
     }
 
     /* --- getters'n'setters --- */
+    public String getSession()
+    {
+        return
+                this.session;
+    }
+    public void setSession( String id )
+    {
+        this.session = id;
+    }
+
     public boolean isIn()
     {
         return this.in;
@@ -83,6 +103,14 @@ public class LogInOutEvent extends LogInOut
     public void isWellFormed() throws NotWellFormed
     {
         super.isWellFormed();
+        if ( ( this.session == null ) || "".equals( this.session ) )
+        {
+            throw
+                    new NotWellFormed
+                            (
+                                    String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "session" )
+                            );
+        }
         if ( this.when == null )
         {
             throw
@@ -103,6 +131,8 @@ public class LogInOutEvent extends LogInOut
                         &&
                         super.equals( o )
                         &&
+                        areEqual( this.session, that.session )
+                        &&
                         ( this.in == that.in )
                         &&
                         areEqual( this.when, that.when )
@@ -114,7 +144,8 @@ public class LogInOutEvent extends LogInOut
     public int hashCode()
     {
         int result = super.hashCode();
-        result = 31 * result + ( ( this.when != null ) ? this.when.hashCode() : 0 );
+        result = 31 * result + ( ( this.session != null ) ? this.session.hashCode() : 0 );
+        result = 31 * result + ( ( this.when != null )    ? this.when.hashCode() : 0 );
         result = 31 * result + ( this.in ? 1 : 0 );
         return
                 result;
@@ -130,6 +161,7 @@ public class LogInOutEvent extends LogInOut
                                 this.getClass().getSimpleName()
                                 + '['
                                 +        "user: '" + this.getUsername() + "' "
+                                +        "session id: '" + this.getSession() + "' "
                                 +        "logged " + ( this.in ? "in to" : "out from" ) + ' '
                                 +        "application: '" + this.getApplication() + "' "
                                 +        "at: " + Base.convertDate( this.when )

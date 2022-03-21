@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS loginout
 (
   application VARCHAR( 255 )  NOT NULL,
   username    VARCHAR( 255 )  NOT NULL,
+  session_id  VARCHAR( 255 )  NOT NULL,
   date        TIMESTAMP       NOT NULL,
   "in"        BOOLEAN         NOT NULL
 );

@@ -83,6 +83,7 @@ public class EventsCollectorLogins extends EventsCollector
      *
      * @param application    the application identifier;
      * @param user           the username;
+     * @param idSession      the session identifier;
      * @param in             if the end user logged in;
      * @return true, if the remote service accepted the event; false, otherwise;
      */
@@ -90,6 +91,7 @@ public class EventsCollectorLogins extends EventsCollector
         (
                 String			application,
                 String			user,
+                String          idSession,
                 boolean			in
         )
     {
@@ -98,6 +100,7 @@ public class EventsCollectorLogins extends EventsCollector
                         (
                                 application,
                                 user,
+                                idSession,
                                 LocalDateTime.now(),
                                 in
                         );
@@ -107,6 +110,7 @@ public class EventsCollectorLogins extends EventsCollector
      *
      * @param application    the application identifier;
      * @param user           the username;
+     * @param idSession      the session identifier;
      * @param when           when the event occurred;
      * @param in             if the end user logged in;
      * @return true, if the remote service accepted the event; false, otherwise;
@@ -115,6 +119,7 @@ public class EventsCollectorLogins extends EventsCollector
         (
                 String			application,
                 String			user,
+                String          idSession,
                 LocalDateTime   when,
                 boolean			in
         )
@@ -132,7 +137,7 @@ public class EventsCollectorLogins extends EventsCollector
         try
         {
             /* --- prepare body --- */
-            LogInOutEvent event = new LogInOutEvent( application, user, when, in );
+            LogInOutEvent event = new LogInOutEvent( application, user, idSession, when, in );
 
 			/* --- execute call and check reply --- */
             int status = super.postEvent( event );
