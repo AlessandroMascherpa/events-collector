@@ -58,7 +58,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 		/* --- fill in the events --- */
         log.info( "post events - begin" );
 		LogInOutEvent event;
-		for ( LogInOutResponse response : responses )
+		for ( LogInOutSessionTest response : responses )
 		{
             event = getLogIn( response );
 			this.webTestClient
@@ -118,15 +118,20 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 
         log.info( "server - end" );
 	}
-    private void checkListByDate( List< LogInOutResponse > expected )
+    private void checkListByDate( List< LogInOutSessionTest > expected )
     {
         LocalDateTime   min;
         LocalDateTime   max;
 
-        min = max = expected.get( 0 ).getDateLoggedIn();
-        for ( LogInOutResponse response : expected )
+        min = max = expected.
+                get( 0 )
+                .getResponse()
+                .getDateLoggedIn()
+        ;
+        for ( LogInOutSessionTest session : expected )
         {
-            LocalDateTime date = response.getDateLoggedIn();
+            LogInOutResponse    response    = session.getResponse();
+            LocalDateTime       date        = response.getDateLoggedIn();
             if ( date.compareTo( min ) < 0 )
             {
                 min = date;
@@ -147,13 +152,13 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
             }
         }
 
-        checkList
+        this.checkList
                 (
                         "after=" + LogInOut.convertDate( min ) + '&' + "before=" + LogInOut.convertDate( max ),
                         expected
                 );
     }
-    private void checkList( String query, List< LogInOutResponse > expected )
+    private void checkList( String query, List< LogInOutSessionTest > expected )
     {
         String  url = this.getUrlPath();
         if ( ( query != null ) && ( ! "".equals( query ) ) )
@@ -162,18 +167,19 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
             log.info( "query parameters: '" + query + '\'' );
         }
 
-        List< LogInOutResponse > list = this.webTestClient
-                .get()
-                .uri( url )
-                .exchange()
-                .expectStatus().isOk()
-                .expectBodyList( LogInOutResponse.class )
-                .hasSize( expected.size() )
-                .returnResult()
-                .getResponseBody()
+        List< LogInOutResponse > list =
+                this.webTestClient
+                        .get()
+                        .uri( url )
+                        .exchange()
+                        .expectStatus().isOk()
+                        .expectBodyList( LogInOutResponse.class )
+                        .hasSize( expected.size() )
+                        .returnResult()
+                        .getResponseBody()
                 ;
 
-        checkListResult( list, expected );
+        checkLogInOutListResult( list, expected );
     }
 
     @Test
@@ -182,7 +188,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 		log.info( "post of incorrect events - begin" );
 
         LogInOutEvent event;
-        for ( LogInOutResponse response : failures )
+        for ( LogInOutSessionTest response : failures )
         {
             event = getLogIn( response );
             this.webTestClient
@@ -194,7 +200,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
                                     Mono.just( event ),
                                     LogInOutResponse.class
                             )
-                                    .exchange()
+                    .exchange()
                     .expectStatus().isBadRequest()
             ;
 
@@ -239,35 +245,37 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 
 
 	/* --- payload methods --- */
-	public static LogInOutEvent  getLogIn( LogInOutResponse response )
+	private static LogInOutEvent  getLogIn( LogInOutSessionTest session )
 	{
-		return
+        LogInOutResponse    response    = session.getResponse();
+        return
                 new LogInOutEvent
                         (
                                 response.getApplication(),
                                 response.getUsername(),
+                                session.getIdSession(),
                                 response.getDateLoggedIn(),
                                 true
-                        )
-				;
+                        );
 	}
-	public static LogInOutEvent  getLogOut( LogInOutResponse response )
+	private static LogInOutEvent  getLogOut( LogInOutSessionTest session )
 	{
-		LogInOutEvent	payload	= null;
-		LocalDateTime	out		= response.getDateLoggedOut();
+        LogInOutEvent       payload     = null;
+        LogInOutResponse    response    = session.getResponse();
+		LocalDateTime       out 		= response.getDateLoggedOut();
 		if ( out != null )
 		{
 			payload	= new LogInOutEvent
                     (
                             response.getApplication(),
                             response.getUsername(),
+                            session.getIdSession(),
                             out,
                             false
                     );
 		}
 		return
-				payload
-				;
+				payload;
 	}
 
 }

@@ -57,6 +57,7 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
                     (
                             "app-1",
                             "user-1",
+                            "session-1",
                             asDate( 2021, 2, 10, 14, 39, 3 ),
                             true
                     );
@@ -79,6 +80,7 @@ public class EventsCollectorWithoutServerTest extends EventsLogInOut
                     (
                             "app-1",
                             "user-1",
+                            "session-2",
                             true
                     );
             assertFalse( posted );

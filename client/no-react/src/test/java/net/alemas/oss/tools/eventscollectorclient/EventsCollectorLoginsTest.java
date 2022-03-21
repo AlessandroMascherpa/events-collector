@@ -66,12 +66,15 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
         log.info( "post events - begin" );
 
         boolean posted;
-        for ( LogInOutResponse response : responses )
+        for ( LogInOutSessionTest failure : responses )
         {
+            LogInOutResponse response = failure.getResponse();
+
             posted = collector.postEvent
                     (
                             response.getApplication(),
                             response.getUsername(),
+                            failure.getIdSession(),
                             response.getDateLoggedIn(),
                             true
                     );
@@ -83,6 +86,7 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
                         (
                                 response.getApplication(),
                                 response.getUsername(),
+                                failure.getIdSession(),
                                 response.getDateLoggedOut(),
                                 false
                         );
@@ -93,7 +97,7 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
 
         /* --- get the events list --- */
 
-        checkListResult
+        checkLogInOutListResult
                 (
                         collector.getEventsList(),
                         responses
@@ -125,7 +129,7 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
     private void checkListByDate
             (
                     EventsCollectorLogins       collector,
-                    List< LogInOutResponse >    expected
+                    List< LogInOutSessionTest > expected
             )
             throws
                 URISyntaxException
@@ -133,10 +137,15 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
         LocalDateTime   min;
         LocalDateTime   max;
 
-        min = max = expected.get( 0 ).getDateLoggedIn();
-        for ( LogInOutResponse response : expected )
+        min = max =
+                expected
+                        .get( 0 )
+                        .getResponse()
+                        .getDateLoggedIn();
+        for ( LogInOutSessionTest session : expected )
         {
-            LocalDateTime date = response.getDateLoggedIn();
+            LogInOutResponse    response    = session.getResponse();
+            LocalDateTime       date        = response.getDateLoggedIn();
             if ( date.compareTo( min ) < 0 )
             {
                 min = date;
@@ -171,12 +180,12 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
                     String                      app,
                     LocalDateTime               after,
                     LocalDateTime               before,
-                    List< LogInOutResponse >    expected
+                    List< LogInOutSessionTest > expected
             )
             throws
                 URISyntaxException
     {
-        checkListResult
+        checkLogInOutListResult
                 (
                         collector.getEventsList( app, after, before ),
                         expected
@@ -191,22 +200,26 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
         boolean                 posted;
         EventsCollectorLogins   collector = new EventsCollectorLogins( server.getService() );
 
-        for ( LogInOutResponse failure : failures )
+        for ( LogInOutSessionTest failure : failures )
         {
+            LogInOutResponse response = failure.getResponse();
+
             posted = collector.postEvent
                     (
-                            failure.getApplication(),
-                            failure.getUsername(),
-                            failure.getDateLoggedIn(),
+                            response.getApplication(),
+                            response.getUsername(),
+                            failure.getIdSession(),
+                            response.getDateLoggedIn(),
                             true
                     );
             assertFalse( posted );
 
             posted = collector.postEvent
                     (
-                            failure.getApplication(),
-                            failure.getUsername(),
-                            failure.getDateLoggedOut(),
+                            response.getApplication(),
+                            response.getUsername(),
+                            failure.getIdSession(),
+                            response.getDateLoggedOut(),
                             false
                     );
             assertFalse( posted );
