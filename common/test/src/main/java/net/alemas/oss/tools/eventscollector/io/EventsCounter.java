@@ -22,11 +22,14 @@ public class EventsCounter extends EventsBase< CounterResponse >
     protected static final String                                                       COUNT_ID_3  = "count-3";
 
     protected static final List< CounterEvent >                                         events;
+    protected static final List< CounterEvent >                                         eventsDot;
     protected static final List< CounterResponse >                                      responses;
-    protected static final Map< PairApplicationIdUsernameId, List< LocalDateTime > >    scenario    = new HashMap<>();
+    protected static final List< CounterResponse >                                      responsesDot;
+    protected static final Map< PairApplicationIdUsernameId, List< LocalDateTime > >    scenarioDot = new HashMap<>();
+    protected static final Map< PairApplicationIdUsernameId, List< LocalDateTime > >    scenarioNet = new HashMap<>();
     static
     {
-        scenario.put
+        scenarioDot.put
                 (
                         PairApplicationIdUsernameId.build( APP_DOT, COUNT_ID_1 ),
                         Collections.singletonList
@@ -34,7 +37,7 @@ public class EventsCounter extends EventsBase< CounterResponse >
                                         asDate( 2021, 5, 11, 23, 2, 12 )
                                 )
                 );
-        scenario.put
+        scenarioDot.put
                 (
                         PairApplicationIdUsernameId.build( APP_DOT, COUNT_ID_2 ),
                         Arrays.asList
@@ -43,7 +46,7 @@ public class EventsCounter extends EventsBase< CounterResponse >
                                         asDate( 2021, 5, 11, 23, 14, 34 )
                                 )
                 );
-        scenario.put
+        scenarioNet.put
                 (
                         PairApplicationIdUsernameId.build( APP_NET, COUNT_ID_3 ),
                         Arrays.asList
@@ -54,8 +57,14 @@ public class EventsCounter extends EventsBase< CounterResponse >
                                 )
                 );
 
-        events      = prepareEvents( scenario );
-        responses   = prepareResponses( scenario );
+        eventsDot       = prepareEvents( scenarioDot );
+        responsesDot    = prepareResponses( scenarioDot );
+
+        events          = prepareEvents( scenarioNet );
+        responses       = prepareResponses( scenarioNet );
+
+        events.addAll( eventsDot );
+        responses.addAll( responsesDot );
     }
     private static List< CounterEvent >  prepareEvents( Map< PairApplicationIdUsernameId, List< LocalDateTime > > scenario )
     {

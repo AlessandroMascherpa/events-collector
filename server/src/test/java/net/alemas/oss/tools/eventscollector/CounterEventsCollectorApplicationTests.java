@@ -73,15 +73,28 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
 		/* --- check inserted events - all records --- */
         log.info( "get all events - begin" );
 
-        this.checkList( responses );
+        this.checkList( null, responses );
 
         log.info( "get all events - end" );
 
+        /* --- check inserted events - filter by application --- */
+        log.info( "get events filtered by application - begin" );
+
+        checkList( "application=" + APP_DOT, responsesDot );
+
+        log.info( "get events filtered by application - end" );
+
+
         log.info( "server - end" );
     }
-    private void checkList( List< CounterResponse > expected )
+    private void checkList( String query, List< CounterResponse > expected )
     {
         String                      url     = this.getUrlPath();
+        if ( ( query != null ) && ( ! "".equals( query ) ) )
+        {
+            url += '?' + query;
+            log.info( "query parameters: '" + query + '\'' );
+        }
 
         List< CounterResponse >     actual  = this.webTestClient
                 .get()

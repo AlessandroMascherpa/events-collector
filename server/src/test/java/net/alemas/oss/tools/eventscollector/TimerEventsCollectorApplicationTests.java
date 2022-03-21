@@ -73,15 +73,31 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
 		/* --- check inserted events - all records --- */
         log.info( "get all events - begin" );
 
-        this.checkList( responses );
+        this.checkList( null, responses );
 
         log.info( "get all events - end" );
 
+        /* --- check inserted events - filter by application --- */
+        log.info( "get events filtered by application - begin" );
+
+        checkList( "application=" + APP_DOT, responsesDot );
+
+        log.info( "get events filtered by application - end" );
+
+        /* --- check inserted events - filter by date interval --- */
+        log.info( "get events filtered by date interval - begin" );
+
+
         log.info( "server - end" );
     }
-    private void checkList( List< TimingResponse > expected )
+    private void checkList( String query, List< TimingResponse > expected )
     {
         String                      url     = this.getUrlPath();
+        if ( ( query != null ) && ( ! "".equals( query ) ) )
+        {
+            url += '?' + query;
+            log.info( "query parameters: '" + query + '\'' );
+        }
 
         List< TimingResponse >      actual  = this.webTestClient
                 .get()

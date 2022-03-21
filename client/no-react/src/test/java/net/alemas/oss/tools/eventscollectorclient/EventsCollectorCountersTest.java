@@ -80,13 +80,25 @@ public class EventsCollectorCountersTest extends EventsCounter
 
         /* --- get the events list --- */
         log.info( "get all events - begin" );
-
         checkListResult
                 (
                         collector.getEventsList(),
                         responses
                 );
         log.info( "get all events - end" );
+
+        log.info( "get selected events - begin" );
+        checkListResult
+                (
+                        collector.getEventsList
+                                (
+                                        APP_DOT,
+                                        null,
+                                        null
+                                ),
+                        responsesDot
+                );
+        log.info( "get all selected - end" );
 
         log.info( "client - end" );
     }

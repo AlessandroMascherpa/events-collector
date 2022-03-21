@@ -22,11 +22,14 @@ public class EventsTiming extends EventsBase< TimingResponse >
     protected static final String                                                       TIMER_ID_3 = "timer-3";
 
     protected static final List< TimingEvent >                                          events;
+    protected static final List< TimingEvent >                                          eventsDot;
     protected static final List< TimingResponse >                                       responses;
-    protected static final Map< PairApplicationIdUsernameId, List< EventElapsed > >     scenario    = new HashMap<>();
+    protected static final List< TimingResponse >                                       responsesDot;
+    protected static final Map< PairApplicationIdUsernameId, List< EventElapsed > >     scenarioDot    = new HashMap<>();
+    protected static final Map< PairApplicationIdUsernameId, List< EventElapsed > >     scenarioOrg    = new HashMap<>();
     static
     {
-        scenario.put
+        scenarioDot.put
                 (
                         PairApplicationIdUsernameId.build( APP_DOT, TIMER_ID_1 ),
                         Collections.singletonList
@@ -35,7 +38,7 @@ public class EventsTiming extends EventsBase< TimingResponse >
                                 )
                 );
 
-        scenario.put
+        scenarioDot.put
                 (
                         PairApplicationIdUsernameId.build( APP_DOT, TIMER_ID_2 ),
                         Arrays.asList
@@ -45,7 +48,7 @@ public class EventsTiming extends EventsBase< TimingResponse >
                                 )
                 );
 
-        scenario.put
+        scenarioOrg.put
                 (
                         PairApplicationIdUsernameId.build( APP_ORG, TIMER_ID_3 ),
                         Arrays.asList
@@ -56,8 +59,14 @@ public class EventsTiming extends EventsBase< TimingResponse >
                                 )
                 );
 
-        events      = prepareEvents( scenario );
-        responses   = prepareResponses( scenario );
+        eventsDot       = prepareEvents( scenarioDot );
+        responsesDot    = prepareResponses( scenarioDot );
+
+        events          = prepareEvents( scenarioOrg );
+        responses       = prepareResponses( scenarioOrg );
+
+        events.addAll( eventsDot );
+        responses.addAll( responsesDot );
     }
     private static List< TimingEvent >  prepareEvents( Map< PairApplicationIdUsernameId, List< EventElapsed > > scenario )
     {
