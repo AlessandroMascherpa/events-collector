@@ -224,7 +224,7 @@ public class LoginController
         return
                 ResponseEntity
                         .ok()
-                        .header( HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
+                        .header( HttpHeaders.CONTENT_TYPE, EndpointsPaths.APPLICATION_SPREADSHEET )
                         .header( HttpHeaders.CONTENT_DISPOSITION, attachment.toString() )
                         .cacheControl( CacheControl.noCache() )
                         .body

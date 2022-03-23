@@ -207,8 +207,7 @@ public class CounterController
     @RequestMapping
             (
                     value       = EndpointsPaths.REQUEST_PATH_COUNTER_EVENT_XLSX,
-                    method      = RequestMethod.GET,
-                    produces    = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    method      = RequestMethod.GET
             )
     private ResponseEntity< Mono< Resource > > getEventsGroupedByIdAsSpreadsheet
             (
@@ -265,7 +264,7 @@ public class CounterController
         return
                 ResponseEntity
                         .ok()
-                        .header( HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" )
+                        .header( HttpHeaders.CONTENT_TYPE, EndpointsPaths.APPLICATION_SPREADSHEET )
                         .header( HttpHeaders.CONTENT_DISPOSITION, attachment.toString() )
                         .cacheControl( CacheControl.noCache() )
                         .body

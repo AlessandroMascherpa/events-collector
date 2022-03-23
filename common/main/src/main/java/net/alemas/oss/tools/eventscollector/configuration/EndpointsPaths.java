@@ -39,4 +39,7 @@ public class EndpointsPaths
 
     public  final static String  FULL_PATH_LOGIN_EVENT          = EndpointsPaths.REQUEST_PATH_LOGIN_BASE + EndpointsPaths.REQUEST_PATH_LOGIN_EVENT;
 
+    /* --- endpoint media types --- */
+    public  final static String  APPLICATION_SPREADSHEET        = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
 }
