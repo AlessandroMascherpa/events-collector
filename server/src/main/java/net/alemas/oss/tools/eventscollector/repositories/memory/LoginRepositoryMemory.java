@@ -91,8 +91,6 @@ public class LoginRepositoryMemory
     }
 
 
-    static private final long          SECONDS_IN_OUT_WINDOW = ( 20 * 60 );
-
     @Override
     public Flux< LogInOutResponse > groupById( String application, LocalDateTime after, LocalDateTime before )
     {
