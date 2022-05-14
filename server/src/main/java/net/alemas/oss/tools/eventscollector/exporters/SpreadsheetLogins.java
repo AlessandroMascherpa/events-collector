@@ -4,7 +4,6 @@ package net.alemas.oss.tools.eventscollector.exporters;
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,45 +45,17 @@ public class SpreadsheetLogins extends SpreadsheetByList< LogInOutResponse >
     }
 
     @Override
-    protected EventsConsumer< LogInOutResponse > getConsumer
+    protected void fillRow
             (
-                    XSSFSheet       theSheet,
-                    XSSFCellStyle   theStyle,
-                    int             start
+                    XSSFRow             row,
+                    LogInOutResponse    response
             )
     {
-        return
-                new LoginsConsumer( theSheet, theStyle, start );
-    }
+        row.createCell( 0, CellType.STRING ).setCellValue( response.getApplication() );
+        row.createCell( 1, CellType.STRING ).setCellValue( response.getUsername() );
 
-    /* --- internal classes --- */
-    protected static class LoginsConsumer extends EventsConsumer< LogInOutResponse >
-    {
-        /* --- constructors --- */
-        public LoginsConsumer
-                (
-                        XSSFSheet       theSheet,
-                        XSSFCellStyle   theStyle,
-                        int             start
-                )
-        {
-            super( theSheet, theStyle, start );
-        }
-
-        /* --- implemented methods --- */
-        @Override
-        protected void fillRow
-                (
-                        XSSFRow             row,
-                        LogInOutResponse    response
-                )
-        {
-            row.createCell( 0, CellType.STRING ).setCellValue( response.getApplication() );
-            row.createCell( 1, CellType.STRING ).setCellValue( response.getUsername() );
-
-            this.setCellDateTime( row, 2, response.getDateLoggedIn() );
-            this.setCellDateTime( row, 3, response.getDateLoggedOut() );
-        }
+        this.setCellDateTime( row, 2, response.getDateLoggedIn() );
+        this.setCellDateTime( row, 3, response.getDateLoggedOut() );
     }
 
 }

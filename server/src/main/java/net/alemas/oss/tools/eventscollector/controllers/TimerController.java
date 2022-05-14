@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -261,6 +260,20 @@ public class TimerController
                         .filename( name + '.' + EndpointsPaths.EXPORTED_FILE_NAME_TIMER )
                         .build()
                 ;
+
+        this.repository
+                .groupById
+                        (
+                                application,
+                                after,
+                                before
+                        )
+                .subscribe
+                        (
+                                this.exporter
+                        )
+        ;
+
         return
                 ResponseEntity
                         .ok()
@@ -269,20 +282,10 @@ public class TimerController
                         .cacheControl( CacheControl.noCache() )
                         .body
                                 (
-                                        Mono.fromCallable
+                                        Mono.from
                                                 (
-                                                        () ->
-                                                                this.exporter
-                                                                        .export
-                                                                                (
-                                                                                        this.repository
-                                                                                                .groupById( application, after, before )
-                                                                                )
+                                                        this.exporter
                                                 )
-                                            .subscribeOn
-                                                    (
-                                                            Schedulers.boundedElastic()
-                                                    )
                                 )
                 ;
     }

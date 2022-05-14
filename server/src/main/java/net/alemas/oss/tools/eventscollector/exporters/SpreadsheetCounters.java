@@ -4,7 +4,6 @@ package net.alemas.oss.tools.eventscollector.exporters;
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,43 +43,15 @@ public class SpreadsheetCounters extends SpreadsheetByList< CounterResponse >
     }
 
     @Override
-    protected EventsConsumer< CounterResponse > getConsumer
+    protected void fillRow
             (
-                    XSSFSheet       theSheet,
-                    XSSFCellStyle   theStyle,
-                    int             start
+                    XSSFRow         row,
+                    CounterResponse response
             )
     {
-        return
-                new CountersConsumer( theSheet, theStyle, start );
-    }
-
-    /* --- internal classes --- */
-    protected static class CountersConsumer extends EventsConsumer< CounterResponse >
-    {
-        /* --- constructors --- */
-        public CountersConsumer
-                (
-                        XSSFSheet       theSheet,
-                        XSSFCellStyle   theStyle,
-                        int             start
-                )
-        {
-            super( theSheet, theStyle, start );
-        }
-
-        /* --- implemented methods --- */
-        @Override
-        protected void fillRow
-                (
-                        XSSFRow         row,
-                        CounterResponse response
-                )
-        {
-            row.createCell( 0, CellType.STRING ).setCellValue( response.getApplication() );
-            row.createCell( 1, CellType.STRING  ).setCellValue( response.getId() );
-            row.createCell( 2, CellType.NUMERIC ).setCellValue( response.getCounter() );
-        }
+        row.createCell( 0, CellType.STRING ).setCellValue( response.getApplication() );
+        row.createCell( 1, CellType.STRING  ).setCellValue( response.getId() );
+        row.createCell( 2, CellType.NUMERIC ).setCellValue( response.getCounter() );
     }
 
 }
