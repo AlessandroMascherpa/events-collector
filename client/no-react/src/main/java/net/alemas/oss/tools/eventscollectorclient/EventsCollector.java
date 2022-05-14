@@ -218,7 +218,7 @@ public abstract class EventsCollector
             throw
                     new IOException
                             (
-                                    "failed with return code: " + status
+                                    "failed to get from address '" + uri.toString() + "' with return code: " + status
                             )
                     ;
         }

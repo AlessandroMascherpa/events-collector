@@ -189,10 +189,7 @@ public class EventsCollectorTimers extends EventsCollector
         String  banner  = "getting list of counting events - end point '" + uri.toString() + "' - ";
         if ( log.isDebugEnabled() )
         {
-            log.debug
-                    (
-                            banner + "begin"
-                    );
+            log.debug( banner + "begin" );
         }
 
         List< TimingResponse > list = null;
@@ -228,6 +225,10 @@ public class EventsCollectorTimers extends EventsCollector
                                 banner + e.getMessage()
                         );
             }
+        }
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( banner + "end" );
         }
         return
                 list;

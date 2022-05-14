@@ -201,10 +201,7 @@ public class EventsCollectorLogins extends EventsCollector
         String  banner  = "listing events - end point '" + uri.toString() + "' - ";
         if ( log.isDebugEnabled() )
         {
-            log.debug
-                    (
-                            banner + "begin"
-                    );
+            log.debug( banner + "begin" );
         }
 
         List< LogInOutResponse > list = null;
@@ -238,6 +235,10 @@ public class EventsCollectorLogins extends EventsCollector
                                 banner + e.getMessage()
                         );
             }
+        }
+        if ( log.isDebugEnabled() )
+        {
+            log.debug( banner + "end" );
         }
         return
                 list;
