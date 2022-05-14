@@ -204,7 +204,7 @@ public class LoginController
             log.info
                     (
                             "returning list of events as spreadsheet - filter by: application: '{}', after: {}, before: {}",
-                            ( application != null ) ? application.replaceAll( "[\r\n]", "" ) : null,
+                            Base.safeLogString( application ),
                             Base.convertDate( after ).replaceAll( "[\r\n]", "" ),
                             Base.convertDate( before ).replaceAll( "[\r\n]", "" )
                     );
