@@ -20,6 +20,10 @@ server:
     error:
       include-message:  always
 
+# actuator parameters
+#
+management.endpoints.web.exposure.include: health, info
+
 # logging configuration
 #
 logging:
