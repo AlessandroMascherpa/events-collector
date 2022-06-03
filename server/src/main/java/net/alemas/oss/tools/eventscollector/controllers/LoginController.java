@@ -74,6 +74,61 @@ public class LoginController
     /* --- end-points --- */
     @ApiOperation
             (
+                    value = "To store a log in/out event.",
+                    code = 201
+            )
+    @ApiResponses
+            (
+                    value =
+                            {
+                                    @ApiResponse( code = 201, message = "Event stored" ),
+                                    @ApiResponse( code = 404, message = "If client posted an invalid log in/out event." )
+                            }
+            )
+    @RequestMapping
+            (
+                    value		= EndpointsPaths.REQUEST_PATH_LOGIN_EVENT,
+                    method		= RequestMethod.POST,
+                    consumes	= MediaType.APPLICATION_JSON_VALUE
+            )
+    @ResponseStatus( HttpStatus.CREATED )
+    private void addLogin
+    (
+            @RequestBody LogInOutEvent event
+    )
+    {
+        if ( log.isInfoEnabled() )
+        {
+            log.info( "logging event - event: '{}' - begin", event.toString() );
+        }
+        try
+        {
+            this.repository.add( event );
+        }
+        catch ( Exception e )
+        {
+            if ( log.isWarnEnabled() )
+            {
+                log.warn( "logging event - failure", e );
+            }
+            throw
+                    new ResponseStatusException
+                            (
+                                    HttpStatus.BAD_REQUEST,
+                                    e.getMessage(),
+                                    e
+                            )
+                    ;
+        }
+        if ( log.isInfoEnabled() )
+        {
+            log.info( "logging event - end" );
+        }
+    }
+
+
+    @ApiOperation
+            (
                     value = "List stored log in/out events as JSON objects array. Events can be filtered out with query parameters.",
                     code = 200
             )
@@ -250,59 +305,5 @@ public class LoginController
                 ;
     }
 
-
-    @ApiOperation
-            (
-                    value = "To store a log in/out event.",
-                    code = 201
-            )
-    @ApiResponses
-            (
-                    value =
-                            {
-                                    @ApiResponse( code = 201, message = "Event stored" ),
-                                    @ApiResponse( code = 404, message = "If client posted an invalid log in/out event." )
-                            }
-            )
-    @RequestMapping
-            (
-                    value		= EndpointsPaths.REQUEST_PATH_LOGIN_EVENT,
-                    method		= RequestMethod.POST,
-                    consumes	= MediaType.APPLICATION_JSON_VALUE
-            )
-    @ResponseStatus( HttpStatus.CREATED )
-    private void addLogin
-            (
-                    @RequestBody LogInOutEvent event
-            )
-    {
-        if ( log.isInfoEnabled() )
-        {
-            log.info( "logging event - event: '{}' - begin", event.toString() );
-        }
-        try
-        {
-            this.repository.add( event );
-        }
-        catch ( Exception e )
-        {
-            if ( log.isWarnEnabled() )
-            {
-                log.warn( "logging event - failure", e );
-            }
-            throw
-                    new ResponseStatusException
-                            (
-                                    HttpStatus.BAD_REQUEST,
-                                    e.getMessage(),
-                                    e
-                            )
-                    ;
-        }
-        if ( log.isInfoEnabled() )
-        {
-            log.info( "logging event - end" );
-        }
-    }
 
 }
