@@ -20,7 +20,7 @@ server:
     error:
       include-message:  always
 
-# actuator parameters
+# actuator configuration
 #
 management.endpoints.web.exposure.include: health, info
 
