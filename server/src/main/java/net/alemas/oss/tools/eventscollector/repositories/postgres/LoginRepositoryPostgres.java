@@ -96,11 +96,6 @@ public class LoginRepositoryPostgres
                     LocalDateTime   before
             )
     {
-        String                  sql     = "select "
-                                        +       '*'
-                                        + " from "
-                                        +       TABLE
-                ;
         CreateWhereStatement    where   =
                 new CreateWhereStatement
                         (
@@ -108,8 +103,14 @@ public class LoginRepositoryPostgres
                                 null,
                                 after,
                                 before
-                        );
-        sql = where.appendWhereStatement( sql );
+                        )
+                ;
+        String                  sql     = "select "
+                                        +       '*'
+                                        + " from "
+                                        +       TABLE
+                                        + where.appendWhereStatement()
+                ;
 
         Statement statement = connection.createStatement( sql );
         where.bindParameters( statement );
@@ -141,6 +142,21 @@ public class LoginRepositoryPostgres
                     LocalDateTime   before
             )
     {
+        CreateWhereStatement    where   =
+                new CreateWhereStatement
+                        (
+                                application,
+                                null,
+                                after,
+                                before
+                        )
+                ;
+        String                  sub     = "select "
+                                        +       '*'
+                                        + " from "
+                                        +       TABLE
+                                        + " where "
+                ;
         String                  sql     = "select "
                                         +       "loggedin.application" + ", "
                                         +       "loggedin.username" + ", "
@@ -148,21 +164,15 @@ public class LoginRepositoryPostgres
                                         +       "loggedout.date" + " as " + "date_out"
                                         + " from "
                                         +   '('
-                                        +       "select "
-                                        +           '*'
-                                        +       " from "
-                                        +           TABLE
-                                        +       " where "
+                                        +       sub
                                         +           "\"in\" = true"
+                                        +       where.appendAndStatement()
                                         +   ") " + "loggedin"
                                         + " left join "
                                         +   '('
-                                        +       "select "
-                                        +           '*'
-                                        +       " from "
-                                        +           TABLE
-                                        +       " where "
+                                        +       sub
                                         +           "\"in\" = false"
+                                        +       where.appendAndStatement()
                                         +   ") " + "loggedout"
                                         +   " on "
                                         +       "loggedin.application = loggedout.application"
@@ -175,16 +185,6 @@ public class LoginRepositoryPostgres
                                         +   " order by "
                                         +       "application" + ',' + "username" + ',' + "date_in"
                 ;
-
-        CreateWhereStatement    where   =
-                new CreateWhereStatement
-                        (
-                                application,
-                                null,
-                                after,
-                                before
-                        );
-        sql = where.appendWhereStatement( sql );
 
         Statement statement = connection.createStatement( sql );
         where.bindParameters( statement );

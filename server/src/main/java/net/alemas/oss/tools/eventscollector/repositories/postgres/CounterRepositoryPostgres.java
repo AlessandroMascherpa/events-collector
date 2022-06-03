@@ -94,11 +94,6 @@ public class CounterRepositoryPostgres
                 LocalDateTime   before
         )
     {
-        String                  sql     = "select "
-                                          +       '*'
-                                          + " from "
-                                          +       TABLE
-                ;
         CreateWhereStatement    where   =
                 new CreateWhereStatement
                         (
@@ -106,8 +101,14 @@ public class CounterRepositoryPostgres
                                 null,
                                 after,
                                 before
-                        );
-        sql = where.appendWhereStatement( sql );
+                        )
+                ;
+        String                  sql     = "select "
+                                        +       '*'
+                                        + " from "
+                                        +       TABLE
+                                        + where.appendWhereStatement()
+                ;
 
         Statement statement = connection.createStatement( sql );
         where.bindParameters( statement );
@@ -137,13 +138,6 @@ public class CounterRepositoryPostgres
                     LocalDateTime   before
             )
     {
-        String                  sql     = "select "
-                                          +       "application" + ", "
-                                          +       "event_id" + ", "
-                                          +       "count( date ) as count"
-                                          + " from "
-                                          +       TABLE
-                ;
         CreateWhereStatement    where   =
                 new CreateWhereStatement
                         (
@@ -151,11 +145,18 @@ public class CounterRepositoryPostgres
                                 null,
                                 after,
                                 before
-                        );
-        sql  = where.appendWhereStatement( sql );
-        sql += " group by "
-             +       "application, event_id"
-        ;
+                        )
+                ;
+        String                  sql     = "select "
+                                        +       "application" + ", "
+                                        +       "event_id" + ", "
+                                        +       "count( date ) as count"
+                                        + " from "
+                                        +       TABLE
+                                        + where.appendWhereStatement()
+                                        + " group by "
+                                        +       "application, event_id"
+                ;
 
         Statement statement = connection.createStatement( sql );
         where.bindParameters( statement );

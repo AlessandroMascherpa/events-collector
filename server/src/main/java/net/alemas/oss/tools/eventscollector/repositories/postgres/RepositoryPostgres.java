@@ -182,12 +182,21 @@ public abstract class RepositoryPostgres< Event extends Base, Response extends B
         }
 
         /* --- getters --- */
-        protected String appendWhereStatement( String sql )
+        protected String appendWhereStatement()
         {
             return
                     ( this.where.length() > 0 )
-                    ? ( sql + " where " + this.where )
-                    : sql
+                    ? ( " where " + this.where )
+                    : ""
+                    ;
+        }
+
+        protected String appendAndStatement()
+        {
+            return
+                    ( this.where.length() > 0 )
+                    ? ( " and " + this.where )
+                    : ""
                     ;
         }
 

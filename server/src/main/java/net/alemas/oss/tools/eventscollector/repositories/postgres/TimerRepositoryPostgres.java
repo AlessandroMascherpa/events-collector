@@ -89,18 +89,13 @@ public class TimerRepositoryPostgres
     /* --- abstract methods definition --- */
     @Override
     protected Statement createStatementForList
-    (
-            Connection      connection,
-            String          application,
-            LocalDateTime   after,
-            LocalDateTime   before
-    )
+        (
+                Connection      connection,
+                String          application,
+                LocalDateTime   after,
+                LocalDateTime   before
+        )
     {
-        String                  sql     = "select "
-                                        +       '*'
-                                        + " from "
-                                        +       TABLE
-                ;
         CreateWhereStatement    where   =
                 new CreateWhereStatement
                         (
@@ -108,8 +103,14 @@ public class TimerRepositoryPostgres
                                 null,
                                 after,
                                 before
-                        );
-        sql = where.appendWhereStatement( sql );
+                        )
+                ;
+        String                  sql     = "select "
+                                        +       '*'
+                                        + " from "
+                                        +       TABLE
+                                        + where.appendWhereStatement()
+                ;
 
         Statement statement = connection.createStatement( sql );
         where.bindParameters( statement );
@@ -140,6 +141,15 @@ public class TimerRepositoryPostgres
                     LocalDateTime   before
             )
     {
+        CreateWhereStatement    where   =
+                new CreateWhereStatement
+                        (
+                                application,
+                                null,
+                                after,
+                                before
+                        )
+                ;
         String                  sql     = "select "
                                         +       "application" + ", "
                                         +       "event_id" + ", "
@@ -149,18 +159,9 @@ public class TimerRepositoryPostgres
                                         +       "max( elapsed ) as max"
                                         + " from "
                                         +       TABLE
-                                        ;
-        CreateWhereStatement    where   =
-                new CreateWhereStatement
-                        (
-                                application,
-                                null,
-                                after,
-                                before
-                        );
-        sql = where.appendWhereStatement( sql );
-        sql += " group by "
-            +       "application, event_id"
+                                        + where.appendWhereStatement()
+                                        + " group by "
+                                        +       "application, event_id"
             ;
 
         Statement statement = connection.createStatement( sql );
