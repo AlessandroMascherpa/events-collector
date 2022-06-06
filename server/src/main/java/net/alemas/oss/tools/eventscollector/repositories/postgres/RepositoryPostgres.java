@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 
 /**
@@ -73,7 +74,11 @@ public abstract class RepositoryPostgres< Event extends Base, Response extends B
                                                                         this.mapEvent( row )
                                                         )
                                 )
-                        .log()
+                        .log
+                                (
+                                        null,
+                                        Level.FINE
+                                )
                 ;
     }
 
@@ -112,7 +117,11 @@ public abstract class RepositoryPostgres< Event extends Base, Response extends B
                                                                         this.mapResponse( row )
                                                         )
                                 )
-                        .log()
+                        .log
+                                (
+                                        null,
+                                        Level.FINE
+                                )
                 ;
     }
 
