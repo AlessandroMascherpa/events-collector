@@ -92,7 +92,12 @@ public class LoginRepositoryMemory
 
 
     @Override
-    public Flux< LogInOutResponse > groupById( String application, LocalDateTime after, LocalDateTime before )
+    public Flux< LogInOutResponse > groupById
+            (
+                    String        application,
+                    LocalDateTime after,
+                    LocalDateTime before
+            )
     {
         List< LogInOutEvent >    outs
                 = this.repository
