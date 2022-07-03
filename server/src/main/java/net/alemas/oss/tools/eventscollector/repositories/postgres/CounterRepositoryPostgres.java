@@ -167,12 +167,13 @@ public class CounterRepositoryPostgres
     @Override
     protected CounterResponse mapResponse( Row row )
     {
+        Long count = row.get( "count", Long.class );
         return
                 new CounterResponse
                         (
                                 row.get( "application", String.class ),
                                 row.get( "event_id",    String.class ),
-                                row.get( "count",       Long.class )
+                                ( count != null ) ? count : 0
                         );
     }
 

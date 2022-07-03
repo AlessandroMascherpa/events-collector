@@ -25,6 +25,9 @@
         <Class name="~net.alemas.oss.tools.eventscollector.*" />
         <Or>
             <Field name="failures" />
+            <Field name="scenarioDot" />
+            <Field name="scenarioNet" />
+            <Field name="scenarioOrg" />
             <Field name="scenario" />
             <Field name="responses" />
             <Field name="appDate" />
@@ -33,21 +36,25 @@
         </Or>
         <Bug pattern="MS_MUTABLE_COLLECTION_PKGPROTECT" />
     </Match>
+    <Match>
+        <Class name="net.alemas.oss.tools.eventscollector.io.EventsLogInOut$LogInOutSessionTest" />
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+    </Match>
 
     <!-- events-collector-server -->
     <Match>
         <Class name="net.alemas.oss.tools.eventscollector.controllers.CounterController" />
-        <Bug pattern="CRLF_INJECTION_LOGS" />
+        <Bug pattern="CRLF_INJECTION_LOGS,EI_EXPOSE_REP2" />
     </Match>
 
     <Match>
         <Class name="net.alemas.oss.tools.eventscollector.controllers.TimerController" />
-        <Bug pattern="CRLF_INJECTION_LOGS" />
+        <Bug pattern="CRLF_INJECTION_LOGS,EI_EXPOSE_REP2" />
     </Match>
 
     <Match>
         <Class name="net.alemas.oss.tools.eventscollector.controllers.LoginController" />
-        <Bug pattern="CRLF_INJECTION_LOGS" />
+        <Bug pattern="CRLF_INJECTION_LOGS,EI_EXPOSE_REP2" />
     </Match>
 
 </FindBugsFilter>

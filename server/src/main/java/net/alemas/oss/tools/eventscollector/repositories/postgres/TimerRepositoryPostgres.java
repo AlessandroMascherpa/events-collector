@@ -121,13 +121,14 @@ public class TimerRepositoryPostgres
     @Override
     protected TimingEvent mapEvent( Row row )
     {
+        Double elapsed = row.get( "elapsed", Double.class );
         return
                 new TimingEvent
                         (
                                 row.get( "application", String.class ),
                                 row.get( "event_id",    String.class ),
                                 row.get( "date",        LocalDateTime.class ),
-                                row.get( "elapsed",     Double.class )
+                                ( elapsed != null ) ? elapsed : 0.0D
                         );
     }
 
@@ -173,15 +174,19 @@ public class TimerRepositoryPostgres
     @Override
     protected TimingResponse mapResponse( Row row )
     {
+        Long count = row.get( "count", Long.class );
+        Double avg = row.get( "avg",   Double.class );
+        Double min = row.get( "min",   Double.class );
+        Double max = row.get( "max",   Double.class );
         return
                 new TimingResponse
                         (
                                 row.get( "application", String.class ),
                                 row.get( "event_id",    String.class ),
-                                row.get( "count",       Long.class ),
-                                row.get( "avg",         Double.class ),
-                                row.get( "min",         Double.class ),
-                                row.get( "max",         Double.class )
+                                ( count != null ) ? count : 0,
+                                ( avg   != null ) ? avg   : 0.0D,
+                                ( min   != null ) ? min   : 0.0D,
+                                ( max   != null ) ? max   : 0.0D
                         );
     }
 
