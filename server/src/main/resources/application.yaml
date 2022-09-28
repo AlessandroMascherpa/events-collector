@@ -26,6 +26,7 @@ management.endpoints.web.exposure.include: health, info
 
 # logging configuration
 #
+spring.output.ansi.enabled: ALWAYS
 logging:
   level:
     web:  INFO
@@ -33,6 +34,6 @@ logging:
       springframework:
         web:  INFO
 
-# swagger configuraton
+# swagger configuration
 #
 springfox.documentation.swagger-ui.base-url:  ${server.base-path}
