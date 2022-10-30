@@ -1,4 +1,4 @@
-package net.alemas.oss.tools.eventscollector.io.counter;
+package net.alemas.oss.tools.eventscollector.io.in;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,13 +9,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 
-
 /**
- * Properties to define which and when an event happened;
+ * Event with its identifier and when it happened.
  *
- * Created by MASCHERPA on 04/05/2021.
+ * Created by MASCHERPA on 14/10/2022.
  */
-public class CounterEvent extends Counter
+public class Event extends Base
 {
     /* --- properties --- */
     @Schema
@@ -31,14 +30,14 @@ public class CounterEvent extends Counter
      * is not correctly parsed by method {@code WebTestClient.ResponseSpec.expectBody(...)}
      * in test suite.
      */
-    private LocalDateTime     when;
+    private LocalDateTime when;
 
     /* --- constructors --- */
-    public CounterEvent()
+    public Event()
     {
         this( null, null, null );
     }
-    public CounterEvent
+    public Event
             (
                     String          application,
                     String          id,
@@ -70,7 +69,8 @@ public class CounterEvent extends Counter
             throw
                     new NotWellFormed
                             (
-                                    String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "when" )
+                                    this.getClass().getSimpleName(),
+                                    "when"
                             );
         }
     }
@@ -78,14 +78,14 @@ public class CounterEvent extends Counter
     @Override
     public boolean equals( Object o )
     {
-        CounterEvent that = ( o instanceof CounterEvent ) ? ( (CounterEvent) o ) :null;
+        Event that = ( o instanceof Event ) ? ( (Event) o ) : null;
         return
                 (
                         ( that != null )
                         &&
                         super.equals( o )
                         &&
-                        areEqual( that.when, that.when )
+                        areEqual( this.when, that.when )
                 )
                 ;
     }
@@ -107,11 +107,11 @@ public class CounterEvent extends Counter
                 Base.safeLogString
                         (
                                 this.getClass().getSimpleName()
-                                + '['
-                                +        "application: '" + this.getApplication() + "', "
-                                +        "id: '" + this.getId() + "' "
-                                +        "at: " + Base.convertDate( this.when )
-                                + ']'
+                                        + '['
+                                        +        "application: '" + this.getApplication() + "', "
+                                        +        "id: '" + this.getId() + "', "
+                                        +        "at: " + Base.convertDate( this.when )
+                                        + ']'
                         )
                 ;
     }

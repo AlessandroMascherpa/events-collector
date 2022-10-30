@@ -10,7 +10,7 @@ public interface WellFormed
     /**
      * Check the event correctness;
      *
-     * @throws IllegalArgumentException if the event is not well-formed;
+     * @throws NotWellFormed if the event is not well-formed;
      */
     void isWellFormed() throws NotWellFormed;
 

@@ -26,6 +26,33 @@ public class NotWellFormed extends IllegalArgumentException
     }
 
     /**
+     * constructs an exception with detail;
+     *
+     * @param nameClass    the class not well-formed;
+     * @param nameProperty the property not well-formed;
+     */
+    public NotWellFormed
+            (
+                    String nameClass,
+                    String nameProperty
+            )
+    {
+        this
+                (
+                        (
+                                String
+                                        .format
+                                                (
+                                                        "Class: '%s', property '%s' was not defined.",
+                                                        nameClass,
+                                                        nameProperty
+                                                )
+                        )
+                )
+        ;
+    }
+
+    /**
      * constructs an exception with detail and cause;
      *
      * @param message the detail message;

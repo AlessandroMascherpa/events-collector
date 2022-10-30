@@ -2,15 +2,16 @@ package net.alemas.oss.tools.eventscollector.io;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
 /**
- * Class to define common properties;
+ * Class to define common properties for all events.
  *
- * Created by MASCHERPA on 04/05/2021.
+ * Created by MASCHERPA on 14/10/2022.
  */
 public abstract class Base implements WellFormed
 {
@@ -33,13 +34,23 @@ public abstract class Base implements WellFormed
             )
     private String             application;
 
+    @Schema
+            (
+                    required    = true,
+                    description = "The unique event identifier.",
+                    nullable    = false
+            )
+    private String              id;
+
     /* --- constructors --- */
     public Base
-        (
-                String  system
-        )
+            (
+                    String  system,
+                    String  id
+            )
     {
         this.application    = system;
+        this.id             = id;
     }
 
     /* --- getters'n'setters --- */
@@ -52,16 +63,35 @@ public abstract class Base implements WellFormed
         this.application = name;
     }
 
+    public String getId()
+    {
+        return this.id;
+    }
+    public void setId( String id )
+    {
+        this.id = id;
+    }
+
     /* --- object checking --- */
     @Override
     public void isWellFormed() throws NotWellFormed
     {
-        if ( ( this.application == null ) || "".equals( this.application ) )
+        if ( ! StringUtils.hasText( this.application ) )
         {
             throw
                     new NotWellFormed
                             (
-                                    String.format( "Class: '%s', property '%s' was not defined.", this.getClass().getSimpleName(), "application" )
+                                    this.getClass().getSimpleName(),
+                                    "application"
+                            );
+        }
+        if ( ! StringUtils.hasText( this.id ) )
+        {
+            throw
+                    new NotWellFormed
+                            (
+                                    this.getClass().getSimpleName(),
+                                    "id"
                             );
         }
     }
@@ -73,10 +103,6 @@ public abstract class Base implements WellFormed
         {
             return true;
         }
-        if ( ( o == null ) || ( this.getClass() != o.getClass() ) )
-        {
-            return false;
-        }
 
         Base that = ( o instanceof Base ) ? ( (Base) o ) : null;
         return
@@ -84,6 +110,8 @@ public abstract class Base implements WellFormed
                         ( that != null )
                         &&
                         areEqual( that.application, that.application )
+                        &&
+                        areEqual( that.id, that.id )
                 )
                 ;
     }
@@ -101,8 +129,10 @@ public abstract class Base implements WellFormed
     @Override
     public int hashCode()
     {
+        int result = ( this.application != null ) ? this.application.hashCode() : 0;
+        result = 31 * result + ( ( this.id != null ) ? this.id.hashCode() : 0 );
         return
-                ( this.application != null ) ? this.application.hashCode() : 0
+                result
                 ;
     }
 

@@ -2,7 +2,6 @@ package net.alemas.oss.tools.eventscollector.io;
 
 
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
 
 import java.time.LocalDateTime;
@@ -14,7 +13,7 @@ import java.util.*;
  *
  * Created by MASCHERPA on 11/05/2021.
  */
-public class EventsCounter extends EventsBase< CounterResponse >
+public class EventsCounter extends EventsBase< net.alemas.oss.tools.eventscollector.io.out.EventsCounter >
 {
     /* --- payload values --- */
     protected static final String                                                       COUNT_ID_1  = "count-1";
@@ -23,8 +22,8 @@ public class EventsCounter extends EventsBase< CounterResponse >
 
     protected static final List< CounterEvent >                                         events;
     protected static final List< CounterEvent >                                         eventsDot;
-    protected static final List< CounterResponse >                                      responses;
-    protected static final List< CounterResponse >                                      responsesDot;
+    protected static final List< net.alemas.oss.tools.eventscollector.io.out.EventsCounter >                                      responses;
+    protected static final List< net.alemas.oss.tools.eventscollector.io.out.EventsCounter >                                      responsesDot;
     protected static final Map< PairApplicationIdUsernameId, List< LocalDateTime > >    scenarioDot = new HashMap<>();
     protected static final Map< PairApplicationIdUsernameId, List< LocalDateTime > >    scenarioNet = new HashMap<>();
     static
@@ -88,15 +87,15 @@ public class EventsCounter extends EventsBase< CounterResponse >
         return
                 events;
     }
-    private static List< CounterResponse >  prepareResponses( Map< PairApplicationIdUsernameId, List< LocalDateTime > > scenario )
+    private static List< net.alemas.oss.tools.eventscollector.io.out.EventsCounter >  prepareResponses( Map< PairApplicationIdUsernameId, List< LocalDateTime > > scenario )
     {
-        List< CounterResponse >  responses = new ArrayList<>();
+        List< net.alemas.oss.tools.eventscollector.io.out.EventsCounter >  responses = new ArrayList<>();
         for ( Map.Entry< PairApplicationIdUsernameId, List< LocalDateTime > > listEntry : scenario.entrySet() )
         {
             PairApplicationIdUsernameId pair = listEntry.getKey();
             responses.add
                     (
-                            new CounterResponse
+                            new net.alemas.oss.tools.eventscollector.io.out.EventsCounter
                                     (
                                             pair.getApplication(),
                                             pair.getId(),

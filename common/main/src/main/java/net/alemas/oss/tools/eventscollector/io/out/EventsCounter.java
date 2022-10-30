@@ -1,4 +1,4 @@
-package net.alemas.oss.tools.eventscollector.io.counter;
+package net.alemas.oss.tools.eventscollector.io.out;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -6,11 +6,11 @@ import net.alemas.oss.tools.eventscollector.io.Base;
 
 
 /**
- * Properties to define how many times an event occurred;
+ * Counts how many times an event occurred.
  *
- * Created by MASCHERPA on 12/05/2021.
+ * Created by MASCHERPA on 14/10/2022.
  */
-public class CounterResponse extends Counter
+public class EventsCounter extends Base
 {
     /* --- properties --- */
     @Schema
@@ -22,11 +22,11 @@ public class CounterResponse extends Counter
     private long  counter;
 
     /* --- constructors --- */
-    public CounterResponse()
+    public EventsCounter()
     {
         this( null, null, 0L );
     }
-    public CounterResponse
+    public EventsCounter
             (
                     String  application,
                     String  id,
@@ -51,7 +51,7 @@ public class CounterResponse extends Counter
     @Override
     public boolean equals( Object o )
     {
-        CounterResponse that = ( o instanceof CounterResponse ) ? ( (CounterResponse) o ) : null;
+        EventsCounter that = ( o instanceof EventsCounter ) ? ( (EventsCounter) o ) : null;
         return
                 (
                         ( that != null )
@@ -82,8 +82,8 @@ public class CounterResponse extends Counter
                                 this.getClass().getSimpleName()
                                 + '['
                                 +        "application: '" + this.getApplication() + "', "
-                                +        "id: '" + this.getId() + "' "
-                                +        "count: " + this.counter
+                                +        "id: '" + this.getId() + "', "
+                                +        "counter: " + this.counter
                                 + ']'
                         )
                 ;

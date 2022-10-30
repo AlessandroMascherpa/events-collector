@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  *
  * Created by MASCHERPA on 26/02/2021.
  */
-public class EventsLogInOut extends EventsBase< LogInOutResponse >
+public class EventsLogInOut extends TestPayloadsBase< LogInOutResponse >
 {
     /* --- checking methods --- */
     protected void checkLogInOutListResult

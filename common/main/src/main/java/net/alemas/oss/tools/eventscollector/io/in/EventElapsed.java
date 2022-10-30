@@ -1,20 +1,19 @@
-package net.alemas.oss.tools.eventscollector.io.timing;
+package net.alemas.oss.tools.eventscollector.io.in;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import net.alemas.oss.tools.eventscollector.io.Base;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
 
 import java.time.LocalDateTime;
 
 
 
 /**
- * Prooerties to defined when an event occurred and how much time it needed.
+ * Elapsed time for an event.
  *
- * Created by MASCHERPA on 25/05/2021.
+ * Created by MASCHERPA on 14/10/2022.
  */
-public class TimingEvent extends CounterEvent
+public class EventElapsed extends Event
 {
     /* --- properties --- */
     @Schema
@@ -26,11 +25,11 @@ public class TimingEvent extends CounterEvent
     private double    elapsed;
 
     /* --- constructors --- */
-    public TimingEvent()
+    public EventElapsed()
     {
         this( null, null, null, 0L );
     }
-    public TimingEvent
+    public EventElapsed
             (
                     String          application,
                     String          id,
@@ -57,7 +56,7 @@ public class TimingEvent extends CounterEvent
     @Override
     public boolean equals( Object o )
     {
-        TimingEvent that = ( o instanceof TimingEvent ) ? ( (TimingEvent) o ) : null;
+        EventElapsed that = ( o instanceof EventElapsed ) ? ( (EventElapsed) o ) : null;
         return
                 (
                         ( that != null )
@@ -88,7 +87,7 @@ public class TimingEvent extends CounterEvent
                                 this.getClass().getSimpleName()
                                 + '['
                                 +        "application: '" + this.getApplication() + "', "
-                                +        "id: '" + this.getId() + "' "
+                                +        "id: '" + this.getId() + "', "
                                 +        "at: " + Base.convertDate( this.getWhen() ) + ", "
                                 +        "elapsed time: " + this.elapsed
                                 + ']'

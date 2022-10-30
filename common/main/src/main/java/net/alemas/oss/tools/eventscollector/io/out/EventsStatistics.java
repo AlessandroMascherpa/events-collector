@@ -1,17 +1,16 @@
-package net.alemas.oss.tools.eventscollector.io.timing;
+package net.alemas.oss.tools.eventscollector.io.out;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import net.alemas.oss.tools.eventscollector.io.Base;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
 
 
 /**
  * Properties to define how many times an event occurred and how much time it needed.
  *
- * Created by MASCHERPA on 25/05/2021.
+ * Created by MASCHERPA on 02/11/2022.
  */
-public class TimingResponse extends CounterResponse
+public class EventsStatistics extends EventsCounter
 {
     /* --- properties --- */
     @Schema
@@ -39,11 +38,11 @@ public class TimingResponse extends CounterResponse
     private double    max;
             
     /* --- constructors --- */
-    public TimingResponse()
+    public EventsStatistics()
     {
      this( null, null, 0L, 0.0D, 0.0D, 0.0D );
     }
-    public TimingResponse
+    public EventsStatistics
             (
                     String  application,
                     String  id,
@@ -91,7 +90,7 @@ public class TimingResponse extends CounterResponse
     @Override
     public boolean equals( Object o )
     {
-        TimingResponse that = ( o instanceof TimingResponse ) ? ( (TimingResponse) o ) : null;
+        EventsStatistics that = ( o instanceof EventsStatistics ) ? ( (EventsStatistics) o ) : null;
         return
                 (
                         ( that != null )
@@ -127,7 +126,9 @@ public class TimingResponse extends CounterResponse
                         (
                                 this.getClass().getSimpleName()
                                 + '['
-                                +        super.toString() + ", "
+                                +        "application: '" + this.getApplication() + "', "
+                                +        "id: '" + this.getId() + "', "
+                                +        "counter: " + this.getCounter() + ", "
                                 +        "average time: " + this.average + ", "
                                 +        "min time: " + this.min + ", "
                                 +        "max time: " + this.max

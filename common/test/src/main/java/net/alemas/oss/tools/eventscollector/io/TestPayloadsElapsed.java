@@ -2,8 +2,7 @@ package net.alemas.oss.tools.eventscollector.io;
 
 
 import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -14,17 +13,17 @@ import java.util.*;
  *
  * Created by MASCHERPA on 26/05/2021.
  */
-public class EventsTiming extends EventsBase< TimingResponse >
+public class EventsTiming extends EventsBase< EventsStatistics >
 {
     /* --- payload values --- */
     protected static final String                                                       TIMER_ID_1 = "timer-1";
     protected static final String                                                       TIMER_ID_2 = "timer-2";
     protected static final String                                                       TIMER_ID_3 = "timer-3";
 
-    protected static final List< TimingEvent >                                          events;
-    protected static final List< TimingEvent >                                          eventsDot;
-    protected static final List< TimingResponse >                                       responses;
-    protected static final List< TimingResponse >                                       responsesDot;
+    protected static final List< net.alemas.oss.tools.eventscollector.io.in.EventElapsed >                                          events;
+    protected static final List< net.alemas.oss.tools.eventscollector.io.in.EventElapsed >                                          eventsDot;
+    protected static final List< EventsStatistics >                                       responses;
+    protected static final List< EventsStatistics >                                       responsesDot;
     protected static final Map< PairApplicationIdUsernameId, List< EventElapsed > >     scenarioDot    = new HashMap<>();
     protected static final Map< PairApplicationIdUsernameId, List< EventElapsed > >     scenarioOrg    = new HashMap<>();
     static
@@ -34,7 +33,7 @@ public class EventsTiming extends EventsBase< TimingResponse >
                         PairApplicationIdUsernameId.build( APP_DOT, TIMER_ID_1 ),
                         Collections.singletonList
                                 (
-                                        EventElapsed.build( 2021, 5, 21, 22, 5, 3, 1.0D )
+                                        EventsTiming.EventElapsed.build( 2021, 5, 21, 22, 5, 3, 1.0D )
                                 )
                 );
 
@@ -43,8 +42,8 @@ public class EventsTiming extends EventsBase< TimingResponse >
                         PairApplicationIdUsernameId.build( APP_DOT, TIMER_ID_2 ),
                         Arrays.asList
                                 (
-                                        EventElapsed.build( 2021, 5, 21, 22, 15, 20, 2.0D ),
-                                        EventElapsed.build( 2021, 5, 21, 22, 55, 22, 4.0D )
+                                        EventsTiming.EventElapsed.build( 2021, 5, 21, 22, 15, 20, 2.0D ),
+                                        EventsTiming.EventElapsed.build( 2021, 5, 21, 22, 55, 22, 4.0D )
                                 )
                 );
 
@@ -53,9 +52,9 @@ public class EventsTiming extends EventsBase< TimingResponse >
                         PairApplicationIdUsernameId.build( APP_ORG, TIMER_ID_3 ),
                         Arrays.asList
                                 (
-                                        EventElapsed.build( 2021, 5, 22, 21, 34, 45, 1.0D ),
-                                        EventElapsed.build( 2021, 5, 22, 21, 52, 36, 2.0D ),
-                                        EventElapsed.build( 2021, 5, 22, 21,  2, 12, 3.0D )
+                                        EventsTiming.EventElapsed.build( 2021, 5, 22, 21, 34, 45, 1.0D ),
+                                        EventsTiming.EventElapsed.build( 2021, 5, 22, 21, 52, 36, 2.0D ),
+                                        EventsTiming.EventElapsed.build( 2021, 5, 22, 21,  2, 12, 3.0D )
                                 )
                 );
 
@@ -68,9 +67,9 @@ public class EventsTiming extends EventsBase< TimingResponse >
         events.addAll( eventsDot );
         responses.addAll( responsesDot );
     }
-    private static List< TimingEvent >  prepareEvents( Map< PairApplicationIdUsernameId, List< EventElapsed > > scenario )
+    private static List< net.alemas.oss.tools.eventscollector.io.in.EventElapsed >  prepareEvents( Map< PairApplicationIdUsernameId, List< EventElapsed > > scenario )
     {
-        List< TimingEvent >  events = new ArrayList<>();
+        List< net.alemas.oss.tools.eventscollector.io.in.EventElapsed >  events = new ArrayList<>();
         for ( Map.Entry< PairApplicationIdUsernameId, List< EventElapsed > > listEntry : scenario.entrySet() )
         {
             PairApplicationIdUsernameId pair = listEntry.getKey();
@@ -78,7 +77,7 @@ public class EventsTiming extends EventsBase< TimingResponse >
             {
                 events.add
                         (
-                                new TimingEvent
+                                new net.alemas.oss.tools.eventscollector.io.in.EventElapsed
                                         (
                                                 pair.getApplication(),
                                                 pair.getId(),
@@ -91,9 +90,9 @@ public class EventsTiming extends EventsBase< TimingResponse >
         return
                 events;
     }
-    private static List< TimingResponse >  prepareResponses( Map< PairApplicationIdUsernameId, List< EventElapsed > > scenario )
+    private static List< EventsStatistics >  prepareResponses( Map< PairApplicationIdUsernameId, List< EventElapsed > > scenario )
     {
-        List< TimingResponse >  responses = new ArrayList<>();
+        List< EventsStatistics >  responses = new ArrayList<>();
         for ( Map.Entry< PairApplicationIdUsernameId, List< EventElapsed > > listEntry : scenario.entrySet() )
         {
             PairApplicationIdUsernameId pair    = listEntry.getKey();
@@ -107,7 +106,7 @@ public class EventsTiming extends EventsBase< TimingResponse >
 
             responses.add
                     (
-                            new TimingResponse
+                            new EventsStatistics
                                     (
                                             pair.getApplication(),
                                             pair.getId(),
@@ -142,23 +141,23 @@ public class EventsTiming extends EventsBase< TimingResponse >
 
 
     /* --- invalid payload values --- */
-    protected static final List< TimingEvent >                 failures    = new ArrayList<>();
+    protected static final List< net.alemas.oss.tools.eventscollector.io.in.EventElapsed >                 failures    = new ArrayList<>();
     static
     {
-        failures.add( new TimingEvent( null,    "invalid", null,                              0.0D ) );
-        failures.add( new TimingEvent( null,    "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
-        failures.add( new TimingEvent( null,    null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
-        failures.add( new TimingEvent( null,    null,      null,                              0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( null,    "invalid", null,                              0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( null,    "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( null,    null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( null,    null,      null,                              0.0D ) );
 
-        failures.add( new TimingEvent( "",      "invalid", null,                              0.0D ) );
-        failures.add( new TimingEvent( "",      "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
-        failures.add( new TimingEvent( "",      null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
-        failures.add( new TimingEvent( "",      null,      null,                              0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( "",      "invalid", null,                              0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( "",      "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( "",      null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( "",      null,      null,                              0.0D ) );
 
-        failures.add( new TimingEvent( "empty", "invalid", null,                              0.0D ) );
-        failures.add( new TimingEvent( "empty", "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
-        failures.add( new TimingEvent( "empty", null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
-        failures.add( new TimingEvent( "empty", null,      null,                              0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( "empty", "invalid", null,                              0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( "empty", "",        asDate( 2021, 5, 14, 23, 24, 12 ), 0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( "empty", null,      asDate( 2021, 5, 14, 23, 24, 36 ), 0.0D ) );
+        failures.add( new net.alemas.oss.tools.eventscollector.io.in.EventElapsed( "empty", null,      null,                              0.0D ) );
 
     }
 
