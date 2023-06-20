@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * Elapsed time for an event.
- *
  * Created by MASCHERPA on 14/10/2022.
  */
 public class EventElapsed extends Event
@@ -22,7 +21,7 @@ public class EventElapsed extends Event
                     description = "How much time the event needed.",
                     nullable    = false
             )
-    private double    elapsed;
+    private long        elapsed;
 
     /* --- constructors --- */
     public EventElapsed()
@@ -34,7 +33,7 @@ public class EventElapsed extends Event
                     String          application,
                     String          id,
                     LocalDateTime   when,
-                    double          needed
+                    long            needed
             )
     {
         super( application, id, when );
@@ -47,7 +46,7 @@ public class EventElapsed extends Event
         return this.elapsed;
     }
 
-    public void setElapsed( double needed )
+    public void setElapsed( long needed )
     {
         this.elapsed = needed;
     }

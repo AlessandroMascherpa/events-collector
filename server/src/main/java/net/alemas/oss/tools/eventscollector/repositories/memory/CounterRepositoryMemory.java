@@ -2,7 +2,7 @@ package net.alemas.oss.tools.eventscollector.repositories.memory;
 
 
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsCounter;
 import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
 import net.alemas.oss.tools.eventscollector.repositories.CounterRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -88,7 +88,7 @@ public class CounterRepositoryMemory
 
 
     @Override
-    public Flux< CounterResponse > groupById
+    public Flux< EventsCounter > groupById
             (
                     String          application,
                     LocalDateTime   after,
@@ -129,7 +129,7 @@ public class CounterRepositoryMemory
                                                                         {
                                                                             PairApplicationIdUsernameId key = grouped.key();
                                                                             return
-                                                                                    new CounterResponse
+                                                                                    new EventsCounter
                                                                                             (
                                                                                                     key.getApplication(),
                                                                                                     key.getId(),

@@ -2,7 +2,7 @@ package net.alemas.oss.tools.eventscollector.exporters;
 
 
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsCounter;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * Created by MASCHERPA on 13/05/2021.
  */
 @Service
-public class SpreadsheetCounters extends SpreadsheetByList< CounterResponse >
+public class SpreadsheetCounters extends SpreadsheetByList< EventsCounter >
 {
     /* --- constructors --- */
     @Autowired
@@ -46,7 +46,7 @@ public class SpreadsheetCounters extends SpreadsheetByList< CounterResponse >
     protected void fillRow
             (
                     XSSFRow         row,
-                    CounterResponse response
+                    EventsCounter response
             )
     {
         row.createCell( 0, CellType.STRING ).setCellValue( response.getApplication() );

@@ -45,7 +45,7 @@ The end point to keep track of event timings is: **/events-collector/events/timi
      - **application** the system where the event occurred
      - **id** the event identifier
      - **when** the event date, it is the format: `yyyy-MM-dd'T'HH:mm:ss.SSS`, for example: 2021-03-10T14:45:03.527
-     - **elapsed** how much time the event needed
+     - **elapsed** how much time the event needed (in milliseconds)
 
  - **GET** to get the events list and, per each event, how many times it occurred and the minimum, maximum and average time needed
  

@@ -4,7 +4,7 @@ package net.alemas.oss.tools.eventscollectorclient;
 import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsCounter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import reactor.core.publisher.Mono;
@@ -188,7 +188,7 @@ public class EventsCollectorCounters extends EventsCollector
      *
      * @return list of events grouped by identifier;
      */
-    public List< CounterResponse > getEventsList()
+    public List< EventsCounter > getEventsList()
     {
         return
                 this.getEventsList( null, null, null );
@@ -202,7 +202,7 @@ public class EventsCollectorCounters extends EventsCollector
      * @param before        events occurred before the given date;
      * @return list of events grouped by identifier;
      */
-    public List< CounterResponse > getEventsList
+    public List< EventsCounter > getEventsList
         (
                 String        application,
                 LocalDateTime after,
@@ -219,7 +219,7 @@ public class EventsCollectorCounters extends EventsCollector
                             url
                     );
         }
-        List< CounterResponse > list =
+        List< EventsCounter > list =
                 this
                         .client
                         .baseUrl( url )
@@ -233,7 +233,7 @@ public class EventsCollectorCounters extends EventsCollector
                                 (
                                         response ->
                                                 ( ( response != null ) && HttpStatus.OK.equals( response.statusCode() ) )
-                                                        ? response.bodyToFlux( CounterResponse.class )
+                                                        ? response.bodyToFlux( EventsCounter.class )
                                                         : null
                                 )
                         .collectList()

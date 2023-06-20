@@ -1,6 +1,6 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
-import net.alemas.oss.tools.eventscollector.io.EventsLogInOut;
+import net.alemas.oss.tools.eventscollector.io.events.TestEventsSession;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  *
  * Created by MASCHERPA on 19/02/2021.
  */
-public class EventsCollectorLoginsTest extends EventsLogInOut
+public class EventsCollectorLoginsTest extends TestEventsSession
 {
     /* --- logging --- */
     final private static Logger log = LoggerFactory.getLogger( EventsCollectorLoginsTest.class );
@@ -66,7 +66,7 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
         log.info( "post events - begin" );
 
         boolean posted;
-        for ( LogInOutSessionTest failure : responses )
+        for ( EventPayloadSession failure : responses )
         {
             LogInOutResponse response = failure.getResponse();
 
@@ -129,7 +129,7 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
     private void checkListByDate
             (
                     EventsCollectorLogins       collector,
-                    List< LogInOutSessionTest > expected
+                    List< EventPayloadSession > expected
             )
             throws
                 URISyntaxException
@@ -142,7 +142,7 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
                         .get( 0 )
                         .getResponse()
                         .getDateLoggedIn();
-        for ( LogInOutSessionTest session : expected )
+        for ( EventPayloadSession session : expected )
         {
             LogInOutResponse    response    = session.getResponse();
             LocalDateTime       date        = response.getDateLoggedIn();
@@ -180,7 +180,7 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
                     String                      app,
                     LocalDateTime               after,
                     LocalDateTime               before,
-                    List< LogInOutSessionTest > expected
+                    List< EventPayloadSession > expected
             )
             throws
                 URISyntaxException
@@ -200,7 +200,7 @@ public class EventsCollectorLoginsTest extends EventsLogInOut
         boolean                 posted;
         EventsCollectorLogins   collector = new EventsCollectorLogins( server.getService() );
 
-        for ( LogInOutSessionTest failure : failures )
+        for ( EventPayloadSession failure : failures )
         {
             LogInOutResponse response = failure.getResponse();
 

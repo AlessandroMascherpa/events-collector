@@ -2,7 +2,7 @@ package net.alemas.oss.tools.eventscollector.exporters;
 
 
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * Created by MASCHERPA on 26/05/2021.
  */
 @Service
-public class SpreadsheetTimers extends SpreadsheetByList< TimingResponse >
+public class SpreadsheetTimers extends SpreadsheetByList< EventsStatistics >
 {
     /* --- constructors --- */
     @Autowired
@@ -52,7 +52,7 @@ public class SpreadsheetTimers extends SpreadsheetByList< TimingResponse >
     protected void fillRow
             (
                     XSSFRow         row,
-                    TimingResponse  response
+                    EventsStatistics response
             )
     {
         row.createCell( 0, CellType.STRING ).setCellValue( response.getApplication() );

@@ -2,8 +2,8 @@ package net.alemas.oss.tools.eventscollectorclient;
 
 
 import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.in.EventElapsed;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import reactor.core.publisher.Mono;
@@ -120,7 +120,7 @@ public class EventsCollectorTimer extends EventsCollector
         )
     {
         String          url     = super.buildUrl();
-        TimingEvent     event   = this.buildBody( application, id, when, elapsed );
+        EventElapsed event   = this.buildBody( application, id, when, elapsed );
 
         if ( log.isDebugEnabled() )
         {
@@ -130,7 +130,7 @@ public class EventsCollectorTimer extends EventsCollector
                             url,
                             application,
                             id,
-                            TimingEvent.convertDate( when )
+                            EventElapsed.convertDate( when )
                     );
         }
         Boolean reply =
@@ -146,7 +146,7 @@ public class EventsCollectorTimer extends EventsCollector
                         .body
                                 (
                                         Mono.just( event ),
-                                        TimingEvent.class
+                                        EventElapsed.class
                                 )
                         .exchangeToMono
                                 (
@@ -169,7 +169,7 @@ public class EventsCollectorTimer extends EventsCollector
         return
                 response;
     }
-    private TimingEvent buildBody
+    private EventElapsed buildBody
             (
                     String			application,
                     String			id,
@@ -178,7 +178,7 @@ public class EventsCollectorTimer extends EventsCollector
             )
     {
         return
-                new TimingEvent
+                new EventElapsed
                         (
                                 application,
                                 id,
@@ -193,7 +193,7 @@ public class EventsCollectorTimer extends EventsCollector
      *
      * @return list of events grouped by identifier;
      */
-    public List< TimingResponse > getEventsList()
+    public List< EventsStatistics > getEventsList()
     {
         return
                 this.getEventsList( null, null, null );
@@ -207,7 +207,7 @@ public class EventsCollectorTimer extends EventsCollector
      * @param before        events occurred before the given date;
      * @return list of events grouped by identifier;
      */
-    public List< TimingResponse > getEventsList
+    public List< EventsStatistics > getEventsList
         (
                 String        application,
                 LocalDateTime after,
@@ -224,7 +224,7 @@ public class EventsCollectorTimer extends EventsCollector
                             url
                     );
         }
-        List< TimingResponse > list =
+        List< EventsStatistics > list =
                 this
                         .client
                         .baseUrl( url )
@@ -238,7 +238,7 @@ public class EventsCollectorTimer extends EventsCollector
                                 (
                                         response ->
                                                 response.statusCode().equals( HttpStatus.OK )
-                                                        ? response.bodyToFlux( TimingResponse.class )
+                                                        ? response.bodyToFlux( EventsStatistics.class )
                                                         : null
                                 )
                         .collectList()

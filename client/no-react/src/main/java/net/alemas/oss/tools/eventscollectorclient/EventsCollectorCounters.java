@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsCounter;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -155,7 +155,7 @@ public class EventsCollectorCounters extends EventsCollector
      *
      * @return list of events grouped by identifier;
      */
-    public List< CounterResponse > getEventsList()
+    public List< EventsCounter > getEventsList()
             throws
                 URISyntaxException
     {
@@ -171,7 +171,7 @@ public class EventsCollectorCounters extends EventsCollector
      * @param before        events occurred before the given date;
      * @return list of events grouped by identifier;
      */
-    public List< CounterResponse > getEventsList
+    public List< EventsCounter > getEventsList
         (
                 String        application,
                 LocalDateTime after,
@@ -187,7 +187,7 @@ public class EventsCollectorCounters extends EventsCollector
             log.debug( banner + "begin" );
         }
 
-        List< CounterResponse > list = null;
+        List< EventsCounter > list = null;
         try
         {
             InputStream stream = super.getEventsList( uri );
@@ -198,7 +198,7 @@ public class EventsCollectorCounters extends EventsCollector
                 list = mapper.readValue
                         (
                                 stream,
-                                new TypeReference< List< CounterResponse > >()
+                                new TypeReference< List< EventsCounter > >()
                                 {
                                 }
                         );

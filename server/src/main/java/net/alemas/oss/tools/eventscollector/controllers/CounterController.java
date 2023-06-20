@@ -7,7 +7,7 @@ import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetCounters;
 import net.alemas.oss.tools.eventscollector.io.Base;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsCounter;
 import net.alemas.oss.tools.eventscollector.repositories.CounterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,10 +143,10 @@ public class CounterController
             (
                     value       = EndpointsPaths.REQUEST_PATH_COUNTER_EVENT,
                     method      = RequestMethod.GET,
-                    produces    = MediaType.APPLICATION_JSON_VALUE
+                    produces    = MediaType.APPLICATION_JSON_VALUE  --> use TEXT_EVENT_STREAM_VALUE as standard SSE stream -> each object from Flux is in a separate 'data:' line
             )
     @ResponseStatus( HttpStatus.OK )
-    private Flux< CounterResponse > getEventsGroupedById
+    private Flux< EventsCounter > getEventsGroupedById
             (
                     @ApiParam
                             (

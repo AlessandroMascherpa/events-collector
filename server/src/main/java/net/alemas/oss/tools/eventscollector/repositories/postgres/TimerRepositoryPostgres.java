@@ -5,8 +5,8 @@ import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.Result;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.Statement;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.in.EventElapsed;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 import net.alemas.oss.tools.eventscollector.repositories.TimerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
                 havingValue     = "postgres"
         )
 public class TimerRepositoryPostgres
-        extends     RepositoryPostgres< TimingEvent, TimingResponse >
+        extends     RepositoryPostgres< EventElapsed, EventsStatistics >
         implements  TimerRepository
 {
     /* --- constants --- */
@@ -46,7 +46,7 @@ public class TimerRepositoryPostgres
 
     /* --- interface methods --- */
     @Override
-    public void add( TimingEvent event ) throws IllegalArgumentException
+    public void add( EventElapsed event ) throws IllegalArgumentException
     {
         if ( event == null )
         {
@@ -119,11 +119,11 @@ public class TimerRepositoryPostgres
     }
 
     @Override
-    protected TimingEvent mapEvent( Row row )
+    protected EventElapsed mapEvent( Row row )
     {
         Double elapsed = row.get( "elapsed", Double.class );
         return
-                new TimingEvent
+                new EventElapsed
                         (
                                 row.get( "application", String.class ),
                                 row.get( "event_id",    String.class ),
@@ -172,14 +172,14 @@ public class TimerRepositoryPostgres
     }
 
     @Override
-    protected TimingResponse mapResponse( Row row )
+    protected EventsStatistics mapResponse( Row row )
     {
         Long count = row.get( "count", Long.class );
         Double avg = row.get( "avg",   Double.class );
         Double min = row.get( "min",   Double.class );
         Double max = row.get( "max",   Double.class );
         return
-                new TimingResponse
+                new EventsStatistics
                         (
                                 row.get( "application", String.class ),
                                 row.get( "event_id",    String.class ),

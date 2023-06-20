@@ -3,9 +3,9 @@ package net.alemas.oss.tools.eventscollector;
 
 import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
-import net.alemas.oss.tools.eventscollector.io.EventsCounter;
+import net.alemas.oss.tools.eventscollector.io.events.TestEventsCounter;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsCounter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
-public class CounterEventsCollectorApplicationTests extends EventsCounter
+public class CounterEventsCollectorApplicationTests extends TestEventsCounter
 {
     /* --- logging --- */
     final private static Logger log = LoggerFactory.getLogger( CounterEventsCollectorApplicationTests.class );
@@ -46,7 +46,7 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
                 .uri( this.getUrlPath() )
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList( CounterResponse.class )
+                .expectBodyList( EventsCounter.class )
                 .hasSize( 0 )
         ;
         log.info( "test empty collection - end" );
@@ -87,7 +87,7 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
 
         log.info( "server - end" );
     }
-    private void checkList( String query, List< CounterResponse > expected )
+    private void checkList( String query, List< EventsCounter > expected )
     {
         String                      url     = this.getUrlPath();
         if ( ( query != null ) && ( ! "".equals( query ) ) )
@@ -96,12 +96,12 @@ public class CounterEventsCollectorApplicationTests extends EventsCounter
             log.info( "query parameters: '" + query + '\'' );
         }
 
-        List< CounterResponse >     actual  = this.webTestClient
+        List< EventsCounter >     actual  = this.webTestClient
                 .get()
                 .uri( url )
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList( CounterResponse.class )
+                .expectBodyList( EventsCounter.class )
                 .hasSize( expected.size() )
                 .returnResult()
                 .getResponseBody()

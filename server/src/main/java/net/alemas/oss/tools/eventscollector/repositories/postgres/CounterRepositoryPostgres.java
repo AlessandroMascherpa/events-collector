@@ -5,7 +5,7 @@ import io.r2dbc.spi.Result;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.Statement;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsCounter;
 import net.alemas.oss.tools.eventscollector.repositories.CounterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
                 havingValue     = "postgres"
         )
 public class CounterRepositoryPostgres
-        extends     RepositoryPostgres< CounterEvent, CounterResponse >
+        extends     RepositoryPostgres< CounterEvent, EventsCounter >
         implements  CounterRepository
 {
     /* --- constants --- */
@@ -165,11 +165,11 @@ public class CounterRepositoryPostgres
     }
 
     @Override
-    protected CounterResponse mapResponse( Row row )
+    protected EventsCounter mapResponse( Row row )
     {
         Long count = row.get( "count", Long.class );
         return
-                new CounterResponse
+                new EventsCounter
                         (
                                 row.get( "application", String.class ),
                                 row.get( "event_id",    String.class ),

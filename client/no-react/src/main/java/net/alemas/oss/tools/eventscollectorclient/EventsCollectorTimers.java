@@ -4,8 +4,8 @@ package net.alemas.oss.tools.eventscollectorclient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.in.EventElapsed;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -112,7 +112,7 @@ public class EventsCollectorTimers extends EventsCollector
         )
     {
         boolean reply;
-        String  date    = TimingEvent.convertDate( when );
+        String  date    = EventElapsed.convertDate( when );
         String  banner  = "posting timing event - end point '" + this.remote.toString() + "' - event: application: '" + application + "', id: '" + id + "', when: " + date + " - ";
         if ( log.isDebugEnabled() )
         {
@@ -124,7 +124,7 @@ public class EventsCollectorTimers extends EventsCollector
         try
         {
             /* --- prepare body --- */
-            TimingEvent event = new TimingEvent( application, id, when, elapsed );
+            EventElapsed event = new EventElapsed( application, id, when, elapsed );
 
 			/* --- execute call and check reply --- */
             int status = super.postEvent( event );
@@ -159,7 +159,7 @@ public class EventsCollectorTimers extends EventsCollector
      *
      * @return list of events grouped by identifier;
      */
-    public List< TimingResponse > getEventsList()
+    public List< EventsStatistics > getEventsList()
             throws
                 URISyntaxException
     {
@@ -176,7 +176,7 @@ public class EventsCollectorTimers extends EventsCollector
      * @param before        events occurred before the given date;
      * @return list of events grouped by identifier;
      */
-    public List< TimingResponse > getEventsList
+    public List< EventsStatistics > getEventsList
         (
                 String        application,
                 LocalDateTime after,
@@ -192,7 +192,7 @@ public class EventsCollectorTimers extends EventsCollector
             log.debug( banner + "begin" );
         }
 
-        List< TimingResponse > list = null;
+        List< EventsStatistics > list = null;
         try
         {
             InputStream stream = super.getEventsList( uri );
@@ -203,7 +203,7 @@ public class EventsCollectorTimers extends EventsCollector
                 list = mapper.readValue
                         (
                                 stream,
-                                new TypeReference< List< TimingResponse > >()
+                                new TypeReference< List< EventsStatistics > >()
                                 {
                                 }
                         );

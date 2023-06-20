@@ -1,8 +1,8 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
-import net.alemas.oss.tools.eventscollector.io.EventsCounter;
+import net.alemas.oss.tools.eventscollector.io.events.TestEventsCounter;
 import net.alemas.oss.tools.eventscollector.io.counter.CounterEvent;
-import net.alemas.oss.tools.eventscollector.io.counter.CounterResponse;
+import net.alemas.oss.tools.eventscollector.io.out.EventsCounter;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  *
  * Created by MASCHERPA on 14/05/2021.
  */
-public class EventsCollectorCountersTest extends EventsCounter
+public class EventsCollectorCountersTest extends TestEventsCounter
 {
     /* --- logging --- */
     final private static Logger log = LoggerFactory.getLogger( EventsCollectorCountersTest.class );
@@ -55,7 +55,7 @@ public class EventsCollectorCountersTest extends EventsCounter
         /* --- check the collection is empty --- */
         log.info( "test empty collection - begin" );
 
-        List< CounterResponse > list = collector.getEventsList();
+        List< EventsCounter > list = collector.getEventsList();
         assertNotNull( list );
         assertTrue( list.isEmpty() );
 

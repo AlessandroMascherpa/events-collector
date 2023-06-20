@@ -6,8 +6,8 @@ import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.ServerConfiguration;
 import net.alemas.oss.tools.eventscollector.exporters.SpreadsheetTimers;
 import net.alemas.oss.tools.eventscollector.io.Base;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.in.EventElapsed;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 import net.alemas.oss.tools.eventscollector.repositories.TimerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +94,7 @@ public class TimerController
     @ResponseStatus( HttpStatus.CREATED )
     private void addCounter
         (
-                @RequestBody TimingEvent event
+                @RequestBody EventElapsed event
         )
     {
         if ( log.isInfoEnabled() )
@@ -146,7 +146,7 @@ public class TimerController
                     produces    = MediaType.APPLICATION_JSON_VALUE
             )
     @ResponseStatus( HttpStatus.OK )
-    private Flux< TimingResponse > getEventsGroupedById
+    private Flux< EventsStatistics > getEventsGroupedById
             (
                     @ApiParam
                             (

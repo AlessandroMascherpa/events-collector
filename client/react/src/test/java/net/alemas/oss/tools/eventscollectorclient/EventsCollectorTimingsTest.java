@@ -1,9 +1,9 @@
 package net.alemas.oss.tools.eventscollectorclient;
 
 
-import net.alemas.oss.tools.eventscollector.io.EventsTiming;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.events.TestEventsElapsed;
+import net.alemas.oss.tools.eventscollector.io.in.EventElapsed;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  *
  * Created by MASCHERPA on 27/05/2021.
  */
-public class EventsCollectorTimingsTest extends EventsTiming
+public class EventsCollectorTimingsTest extends TestEventsElapsed
 {
     /* --- logging --- */
     final private static Logger log = LoggerFactory.getLogger( EventsCollectorTimingsTest.class );
@@ -58,7 +58,7 @@ public class EventsCollectorTimingsTest extends EventsTiming
         /* --- check the collection is empty --- */
         log.info( "test empty collection - begin" );
 
-        List< TimingResponse > list = collector.getEventsList();
+        List< EventsStatistics > list = collector.getEventsList();
         assertNotNull( list );
         assertTrue( list.isEmpty() );
 
@@ -69,7 +69,7 @@ public class EventsCollectorTimingsTest extends EventsTiming
         log.info( "post events - begin" );
 
         boolean posted;
-        for ( TimingEvent event : events )
+        for ( EventElapsed event : events )
         {
             posted = collector.postEvent
                     (
@@ -102,7 +102,7 @@ public class EventsCollectorTimingsTest extends EventsTiming
         boolean                 posted;
         EventsCollectorTimer collector = new EventsCollectorTimer( server.getService() );
 
-        for ( TimingEvent failure : failures )
+        for ( EventElapsed failure : failures )
         {
             posted = collector.postEvent
                     (

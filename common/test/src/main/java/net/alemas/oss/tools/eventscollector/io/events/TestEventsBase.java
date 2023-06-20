@@ -1,4 +1,4 @@
-package net.alemas.oss.tools.eventscollector.io;
+package net.alemas.oss.tools.eventscollector.io.events;
 
 
 import java.time.LocalDateTime;
@@ -10,10 +10,9 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Class with common payloads for testing.
- *
- * Created by MASCHERPA on 11/05/2021.
+ * Created by MASCHERPA on 30/10/2022.
  */
-public abstract class EventsBase< Response >
+public abstract class TestEventsBase < Response >
 {
     /* --- payload values --- */
     protected static final String					APP_DOT		= "app-dot";

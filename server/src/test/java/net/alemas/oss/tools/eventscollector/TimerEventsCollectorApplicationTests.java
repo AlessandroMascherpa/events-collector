@@ -3,9 +3,9 @@ package net.alemas.oss.tools.eventscollector;
 
 import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
-import net.alemas.oss.tools.eventscollector.io.EventsTiming;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.events.TestEventsElapsed;
+import net.alemas.oss.tools.eventscollector.io.in.EventElapsed;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
-public class TimerEventsCollectorApplicationTests extends EventsTiming
+public class TimerEventsCollectorApplicationTests extends TestEventsElapsed
 {
     /* --- logging --- */
     final private static Logger log = LoggerFactory.getLogger( CounterEventsCollectorApplicationTests.class );
@@ -46,14 +46,14 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
                 .uri( this.getUrlPath() )
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList( TimingResponse.class )
+                .expectBodyList( EventsStatistics.class )
                 .hasSize( 0 )
         ;
         log.info( "test empty collection - end" );
 
         /* --- fill in the events --- */
         log.info( "post events - begin" );
-        for ( TimingEvent event : events )
+        for ( EventElapsed event : events )
         {
             this.webTestClient
                     .post()
@@ -62,7 +62,7 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
                     .body
                             (
                                     Mono.just( event ),
-                                    TimingEvent.class
+                                    EventElapsed.class
                             )
                     .exchange()
                     .expectStatus().isCreated()
@@ -90,7 +90,7 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
 
         log.info( "server - end" );
     }
-    private void checkList( String query, List< TimingResponse > expected )
+    private void checkList( String query, List< EventsStatistics > expected )
     {
         String                      url     = this.getUrlPath();
         if ( ( query != null ) && ( ! "".equals( query ) ) )
@@ -99,12 +99,12 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
             log.info( "query parameters: '" + query + '\'' );
         }
 
-        List< TimingResponse >      actual  = this.webTestClient
+        List< EventsStatistics >      actual  = this.webTestClient
                 .get()
                 .uri( url )
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList( TimingResponse.class )
+                .expectBodyList( EventsStatistics.class )
                 .hasSize( expected.size() )
                 .returnResult()
                 .getResponseBody()
@@ -118,7 +118,7 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
     {
         log.info( "post of incorrect events - begin" );
 
-        for ( TimingEvent event : failures )
+        for ( EventElapsed event : failures )
         {
             this.webTestClient
                     .post()
@@ -127,7 +127,7 @@ public class TimerEventsCollectorApplicationTests extends EventsTiming
                     .body
                             (
                                     Mono.just( event ),
-                                    TimingEvent.class
+                                    EventElapsed.class
                             )
                     .exchange()
                     .expectStatus().isBadRequest()

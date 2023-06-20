@@ -2,7 +2,7 @@ package net.alemas.oss.tools.eventscollector;
 
 import net.alemas.oss.tools.eventscollector.configuration.EndpointsPaths;
 import net.alemas.oss.tools.eventscollector.configuration.Properties;
-import net.alemas.oss.tools.eventscollector.io.EventsLogInOut;
+import net.alemas.oss.tools.eventscollector.io.events.TestEventsSession;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOut;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutEvent;
 import net.alemas.oss.tools.eventscollector.io.loginout.LogInOutResponse;
@@ -24,7 +24,7 @@ import java.util.List;
 
 @ExtendWith( SpringExtension.class )
 @SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
-class LoginEventsCollectorApplicationTests extends EventsLogInOut
+class LoginEventsCollectorApplicationTests extends TestEventsSession
 {
 	/* --- logging --- */
 	final private static Logger log = LoggerFactory.getLogger( LoginEventsCollectorApplicationTests.class );
@@ -58,7 +58,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 		/* --- fill in the events --- */
         log.info( "post events - begin" );
 		LogInOutEvent event;
-		for ( LogInOutSessionTest response : responses )
+		for ( EventPayloadSession response : responses )
 		{
             event = getLogIn( response );
 			this.webTestClient
@@ -118,7 +118,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 
         log.info( "server - end" );
 	}
-    private void checkListByDate( List< LogInOutSessionTest > expected )
+    private void checkListByDate( List< EventPayloadSession > expected )
     {
         LocalDateTime   min;
         LocalDateTime   max;
@@ -128,7 +128,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
                 .getResponse()
                 .getDateLoggedIn()
         ;
-        for ( LogInOutSessionTest session : expected )
+        for ( EventPayloadSession session : expected )
         {
             LogInOutResponse    response    = session.getResponse();
             LocalDateTime       date        = response.getDateLoggedIn();
@@ -158,7 +158,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
                         expected
                 );
     }
-    private void checkList( String query, List< LogInOutSessionTest > expected )
+    private void checkList( String query, List< EventPayloadSession > expected )
     {
         String  url = this.getUrlPath();
         if ( ( query != null ) && ( ! "".equals( query ) ) )
@@ -188,7 +188,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 		log.info( "post of incorrect events - begin" );
 
         LogInOutEvent event;
-        for ( LogInOutSessionTest response : failures )
+        for ( EventPayloadSession response : failures )
         {
             event = getLogIn( response );
             this.webTestClient
@@ -245,7 +245,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
 
 
 	/* --- payload methods --- */
-	private static LogInOutEvent  getLogIn( LogInOutSessionTest session )
+	private static LogInOutEvent  getLogIn( EventPayloadSession session )
 	{
         LogInOutResponse    response    = session.getResponse();
         return
@@ -258,7 +258,7 @@ class LoginEventsCollectorApplicationTests extends EventsLogInOut
                                 true
                         );
 	}
-	private static LogInOutEvent  getLogOut( LogInOutSessionTest session )
+	private static LogInOutEvent  getLogOut( EventPayloadSession session )
 	{
         LogInOutEvent       payload     = null;
         LogInOutResponse    response    = session.getResponse();

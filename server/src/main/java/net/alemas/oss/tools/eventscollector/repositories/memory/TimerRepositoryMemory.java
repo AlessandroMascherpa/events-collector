@@ -2,8 +2,8 @@ package net.alemas.oss.tools.eventscollector.repositories.memory;
 
 
 import net.alemas.oss.tools.eventscollector.io.linking.PairApplicationIdUsernameId;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingEvent;
-import net.alemas.oss.tools.eventscollector.io.timing.TimingResponse;
+import net.alemas.oss.tools.eventscollector.io.in.EventElapsed;
+import net.alemas.oss.tools.eventscollector.io.out.EventsStatistics;
 import net.alemas.oss.tools.eventscollector.repositories.TimerRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
@@ -32,11 +32,11 @@ public class TimerRepositoryMemory
             TimerRepository, RepositoryMemoryConstants
 {
     /* --- properties -- */
-    private List< TimingEvent > repository  = new ArrayList<>();
+    private List< EventElapsed > repository  = new ArrayList<>();
 
     /* --- handlers --- */
     @Override
-    public void add( TimingEvent event ) throws IllegalArgumentException
+    public void add( EventElapsed event ) throws IllegalArgumentException
     {
         if ( event == null )
         {
@@ -62,7 +62,7 @@ public class TimerRepositoryMemory
 
 
     @Override
-    public Flux< TimingEvent > list
+    public Flux< EventElapsed > list
             (
                     String          application,
                     LocalDateTime   after,
@@ -88,7 +88,7 @@ public class TimerRepositoryMemory
 
 
     @Override
-    public Flux< TimingResponse > groupById
+    public Flux< EventsStatistics > groupById
             (
                     String          application,
                     LocalDateTime   after,
@@ -126,7 +126,7 @@ public class TimerRepositoryMemory
                                                                 (
                                                                         Collectors.summarizingDouble
                                                                                 (
-                                                                                        TimingEvent::getElapsed
+                                                                                        EventElapsed::getElapsed
                                                                                 )
                                                                 )
                                                         .map
@@ -135,7 +135,7 @@ public class TimerRepositoryMemory
                                                                         {
                                                                             PairApplicationIdUsernameId key = grouped.key();
                                                                             return
-                                                                                    new TimingResponse
+                                                                                    new EventsStatistics
                                                                                             (
                                                                                                     key.getApplication(),
                                                                                                     key.getId(),
@@ -152,7 +152,7 @@ public class TimerRepositoryMemory
 
     protected boolean filterByApplicationAndDate
             (
-                    TimingEvent     event,
+                    EventElapsed    event,
                     String          application,
                     LocalDateTime   after,
                     LocalDateTime   before
